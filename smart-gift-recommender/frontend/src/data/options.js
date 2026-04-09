@@ -31,11 +31,33 @@ export const occasions = [
   { value: "valentines", label: "Valentine's Day" },
   { value: "mothers_day", label: "Mother's Day" },
   { value: "fathers_day", label: "Father's Day" },
-  { value: "diwali", label: "Diwali" },
-  { value: "christmas", label: "Christmas" },
-  { value: "eid", label: "Eid" },
-  { value: "new_year", label: "New Year" },
-  { value: "housewarming", label: "Housewarming" },
+  // Indian Festivals
+  { value: "diwali", label: "Diwali 🪔" },
+  { value: "holi", label: "Holi 🎨" },
+  { value: "navratri", label: "Navratri / Durga Puja 🪷" },
+  { value: "raksha_bandhan", label: "Raksha Bandhan 🪢" },
+  { value: "baisakhi", label: "Baisakhi / Pongal 🌾" },
+  { value: "ganesh_chaturthi", label: "Ganesh Chaturthi 🐘" },
+  { value: "onam", label: "Onam 🌺" },
+  { value: "ugadi", label: "Ugadi / Gudi Padwa 🌿" },
+  // Islamic Festivals
+  { value: "eid", label: "Eid ul-Fitr 🌙" },
+  { value: "eid_adha", label: "Eid ul-Adha 🐑" },
+  // Christian Festivals
+  { value: "christmas", label: "Christmas 🎄" },
+  { value: "easter", label: "Easter 🐣" },
+  // East Asian Festivals
+  { value: "chinese_new_year", label: "Chinese New Year 🐉" },
+  { value: "mid_autumn", label: "Mid-Autumn Festival 🥮" },
+  { value: "diwali_of_south", label: "Deepavali (South Asia) ✨" },
+  // Jewish Festivals
+  { value: "hanukkah", label: "Hanukkah 🕎" },
+  { value: "rosh_hashanah", label: "Rosh Hashanah 🍎" },
+  // Western / Global
+  { value: "new_year", label: "New Year 🎆" },
+  { value: "thanksgiving", label: "Thanksgiving 🦃" },
+  { value: "halloween", label: "Halloween 🎃" },
+  { value: "housewarming", label: "Housewarming 🏠" },
   { value: "get_well_soon", label: "Get Well Soon" },
   { value: "congratulations", label: "Congratulations" },
   { value: "thank_you", label: "Thank You" },
