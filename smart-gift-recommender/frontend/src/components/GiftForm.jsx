@@ -1,8 +1,15 @@
 import { useState } from "react";
 import { relationships, occasions, budgets } from "../data/options";
 
+const genders = [
+  { value: "any", label: "Any / Not specified" },
+  { value: "male", label: "Male" },
+  { value: "female", label: "Female" },
+  { value: "non_binary", label: "Non-binary" },
+];
+
 export default function GiftForm({ onRecommend }) {
-  const [form, setForm] = useState({ relationship: "", occasion: "", budget: "" });
+  const [form, setForm] = useState({ relationship: "", occasion: "", budget: "", gender: "any" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -29,46 +36,44 @@ export default function GiftForm({ onRecommend }) {
     }
   };
 
-  const selectClass =
-    "mt-1 w-full border-2 border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-violet-500 bg-gray-50 transition";
+  const sel = "mt-1 w-full border-2 border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-violet-500 bg-gray-50 transition";
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <h2 className="text-xl font-semibold text-violet-700 text-center mb-2">Find the Perfect Gift</h2>
 
       <div>
         <label className="block text-sm font-medium text-gray-600">Who are you gifting?</label>
-        <select name="relationship" value={form.relationship} onChange={handleChange} className={selectClass}>
+        <select name="relationship" value={form.relationship} onChange={handleChange} className={sel}>
           <option value="">-- Select Relationship --</option>
-          {relationships.map((r) => (
-            <option key={r.value} value={r.value}>{r.label}</option>
-          ))}
+          {relationships.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
+        </select>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-600">Recipient's Gender</label>
+        <select name="gender" value={form.gender} onChange={handleChange} className={sel}>
+          {genders.map((g) => <option key={g.value} value={g.value}>{g.label}</option>)}
         </select>
       </div>
 
       <div>
         <label className="block text-sm font-medium text-gray-600">What's the occasion?</label>
-        <select name="occasion" value={form.occasion} onChange={handleChange} className={selectClass}>
+        <select name="occasion" value={form.occasion} onChange={handleChange} className={sel}>
           <option value="">-- Select Occasion --</option>
-          {occasions.map((o) => (
-            <option key={o.value} value={o.value}>{o.label}</option>
-          ))}
+          {occasions.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
       </div>
 
       <div>
         <label className="block text-sm font-medium text-gray-600">What's your budget?</label>
-        <select name="budget" value={form.budget} onChange={handleChange} className={selectClass}>
+        <select name="budget" value={form.budget} onChange={handleChange} className={sel}>
           <option value="">-- Select Budget --</option>
-          {budgets.map((b) => (
-            <option key={b.value} value={b.value}>{b.label}</option>
-          ))}
+          {budgets.map((b) => <option key={b.value} value={b.value}>{b.label}</option>)}
         </select>
       </div>
 
-      {error && (
-        <p className="text-red-500 text-sm text-center">{error}</p>
-      )}
+      {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
       <button
         type="submit"
