@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Query, HTTPException
+from fastapi import FastAPI, Query, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
@@ -25,6 +25,7 @@ def recommend(
     occasion: str = Query(...),
     budget: str = Query(...),
     gender: str = Query(default="any"),
+    x_user_id: Optional[str] = Header(default=None),
 ):
     result = next(
         (g for g in gift_data if g["relationship"] == relationship
@@ -43,17 +44,13 @@ def recommend(
     if not result:
         raise HTTPException(status_code=404, detail="No recommendations found. Try adjusting your filters.")
 
-    # log the search
     db = get_db()
     db.execute(
-        "INSERT INTO search_logs (relationship, occasion, budget, gender) VALUES (?,?,?,?)",
-        (relationship, occasion, budget, gender)
+        "INSERT INTO search_logs (user_id, relationship, occasion, budget, gender) VALUES (?,?,?,?,?)",
+        (x_user_id, relationship, occasion, budget, gender)
     )
     db.commit()
-    db.close()
 
-    # get vote scores for each gift
-    db = get_db()
     gifts_with_scores = []
     for gift in result["gifts"]:
         row = db.execute(
@@ -73,6 +70,37 @@ def recommend(
         "recommendations": gifts_with_scores,
     }
 
+# ─── SEARCH HISTORY (per user) ────────────────────────────────
+@app.get("/api/history")
+def get_history(x_user_id: Optional[str] = Header(default=None)):
+    if not x_user_id:
+        raise HTTPException(status_code=400, detail="User ID required")
+    db = get_db()
+    rows = db.execute(
+        "SELECT * FROM search_logs WHERE user_id=? ORDER BY created_at DESC LIMIT 50",
+        (x_user_id,)
+    ).fetchall()
+    db.close()
+    return [dict(r) for r in rows]
+
+@app.delete("/api/history/{log_id}")
+def delete_history(log_id: int, x_user_id: Optional[str] = Header(default=None)):
+    db = get_db()
+    db.execute("DELETE FROM search_logs WHERE id=? AND user_id=?", (log_id, x_user_id))
+    db.commit()
+    db.close()
+    return {"message": "Deleted"}
+
+@app.delete("/api/history")
+def clear_history(x_user_id: Optional[str] = Header(default=None)):
+    if not x_user_id:
+        raise HTTPException(status_code=400, detail="User ID required")
+    db = get_db()
+    db.execute("DELETE FROM search_logs WHERE user_id=?", (x_user_id,))
+    db.commit()
+    db.close()
+    return {"message": "History cleared"}
+
 # ─── OPTIONS ──────────────────────────────────────────────────
 @app.get("/api/options")
 def options():
@@ -85,7 +113,7 @@ class VotePayload(BaseModel):
     gift_name: str
     relationship: str
     occasion: str
-    vote: int  # 1 or -1
+    vote: int
 
 @app.post("/api/vote")
 def vote(payload: VotePayload):
@@ -100,7 +128,7 @@ def vote(payload: VotePayload):
     db.close()
     return {"message": "Vote recorded"}
 
-# ─── WISHLIST ─────────────────────────────────────────────────
+# ─── WISHLIST (per user) ───────────────────────────────────────
 class WishlistPayload(BaseModel):
     gift_name: str
     relationship: str
@@ -108,65 +136,62 @@ class WishlistPayload(BaseModel):
     budget: str
 
 @app.post("/api/wishlist")
-def add_wishlist(payload: WishlistPayload):
+def add_wishlist(payload: WishlistPayload, x_user_id: Optional[str] = Header(default=None)):
     db = get_db()
     db.execute(
-        "INSERT INTO wishlist (gift_name, relationship, occasion, budget) VALUES (?,?,?,?)",
-        (payload.gift_name, payload.relationship, payload.occasion, payload.budget)
+        "INSERT INTO wishlist (user_id, gift_name, relationship, occasion, budget) VALUES (?,?,?,?,?)",
+        (x_user_id, payload.gift_name, payload.relationship, payload.occasion, payload.budget)
     )
     db.commit()
     db.close()
     return {"message": "Added to wishlist"}
 
 @app.get("/api/wishlist")
-def get_wishlist():
+def get_wishlist(x_user_id: Optional[str] = Header(default=None)):
     db = get_db()
-    rows = db.execute("SELECT * FROM wishlist ORDER BY created_at DESC").fetchall()
+    rows = db.execute(
+        "SELECT * FROM wishlist WHERE user_id=? ORDER BY created_at DESC",
+        (x_user_id,)
+    ).fetchall()
     db.close()
     return [dict(r) for r in rows]
 
 @app.delete("/api/wishlist/{item_id}")
-def delete_wishlist(item_id: int):
+def delete_wishlist(item_id: int, x_user_id: Optional[str] = Header(default=None)):
     db = get_db()
-    db.execute("DELETE FROM wishlist WHERE id=?", (item_id,))
+    db.execute("DELETE FROM wishlist WHERE id=? AND user_id=?", (item_id, x_user_id))
     db.commit()
     db.close()
-    return {"message": "Removed from wishlist"}
+    return {"message": "Removed"}
 
-# ─── ANALYTICS ────────────────────────────────────────────────
+# ─── ANALYTICS (global — backend/admin view) ──────────────────
 @app.get("/api/analytics")
 def analytics():
     db = get_db()
 
-    # total searches
     total = db.execute("SELECT COUNT(*) as count FROM search_logs").fetchone()["count"]
 
-    # top occasions
     top_occasions = db.execute("""
         SELECT occasion, COUNT(*) as count FROM search_logs
         GROUP BY occasion ORDER BY count DESC LIMIT 10
     """).fetchall()
 
-    # top relationships
     top_relationships = db.execute("""
         SELECT relationship, COUNT(*) as count FROM search_logs
         GROUP BY relationship ORDER BY count DESC LIMIT 10
     """).fetchall()
 
-    # gender breakdown
     gender_breakdown = db.execute("""
         SELECT gender, COUNT(*) as count FROM search_logs
         GROUP BY gender ORDER BY count DESC
     """).fetchall()
 
-    # top gifts by votes
     top_gifts = db.execute("""
         SELECT gift_name, relationship, occasion, SUM(vote) as score, COUNT(*) as votes
         FROM gift_votes GROUP BY gift_name, relationship, occasion
         ORDER BY score DESC LIMIT 10
     """).fetchall()
 
-    # festival vs non-festival
     festival_occasions = ('diwali','holi','navratri','raksha_bandhan','baisakhi',
                           'ganesh_chaturthi','onam','ugadi','eid','eid_adha',
                           'christmas','easter','chinese_new_year','mid_autumn',
@@ -176,17 +201,22 @@ def analytics():
         festival_occasions
     ).fetchone()["count"]
 
-    # searches by day (last 7 days)
     daily = db.execute("""
         SELECT DATE(created_at) as day, COUNT(*) as count
         FROM search_logs WHERE created_at >= DATE('now','-7 days')
         GROUP BY day ORDER BY day
     """).fetchall()
 
+    # unique users
+    unique_users = db.execute(
+        "SELECT COUNT(DISTINCT user_id) as count FROM search_logs WHERE user_id IS NOT NULL"
+    ).fetchone()["count"]
+
     db.close()
 
     return {
         "total_searches": total,
+        "unique_users": unique_users,
         "festival_searches": festival_count,
         "non_festival_searches": total - festival_count,
         "top_occasions": [dict(r) for r in top_occasions],

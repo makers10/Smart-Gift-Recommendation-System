@@ -11,10 +11,10 @@ def init_db():
     conn = get_db()
     c = conn.cursor()
 
-    # search logs — every recommendation request
     c.execute("""
         CREATE TABLE IF NOT EXISTS search_logs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id TEXT,
             relationship TEXT,
             occasion TEXT,
             budget TEXT,
@@ -23,22 +23,27 @@ def init_db():
         )
     """)
 
-    # gift votes — thumbs up/down per gift item
+    # migrate: add user_id column if it doesn't exist yet
+    try:
+        c.execute("ALTER TABLE search_logs ADD COLUMN user_id TEXT")
+    except Exception:
+        pass
+
     c.execute("""
         CREATE TABLE IF NOT EXISTS gift_votes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             gift_name TEXT,
             relationship TEXT,
             occasion TEXT,
-            vote INTEGER,  -- 1 = thumbs up, -1 = thumbs down
+            vote INTEGER,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     """)
 
-    # wishlist
     c.execute("""
         CREATE TABLE IF NOT EXISTS wishlist (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id TEXT,
             gift_name TEXT,
             relationship TEXT,
             occasion TEXT,
@@ -46,6 +51,12 @@ def init_db():
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     """)
+
+    # migrate: add user_id to wishlist if missing
+    try:
+        c.execute("ALTER TABLE wishlist ADD COLUMN user_id TEXT")
+    except Exception:
+        pass
 
     conn.commit()
     conn.close()
