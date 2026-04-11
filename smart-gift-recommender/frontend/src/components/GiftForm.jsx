@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { relationships, occasions, budgets } from "../data/options";
+import { apiFetch } from "../utils/api";
 
 const genders = [
   { value: "any", label: "Any / Not specified" },
@@ -8,8 +9,15 @@ const genders = [
   { value: "non_binary", label: "Non-binary 🌈" },
 ];
 
-export default function GiftForm({ onRecommend }) {
-  const [form, setForm] = useState({ relationship: "", occasion: "", budget: "", gender: "any" });
+export default function GiftForm({ onRecommend, prefill, onPrefillUsed }) {
+  const [form, setForm] = useState(
+    prefill
+      ? { relationship: prefill.relationship||"", occasion: prefill.occasion||"", budget: prefill.budget||"", gender: prefill.gender||"any" }
+      : { relationship: "", occasion: "", budget: "", gender: "any" }
+  );
+
+  // consume prefill once
+  if (prefill && onPrefillUsed) { onPrefillUsed(); }
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -25,7 +33,7 @@ export default function GiftForm({ onRecommend }) {
     setLoading(true);
     try {
       const params = new URLSearchParams(form).toString();
-      const res = await fetch(`http://localhost:3001/api/recommend?${params}`);
+      const res = await apiFetch(`/api/recommend?${params}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || "No results found.");
       onRecommend(data);
@@ -64,17 +72,12 @@ export default function GiftForm({ onRecommend }) {
         </div>
       ))}
 
-      {error && (
-        <p className="text-rose-500 text-xs text-center bg-rose-50 rounded-xl py-2 px-3">{error}</p>
-      )}
+      {error && <p className="text-rose-500 text-xs text-center bg-rose-50 rounded-xl py-2 px-3">{error}</p>}
 
-      <button
-        type="submit"
-        disabled={loading}
+      <button type="submit" disabled={loading}
         className="w-full mt-2 bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600
           disabled:opacity-50 text-white font-semibold py-3 rounded-2xl transition-all
-          shadow-lg shadow-rose-200 hover:shadow-rose-300 text-sm tracking-wide cursor-pointer"
-      >
+          shadow-lg shadow-rose-200 hover:shadow-rose-300 text-sm tracking-wide cursor-pointer">
         {loading ? "Finding the perfect gift... 💭" : "Discover Gifts 🎁"}
       </button>
     </form>

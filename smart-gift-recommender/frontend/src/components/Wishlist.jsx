@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { apiFetch } from "../utils/api";
 
 const fmt = (s) => s.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
@@ -8,9 +9,8 @@ export default function Wishlist() {
 
   const fetchWishlist = async () => {
     try {
-      const res = await fetch("http://localhost:3001/api/wishlist");
-      const data = await res.json();
-      setItems(data);
+      const res = await apiFetch("/api/wishlist");
+      setItems(await res.json());
     } catch {}
     setLoading(false);
   };
@@ -18,7 +18,7 @@ export default function Wishlist() {
   useEffect(() => { fetchWishlist(); }, []);
 
   const remove = async (id) => {
-    await fetch(`http://localhost:3001/api/wishlist/${id}`, { method: "DELETE" });
+    await apiFetch(`/api/wishlist/${id}`, { method: "DELETE" });
     setItems((prev) => prev.filter((i) => i.id !== id));
   };
 
@@ -30,9 +30,7 @@ export default function Wishlist() {
         <p className="text-rose-400 text-xs mt-1 tracking-wide">Gifts you've fallen in love with</p>
       </div>
 
-      {loading && (
-        <p className="text-center text-rose-300 text-sm py-8">Loading your saved gifts... 💕</p>
-      )}
+      {loading && <p className="text-center text-rose-300 text-sm py-8">Loading your saved gifts... 💕</p>}
       {!loading && items.length === 0 && (
         <div className="text-center py-10">
           <div className="text-5xl mb-3">🌹</div>

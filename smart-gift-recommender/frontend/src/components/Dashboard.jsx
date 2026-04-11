@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { apiFetch } from "../utils/api";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend, LineChart, Line, CartesianGrid,
@@ -40,7 +41,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/analytics")
+    apiFetch("/api/analytics")
       .then((r) => r.json())
       .then((d) => { setData(d); setLoading(false); })
       .catch(() => setLoading(false));
@@ -70,8 +71,8 @@ export default function Dashboard() {
       {/* Stat Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard label="Total Searches" value={data.total_searches} icon="🔍" color="rose" />
+        <StatCard label="Unique Users" value={data.unique_users} icon="👥" color="pink" />
         <StatCard label="Festival Gifts" value={data.festival_searches} icon="🪔" color="orange" />
-        <StatCard label="Occasion Gifts" value={data.non_festival_searches} icon="🎉" color="pink" />
         <StatCard label="Gifts Voted" value={data.top_gifts.length} icon="💝" color="purple" />
       </div>
 
