@@ -3,9 +3,9 @@ import { relationships, occasions, budgets } from "../data/options";
 import { apiFetch } from "../utils/api";
 
 const genders = [
-  { value: "any", label: "Any / Not specified" },
-  { value: "male", label: "Male 👨" },
-  { value: "female", label: "Female 👩" },
+  { value: "any",        label: "Any / Not specified" },
+  { value: "male",       label: "Male 👨" },
+  { value: "female",     label: "Female 👩" },
   { value: "non_binary", label: "Non-binary 🌈" },
 ];
 
@@ -15,11 +15,10 @@ export default function GiftForm({ onRecommend, prefill, onPrefillUsed }) {
       ? { relationship: prefill.relationship||"", occasion: prefill.occasion||"", budget: prefill.budget||"", gender: prefill.gender||"any" }
       : { relationship: "", occasion: "", budget: "", gender: "any" }
   );
-
-  // consume prefill once
-  if (prefill && onPrefillUsed) { onPrefillUsed(); }
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError]     = useState("");
+
+  if (prefill && onPrefillUsed) onPrefillUsed();
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -33,7 +32,7 @@ export default function GiftForm({ onRecommend, prefill, onPrefillUsed }) {
     setLoading(true);
     try {
       const params = new URLSearchParams(form).toString();
-      const res = await apiFetch(`/api/recommend?${params}`);
+      const res  = await apiFetch(`/api/recommend?${params}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || "No results found.");
       onRecommend(data);
@@ -44,42 +43,90 @@ export default function GiftForm({ onRecommend, prefill, onPrefillUsed }) {
     }
   };
 
-  const sel = `mt-1 w-full border border-rose-200 rounded-xl px-4 py-2.5 text-sm
-    focus:outline-none focus:ring-2 focus:ring-rose-300 bg-rose-50/50
-    text-gray-700 transition placeholder-rose-300`;
-
-  const fields = [
-    { label: "💝 Who are you gifting?", name: "relationship", options: relationships, placeholder: "-- Choose your person --" },
-    { label: "⚧ Their gender", name: "gender", options: genders, placeholder: null },
-    { label: "🌹 What's the occasion?", name: "occasion", options: occasions, placeholder: "-- Choose the occasion --" },
-    { label: "💰 Your budget", name: "budget", options: budgets, placeholder: "-- Choose your budget --" },
-  ];
+  const sel = `mt-1.5 w-full border-2 border-rose-100 rounded-2xl px-4 py-3 text-sm
+    focus:outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-100
+    bg-white/80 text-gray-700 transition-all appearance-none cursor-pointer shadow-sm`;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="text-center mb-6">
-        <h2 className="font-serif text-2xl font-bold text-rose-700">Find the Perfect Gift</h2>
-        <p className="text-rose-400 text-xs mt-1 tracking-wide">Every gift tells a love story ✨</p>
-      </div>
+    <div className="w-full max-w-2xl mx-auto">
+      <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl shadow-rose-100 border border-rose-100 overflow-hidden">
 
-      {fields.map((f) => (
-        <div key={f.name}>
-          <label className="block text-xs font-semibold text-rose-500 tracking-wide uppercase mb-1">{f.label}</label>
-          <select name={f.name} value={form[f.name]} onChange={handleChange} className={sel}>
-            {f.placeholder && <option value="">{f.placeholder}</option>}
-            {f.options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-          </select>
+        {/* Form header banner */}
+        <div className="bg-gradient-to-r from-rose-500 to-pink-500 px-8 py-6 text-white text-center">
+          <div className="text-4xl mb-2">🎁</div>
+          <h2 className="font-serif text-3xl font-bold">Find the Perfect Gift</h2>
+          <p className="text-rose-100 text-sm mt-1 tracking-wide">Every gift tells a love story ✨</p>
         </div>
-      ))}
 
-      {error && <p className="text-rose-500 text-xs text-center bg-rose-50 rounded-xl py-2 px-3">{error}</p>}
+        <form onSubmit={handleSubmit} className="p-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 
-      <button type="submit" disabled={loading}
-        className="w-full mt-2 bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600
-          disabled:opacity-50 text-white font-semibold py-3 rounded-2xl transition-all
-          shadow-lg shadow-rose-200 hover:shadow-rose-300 text-sm tracking-wide cursor-pointer">
-        {loading ? "Finding the perfect gift... 💭" : "Discover Gifts 🎁"}
-      </button>
-    </form>
+            {/* Relationship */}
+            <div className="sm:col-span-2">
+              <label className="block text-xs font-bold text-rose-500 tracking-widest uppercase mb-1">
+                💝 Who are you gifting?
+              </label>
+              <select name="relationship" value={form.relationship} onChange={handleChange} className={sel}>
+                <option value="">-- Choose your person --</option>
+                {relationships.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
+              </select>
+            </div>
+
+            {/* Gender */}
+            <div>
+              <label className="block text-xs font-bold text-rose-500 tracking-widest uppercase mb-1">
+                ⚧ Their gender
+              </label>
+              <select name="gender" value={form.gender} onChange={handleChange} className={sel}>
+                {genders.map((g) => <option key={g.value} value={g.value}>{g.label}</option>)}
+              </select>
+            </div>
+
+            {/* Budget */}
+            <div>
+              <label className="block text-xs font-bold text-rose-500 tracking-widest uppercase mb-1">
+                💰 Your budget
+              </label>
+              <select name="budget" value={form.budget} onChange={handleChange} className={sel}>
+                <option value="">-- Choose your budget --</option>
+                {budgets.map((b) => <option key={b.value} value={b.value}>{b.label}</option>)}
+              </select>
+            </div>
+
+            {/* Occasion */}
+            <div className="sm:col-span-2">
+              <label className="block text-xs font-bold text-rose-500 tracking-widest uppercase mb-1">
+                🌹 What's the occasion?
+              </label>
+              <select name="occasion" value={form.occasion} onChange={handleChange} className={sel}>
+                <option value="">-- Choose the occasion --</option>
+                {occasions.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+              </select>
+            </div>
+          </div>
+
+          {error && (
+            <div className="mt-4 bg-rose-50 border border-rose-200 rounded-2xl px-4 py-3 text-rose-500 text-sm text-center">
+              {error}
+            </div>
+          )}
+
+          <button type="submit" disabled={loading}
+            className="w-full mt-6 bg-gradient-to-r from-rose-500 to-pink-500
+              hover:from-rose-600 hover:to-pink-600 disabled:opacity-50
+              text-white font-bold py-4 rounded-2xl transition-all text-base tracking-wide
+              shadow-xl shadow-rose-200 hover:shadow-rose-300 hover:scale-[1.02] cursor-pointer">
+            {loading ? "Finding the perfect gift... 💭" : "✨ Discover Gifts 🎁"}
+          </button>
+
+          {/* Trust badges */}
+          <div className="flex justify-center gap-6 mt-5 text-xs text-rose-400">
+            <span>🔒 Private & Secure</span>
+            <span>💝 282+ Gift Ideas</span>
+            <span>🛒 Buy Links Included</span>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
