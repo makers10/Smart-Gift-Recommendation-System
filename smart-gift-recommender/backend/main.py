@@ -27,19 +27,40 @@ def recommend(
     gender: str = Query(default="any"),
     x_user_id: Optional[str] = Header(default=None),
 ):
+    # 1. Exact match
     result = next(
         (g for g in gift_data if g["relationship"] == relationship
          and g["occasion"] == occasion and g["budget"] == budget), None)
 
+    # 2. anyone + same occasion + same budget
     if not result:
         result = next(
             (g for g in gift_data if g["relationship"] == "anyone"
              and g["occasion"] == occasion and g["budget"] == budget), None)
 
+    # 3. same relationship + same occasion, any budget
     if not result:
         result = next(
             (g for g in gift_data if g["relationship"] == relationship
              and g["occasion"] == occasion), None)
+
+    # 4. anyone + same occasion, any budget
+    if not result:
+        result = next(
+            (g for g in gift_data if g["relationship"] == "anyone"
+             and g["occasion"] == occasion), None)
+
+    # 5. same relationship + birthday (universal fallback occasion)
+    if not result:
+        result = next(
+            (g for g in gift_data if g["relationship"] == relationship
+             and g["occasion"] == "birthday" and g["budget"] == budget), None)
+
+    # 6. anyone + birthday + same budget (last resort)
+    if not result:
+        result = next(
+            (g for g in gift_data if g["relationship"] == "anyone"
+             and g["occasion"] == "housewarming" and g["budget"] == budget), None)
 
     if not result:
         raise HTTPException(status_code=404, detail="No recommendations found. Try adjusting your filters.")
