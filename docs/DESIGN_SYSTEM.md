@@ -199,9 +199,9 @@ These are particularly useful for Recharts `fill` and `stroke` props and inline 
 | ID | Issue | Target Stage |
 |---|---|---|
 | C2 | No URL routing | C |
-| C3 | No loading skeletons in existing components | E, F |
-| C5 | Budget labels use USD ($) | E |
-| V1 | Emoji in button labels | E, F |
+| C3 | No loading skeletons in existing components | ✅ Done — Stage E (GiftForm shows Skeleton.Card grid while loading) |
+| C5 | Budget labels use USD ($) | ✅ Done — Stage E (options.js updated to ₹) |
+| V1 | Emoji in button labels | ✅ Done — Stage E (GiftForm + GiftResults buttons emoji-free; aria-label used) |
 | V5 | Hero slideshow uses mock data | ✅ Done — Stage D |
 | V6 | Occasion pills are decorative only | ✅ Done — Stage D |
 | V9 | Old card gradients still in GiftResults (replaced with brand palette in B) | Done ✓ |
@@ -215,4 +215,4 @@ These are particularly useful for Recharts `fill` and `stroke` props and inline 
 
 ---
 
-*Last updated: Stage D — Premium Homepage Redesign*
+*Last updated: Stage E — GiftForm + GiftResults Redesign*
