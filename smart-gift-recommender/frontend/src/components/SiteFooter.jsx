@@ -128,10 +128,11 @@ export default function SiteFooter({ onNavigate }) {
       <div className="border-t border-ivory-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4
           flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p className="text-xs text-neutral-400">
+          {/* neutral-500 (#71717a on white = ~4.6:1) passes WCAG AA for small text */}
+          <p className="text-xs text-neutral-500">
             &copy; {year} Gift with Love. All rights reserved.
           </p>
-          <p className="text-xs text-neutral-400">
+          <p className="text-xs text-neutral-500">
             Made with care for every special moment.
           </p>
         </div>

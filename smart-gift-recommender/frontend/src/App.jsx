@@ -55,8 +55,31 @@ export default function App() {
     }, 80);
   };
 
+  // Derive a human-readable page name for the live announcement
+  const PAGE_NAMES = {
+    home:      "Find a Gift",
+    custom:    "Custom Made",
+    history:   "Search History",
+    wishlist:  "Wishlist",
+    dashboard: "Dashboard",
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-ivory-100">
+
+      {/*
+        Visually hidden live region — announces the current page name to
+        screen readers whenever the tab changes (WCAG 4.1.3 Status Messages,
+        helps with WCAG 2.4.2 Page Titled in SPA contexts).
+      */}
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+      >
+        {PAGE_NAMES[tab] ?? ""}
+      </div>
 
       {/* ── Global header + responsive navigation ────────────────────────── */}
       <SiteHeader tab={tab} onNavigate={handleNavigate} />

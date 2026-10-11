@@ -147,7 +147,7 @@ function IconChevronRight({ className = "w-4 h-4" }) {
 
 // ── Section heading component ──────────────────────────────────────────────
 
-function SectionHeading({ eyebrow, title, subtitle }) {
+function SectionHeading({ id, eyebrow, title, subtitle }) {
   return (
     <div className="text-center mb-10 lg:mb-12">
       {eyebrow && (
@@ -155,7 +155,10 @@ function SectionHeading({ eyebrow, title, subtitle }) {
           {eyebrow}
         </p>
       )}
-      <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-burgundy-800 leading-tight">
+      <h2
+        id={id}
+        className="font-serif text-3xl sm:text-4xl font-semibold text-burgundy-800 leading-tight"
+      >
         {title}
       </h2>
       {subtitle && (
@@ -269,12 +272,11 @@ export default function Hero({ onQuickSearch }) {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
+            id="occasions-heading"
             eyebrow="Browse by occasion"
             title="What are you celebrating?"
             subtitle="Select an occasion to instantly pre-fill your gift search."
           />
-          {/* Heading is visually above — but also linked via id for aria-labelledby */}
-          <span id="occasions-heading" className="sr-only">Browse by occasion</span>
 
           <ul
             className="flex flex-wrap justify-center gap-3"
@@ -308,11 +310,11 @@ export default function Hero({ onQuickSearch }) {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
+            id="relationships-heading"
             eyebrow="Shop by relationship"
             title="Who are you gifting today?"
             subtitle="Every relationship deserves a thoughtful, personalised gift."
           />
-          <span id="relationships-heading" className="sr-only">Shop by relationship</span>
 
           <ul
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5"

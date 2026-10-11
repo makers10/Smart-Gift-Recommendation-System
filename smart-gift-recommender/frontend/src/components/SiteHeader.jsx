@@ -189,7 +189,7 @@ export default function SiteHeader({ tab, onNavigate }) {
         onClick={() => navigate(item.id)}
         aria-current={isActive ? "page" : undefined}
         className={[
-          "w-full flex items-center gap-3 px-6 py-3.5 text-left text-base font-medium",
+          "relative w-full flex items-center gap-3 px-6 py-3.5 text-left text-base font-medium",
           "transition-colors duration-150 rounded-none border-b border-ivory-200 last:border-0",
           "focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-burgundy-500",
           isActive
