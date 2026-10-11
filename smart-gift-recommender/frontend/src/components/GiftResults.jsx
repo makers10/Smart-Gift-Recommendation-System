@@ -2,20 +2,17 @@ import { useState } from "react";
 import { apiFetch } from "../utils/api";
 import { fmt, occasionEmojis, amazonLink } from "../utils/format";
 
-// Assign a gradient per card index
-const cardGradients = [
-  "from-rose-400 to-pink-500",
-  "from-pink-400 to-fuchsia-500",
-  "from-purple-400 to-pink-500",
-  "from-rose-500 to-red-400",
-  "from-fuchsia-400 to-rose-500",
-  "from-pink-500 to-rose-400",
-  "from-rose-300 to-pink-400",
-  "from-amber-400 to-rose-400",
+// Subtle burgundy-to-rose accent bar colors per card position
+const cardAccents = [
+  "from-burgundy-500 to-rose-400",
+  "from-burgundy-400 to-rose-300",
+  "from-rose-500 to-burgundy-400",
+  "from-burgundy-600 to-rose-500",
+  "from-rose-400 to-burgundy-500",
+  "from-burgundy-300 to-rose-400",
+  "from-rose-300 to-burgundy-400",
+  "from-burgundy-500 to-rose-600",
 ];
-
-const fmt = (s) => s?.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) || "";
-const buyLink = (gift) => `https://www.amazon.in/s?k=${encodeURIComponent(gift)}`;
 
 export default function GiftResults({ result, onReset }) {
   const [scores,     setScores]     = useState(() => Object.fromEntries(result.recommendations.map((g) => [g.name, g.score])));
@@ -81,7 +78,7 @@ export default function GiftResults({ result, onReset }) {
               transition-all duration-300 hover:-translate-y-1 overflow-hidden">
 
             {/* Top color bar */}
-            <div className={`h-2 bg-gradient-to-r ${cardGradients[i % cardGradients.length]}`} />
+            <div className={`h-2 bg-gradient-to-r ${cardAccents[i % cardAccents.length]}`} />
 
             {/* Top Pick badge */}
             {i === 0 && (
@@ -94,7 +91,7 @@ export default function GiftResults({ result, onReset }) {
             <div className="p-5">
               {/* Gift icon + name */}
               <div className="flex items-start gap-3 mb-4">
-                <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${cardGradients[i % cardGradients.length]}
+                <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${cardAccents[i % cardAccents.length]}
                   flex items-center justify-center text-2xl shadow-md shrink-0`}>
                   🎁
                 </div>
@@ -139,7 +136,7 @@ export default function GiftResults({ result, onReset }) {
                       : "border-pink-200 text-pink-500 hover:bg-pink-50"}`}>
                   {wishlisted[gift.name] ? "💖 Saved" : "🤍 Save"}
                 </button>
-                <a href={buyLink(gift.name)} target="_blank" rel="noreferrer"
+                <a href={amazonLink(gift.name)} target="_blank" rel="noreferrer"
                   className="flex-1 text-xs py-2 rounded-xl border border-orange-200 text-orange-500
                     hover:bg-orange-50 transition text-center font-medium">
                   🛒 Buy Now
