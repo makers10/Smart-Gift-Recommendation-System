@@ -1,15 +1,6 @@
 import { useState } from "react";
 import { apiFetch } from "../utils/api";
-
-const occasionEmojis = {
-  birthday:"🎂",wedding:"💍",baby_shower:"👶",graduation:"🎓",anniversary:"💑",
-  farewell:"👋",promotion:"🏆",valentines:"❤️",mothers_day:"🌸",fathers_day:"👔",
-  diwali:"🪔",holi:"🎨",navratri:"🪷",raksha_bandhan:"🪢",baisakhi:"🌾",
-  ganesh_chaturthi:"🐘",onam:"🌺",ugadi:"🌿",eid:"🌙",eid_adha:"🐑",
-  christmas:"🎄",easter:"🐣",chinese_new_year:"🐉",mid_autumn:"🥮",
-  hanukkah:"🕎",rosh_hashanah:"🍎",new_year:"🎆",thanksgiving:"🦃",halloween:"🎃",
-  housewarming:"🏠",get_well_soon:"💊",congratulations:"🎉",thank_you:"🙏",any:"🎁",
-};
+import { fmt, occasionEmojis, amazonLink } from "../utils/format";
 
 // Assign a gradient per card index
 const cardGradients = [
