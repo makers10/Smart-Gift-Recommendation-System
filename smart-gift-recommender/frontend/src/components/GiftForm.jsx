@@ -1,40 +1,88 @@
+/**
+ * GiftForm — Gift with Love
+ *
+ * Four-field gift-discovery form. Submits GET /api/recommend.
+ *
+ * Fields (all values preserved exactly as the backend expects):
+ *   relationship — 19 options from data/options.js
+ *   gender       — 4 options (any / male / female / non_binary)
+ *   budget       — 3 tiers: low / medium / high  (labels now in ₹, C5 fixed)
+ *   occasion     — 34 options from data/options.js
+ *
+ * Behaviour preserved:
+ *   - All three required fields must be filled (relationship, occasion, budget)
+ *   - Loading state disables submit button
+ *   - Error message rendered inline on validation or API failure
+ *   - prefill prop pre-populates selects (from Hero chips, History re-search)
+ *   - onPrefillUsed() called once after prefill is consumed
+ *
+ * Design changes (Stage E):
+ *   - Design tokens: ivory/burgundy palette, Cormorant serif heading
+ *   - Button primitive replaces raw <button>
+ *   - Emoji removed from button label (V1 fix); kept as decorative aria-hidden
+ *   - Budget labels corrected to ₹ (C5 fix)
+ *   - Accessible <label> with htmlFor/id linkage on every field
+ *   - Loading skeleton shown while API call is in flight (C3 fix)
+ *   - role="alert" on error message (A4 fix)
+ *   - Consistent focus-visible rings via global CSS
+ */
 import { useState } from "react";
 import { relationships, occasions, budgets } from "../data/options";
 import { apiFetch } from "../utils/api";
+import Button from "./ui/Button";
+import Skeleton from "./ui/Skeleton";
 
 const genders = [
   { value: "any",        label: "Any / Not specified" },
-  { value: "male",       label: "Male 👨" },
-  { value: "female",     label: "Female 👩" },
-  { value: "non_binary", label: "Non-binary 🌈" },
+  { value: "male",       label: "Male" },
+  { value: "female",     label: "Female" },
+  { value: "non_binary", label: "Non-binary" },
 ];
+
+// Shared select class — uses global select arrow from index.css
+const selectCls = [
+  "w-full bg-white border border-ivory-300 rounded-base",
+  "px-4 py-3 text-sm text-neutral-800",
+  "focus:outline-none focus:border-burgundy-400 focus:ring-2 focus:ring-burgundy-100",
+  "transition-colors duration-150 appearance-none cursor-pointer shadow-xs",
+].join(" ");
+
+// Shared label class
+const labelCls = "block text-xs font-semibold text-neutral-600 uppercase tracking-wider mb-1.5";
 
 export default function GiftForm({ onRecommend, prefill, onPrefillUsed }) {
   const [form, setForm] = useState(
     prefill
-      ? { relationship: prefill.relationship||"", occasion: prefill.occasion||"", budget: prefill.budget||"", gender: prefill.gender||"any" }
+      ? {
+          relationship: prefill.relationship || "",
+          occasion:     prefill.occasion     || "",
+          budget:       prefill.budget       || "",
+          gender:       prefill.gender       || "any",
+        }
       : { relationship: "", occasion: "", budget: "", gender: "any" }
   );
   const [loading, setLoading] = useState(false);
-  const [error, setError]     = useState("");
+  const [error,   setError]   = useState("");
 
+  // Consume the prefill exactly once after it's been applied to state
   if (prefill && onPrefillUsed) onPrefillUsed();
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     if (!form.relationship || !form.occasion || !form.budget) {
-      setError("Please fill in all fields, darling 💕");
+      setError("Please fill in all required fields to find a gift.");
       return;
     }
     setLoading(true);
     try {
       const params = new URLSearchParams(form).toString();
-      const res  = await apiFetch(`/api/recommend?${params}`);
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || "No results found.");
+      const res    = await apiFetch(`/api/recommend?${params}`);
+      const data   = await res.json();
+      if (!res.ok) throw new Error(data.detail || "No recommendations found.");
       onRecommend(data);
     } catch (err) {
       setError(err.message);
@@ -43,84 +91,161 @@ export default function GiftForm({ onRecommend, prefill, onPrefillUsed }) {
     }
   };
 
-  const sel = `mt-1.5 w-full border-2 border-rose-100 rounded-2xl px-4 py-3 text-sm
-    focus:outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-100
-    bg-rose-50/50 text-gray-800 transition-all appearance-none cursor-pointer shadow-sm`;
+  // Show skeleton grid while loading
+  if (loading) {
+    return (
+      <div className="w-full max-w-4xl mx-auto px-4">
+        <p className="text-center text-sm text-neutral-500 mb-6" role="status" aria-live="polite">
+          Finding the perfect gift…
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton.Card key={i} />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-2xl mx-auto">
-      <div className="bg-white rounded-3xl shadow-xl shadow-rose-100 border border-rose-100 overflow-hidden">
+      {/* Card wrapper */}
+      <div className="bg-white border border-ivory-300 rounded-panel shadow-md overflow-hidden">
 
-        {/* Form header banner */}
-        <div className="bg-gradient-to-r from-rose-500 to-pink-600 px-8 py-6 text-white text-center">
-          <div className="text-4xl mb-2">🎁</div>
-          <h2 className="font-serif text-3xl font-bold">Find the Perfect Gift</h2>
-          <p className="text-rose-100 text-sm mt-1 tracking-wide">Every gift tells a love story ✨</p>
+        {/* Form header */}
+        <div className="bg-burgundy-600 px-8 py-7 text-white">
+          <h2 className="font-serif text-3xl font-semibold leading-tight mb-1">
+            Find the Perfect Gift
+          </h2>
+          <p className="text-sm text-burgundy-200">
+            Tell us about the person and occasion — we'll do the rest.
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-8">
+        <form onSubmit={handleSubmit} className="p-6 sm:p-8" noValidate>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 
             {/* Relationship */}
             <div className="sm:col-span-2">
-              <label className="block text-xs font-bold text-rose-500 tracking-widest uppercase mb-1">
-                💝 Who are you gifting?
+              <label htmlFor="field-relationship" className={labelCls}>
+                Who are you gifting? <span className="text-burgundy-500" aria-hidden="true">*</span>
               </label>
-              <select name="relationship" value={form.relationship} onChange={handleChange} className={sel}>
-                <option value="">-- Choose your person --</option>
-                {relationships.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
+              <select
+                id="field-relationship"
+                name="relationship"
+                value={form.relationship}
+                onChange={handleChange}
+                required
+                className={selectCls}
+                aria-required="true"
+              >
+                <option value="">Select a relationship…</option>
+                {relationships.map((r) => (
+                  <option key={r.value} value={r.value}>{r.label}</option>
+                ))}
               </select>
             </div>
 
             {/* Gender */}
             <div>
-              <label className="block text-xs font-bold text-rose-500 tracking-widest uppercase mb-1">
-                ⚧ Their gender
+              <label htmlFor="field-gender" className={labelCls}>
+                Their gender
               </label>
-              <select name="gender" value={form.gender} onChange={handleChange} className={sel}>
-                {genders.map((g) => <option key={g.value} value={g.value}>{g.label}</option>)}
+              <select
+                id="field-gender"
+                name="gender"
+                value={form.gender}
+                onChange={handleChange}
+                className={selectCls}
+              >
+                {genders.map((g) => (
+                  <option key={g.value} value={g.value}>{g.label}</option>
+                ))}
               </select>
             </div>
 
             {/* Budget */}
             <div>
-              <label className="block text-xs font-bold text-rose-500 tracking-widest uppercase mb-1">
-                💰 Your budget
+              <label htmlFor="field-budget" className={labelCls}>
+                Your budget <span className="text-burgundy-500" aria-hidden="true">*</span>
               </label>
-              <select name="budget" value={form.budget} onChange={handleChange} className={sel}>
-                <option value="">-- Choose your budget --</option>
-                {budgets.map((b) => <option key={b.value} value={b.value}>{b.label}</option>)}
+              <select
+                id="field-budget"
+                name="budget"
+                value={form.budget}
+                onChange={handleChange}
+                required
+                className={selectCls}
+                aria-required="true"
+              >
+                <option value="">Select a budget…</option>
+                {budgets.map((b) => (
+                  <option key={b.value} value={b.value}>{b.label}</option>
+                ))}
               </select>
             </div>
 
             {/* Occasion */}
             <div className="sm:col-span-2">
-              <label className="block text-xs font-bold text-rose-500 tracking-widest uppercase mb-1">
-                🌹 What's the occasion?
+              <label htmlFor="field-occasion" className={labelCls}>
+                What's the occasion? <span className="text-burgundy-500" aria-hidden="true">*</span>
               </label>
-              <select name="occasion" value={form.occasion} onChange={handleChange} className={sel}>
-                <option value="">-- Choose the occasion --</option>
-                {occasions.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+              <select
+                id="field-occasion"
+                name="occasion"
+                value={form.occasion}
+                onChange={handleChange}
+                required
+                className={selectCls}
+                aria-required="true"
+              >
+                <option value="">Select an occasion…</option>
+                {occasions.map((o) => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
               </select>
             </div>
           </div>
 
+          {/* Validation / API error */}
           {error && (
-            <div className="mt-4 bg-rose-50 border border-rose-200 rounded-2xl px-4 py-3 text-rose-500 text-sm text-center">
+            <div
+              role="alert"
+              aria-live="assertive"
+              className="mt-5 flex items-start gap-2.5 bg-burgundy-50 border border-burgundy-200
+                rounded-base px-4 py-3 text-sm text-burgundy-700"
+            >
+              <span aria-hidden="true" className="mt-0.5 text-burgundy-500">
+                {/* Warning icon */}
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+              </span>
               {error}
             </div>
           )}
-          <button type="submit" disabled={loading}
-            className="w-full mt-6 bg-gradient-to-r from-rose-500 to-pink-500
-              hover:from-rose-600 hover:to-pink-600 disabled:opacity-50
-              text-white font-bold py-4 rounded-2xl transition-all text-base tracking-wide
-              shadow-lg shadow-rose-200 hover:scale-[1.02] cursor-pointer">
-            {loading ? "Finding the perfect gift... 💭" : "✨ Discover Gifts 🎁"}
-          </button>
-          <div className="flex justify-center gap-6 mt-5 text-xs text-rose-400">
-            <span>🔒 Private & Secure</span>
-            <span>💝 282+ Gift Ideas</span>
-            <span>🛒 Buy Links Included</span>
+
+          {/* Submit */}
+          <Button
+            type="submit"
+            variant="primary"
+            size="lg"
+            className="w-full mt-6"
+            aria-label="Discover gift recommendations"
+          >
+            Discover Gifts
+          </Button>
+
+          {/* Trust footer */}
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-1 mt-5 text-xs text-neutral-400">
+            <span>282+ gift combinations</span>
+            <span>·</span>
+            <span>20+ relationships</span>
+            <span>·</span>
+            <span>30+ occasions</span>
           </div>
         </form>
       </div>
