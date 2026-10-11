@@ -202,8 +202,8 @@ These are particularly useful for Recharts `fill` and `stroke` props and inline 
 | C3 | No loading skeletons in existing components | E, F |
 | C5 | Budget labels use USD ($) | E |
 | V1 | Emoji in button labels | E, F |
-| V5 | Hero slideshow uses mock data | D |
-| V6 | Occasion pills are decorative only | D |
+| V5 | Hero slideshow uses mock data | ✅ Done — Stage D |
+| V6 | Occasion pills are decorative only | ✅ Done — Stage D |
 | V9 | Old card gradients still in GiftResults (replaced with brand palette in B) | Done ✓ |
 | V10 | Decorative gradient blobs in App.jsx (removed in B) | Done ✓ |
 | V11 | Grain texture body::before (removed in B) | Done ✓ |
@@ -215,4 +215,4 @@ These are particularly useful for Recharts `fill` and `stroke` props and inline 
 
 ---
 
-*Last updated: Stage C — Global Navigation & Footer*
+*Last updated: Stage D — Premium Homepage Redesign*

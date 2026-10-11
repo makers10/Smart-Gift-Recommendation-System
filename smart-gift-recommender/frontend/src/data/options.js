@@ -65,7 +65,7 @@ export const occasions = [
 ];
 
 export const budgets = [
-  { value: "low", label: "Low (Under $25)" },
-  { value: "medium", label: "Medium ($25 - $100)" },
-  { value: "high", label: "High ($100+)" },
+  { value: "low",    label: "Under ₹2,000" },
+  { value: "medium", label: "₹2,000 – ₹8,000" },
+  { value: "high",   label: "₹8,000 and above" },
 ];

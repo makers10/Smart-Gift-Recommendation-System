@@ -384,7 +384,7 @@ Following the spec's Stage A → H progression:
 | **A** | ✅ Audit & baseline | This document |
 | **B** | ✅ Design tokens + shared components | `src/tokens.js`, `src/utils/format.js`, `ErrorBoundary`, skeleton components, font fix, env fix, index.html fix |
 | **C** | ✅ Global layout — header, nav, footer | `SiteHeader.jsx` (sticky, responsive, drawer), `SiteFooter.jsx`, skip-to-content link, neutral color scale |
-| **D** | Homepage redesign | Premium Hero (editorial, not slideshow-heavy), quick discovery entry, occasion/relationship sections |
+| **D** | ✅ Homepage redesign | `Hero.jsx` rewritten: editorial hero, interactive occasion chips (18), relationship cards (6), Custom Made teaser, stats bar. Autoplay slideshow removed. All values wired to real `options.js` data. |
 | **E** | Find a Gift + GiftResults | Redesigned form, premium gift cards, vote/wishlist interactions |
 | **F** | Custom Made, Wishlist, History, Dashboard | Widen Wishlist/History, dashboard density improvements |
 | **G** | Responsive, accessibility, motion | Mobile nav, ARIA attributes, `prefers-reduced-motion`, skeleton states |

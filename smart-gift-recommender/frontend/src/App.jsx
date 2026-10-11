@@ -15,31 +15,69 @@ export default function App() {
   const [tab,     setTab]     = useState("home");
   const [prefill, setPrefill] = useState(null);
 
+  // Switch tab + optionally prefill GiftForm — used by History re-search
   const handleReSearch = (params) => {
     setPrefill(params);
     setResult(null);
     setTab("home");
   };
 
-  // Navigate to a tab, always resetting the result state
+  // Global tab navigation, resets result
   const handleNavigate = (id) => {
     setTab(id);
     setResult(null);
   };
 
+  /**
+   * Called by Hero when a user clicks an occasion chip, a relationship card,
+   * or a "Custom Made" CTA.
+   *
+   * Accepts a partial params object:
+   *   { occasion: "birthday" }           → prefills + scrolls to form
+   *   { relationship: "mom" }             → prefills + scrolls to form
+   *   { __navigate: "custom" }            → navigates to Custom Made tab
+   */
+  const handleQuickSearch = (params) => {
+    if (params.__navigate) {
+      handleNavigate(params.__navigate);
+      return;
+    }
+    // Prefill the form and scroll down to it
+    setPrefill(params);
+    setResult(null);
+    setTab("home");
+    // Small timeout so the DOM rerenders the form before we try to scroll
+    setTimeout(() => {
+      document.getElementById("gift-discovery-form")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 80);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-ivory-100">
 
-      {/* ── Global header + navigation ───────────────────────────────────── */}
+      {/* ── Global header + responsive navigation ────────────────────────── */}
       <SiteHeader tab={tab} onNavigate={handleNavigate} />
 
-      {/* ── Main page content ────────────────────────────────────────────── */}
-      <main id="main-content" className="flex-1 flex flex-col items-center px-4 pb-16">
+      {/* ── Main page content ─────────────────────────────────────────────── */}
+      <main id="main-content" className="flex-1 flex flex-col">
 
-        {/* Home — Find a Gift ─────────────────────────────────────────── */}
-        {tab === "home" && !result && <Hero />}
+        {/* ── Home — Find a Gift ─────────────────────────────────────────── */}
+        {tab === "home" && !result && (
+          <Hero onQuickSearch={handleQuickSearch} />
+        )}
+
         {tab === "home" && (
-          <div className={`w-full flex flex-col items-center ${!result ? "mt-0" : "mt-10"}`}>
+          /*
+           * Scroll anchor placed here so the hero "Find a Gift" CTA can
+           * smoothly scroll the viewport to the GiftForm.
+           */
+          <div
+            id="gift-discovery-form"
+            className={`w-full flex flex-col items-center px-4 ${!result ? "py-12 sm:py-16" : "py-10"}`}
+          >
             <ErrorBoundary label="the gift finder">
               {!result
                 ? <GiftForm
@@ -52,36 +90,36 @@ export default function App() {
           </div>
         )}
 
-        {/* Custom Made ────────────────────────────────────────────────── */}
+        {/* ── Custom Made ──────────────────────────────────────────────────── */}
         {tab === "custom" && (
-          <div className="mt-8 w-full flex justify-center">
+          <div className="mt-8 w-full flex justify-center px-4 pb-16">
             <ErrorBoundary label="Custom Made">
               <Marketplace />
             </ErrorBoundary>
           </div>
         )}
 
-        {/* History ────────────────────────────────────────────────────── */}
+        {/* ── History ──────────────────────────────────────────────────────── */}
         {tab === "history" && (
-          <div className="mt-8 w-full flex justify-center">
+          <div className="mt-8 w-full flex justify-center px-4 pb-16">
             <ErrorBoundary label="your search history">
               <History onReSearch={handleReSearch} />
             </ErrorBoundary>
           </div>
         )}
 
-        {/* Wishlist ───────────────────────────────────────────────────── */}
+        {/* ── Wishlist ─────────────────────────────────────────────────────── */}
         {tab === "wishlist" && (
-          <div className="mt-8 w-full flex justify-center">
+          <div className="mt-8 w-full flex justify-center px-4 pb-16">
             <ErrorBoundary label="your wishlist">
               <Wishlist />
             </ErrorBoundary>
           </div>
         )}
 
-        {/* Dashboard ──────────────────────────────────────────────────── */}
+        {/* ── Dashboard ────────────────────────────────────────────────────── */}
         {tab === "dashboard" && (
-          <div className="mt-8 w-full flex justify-center">
+          <div className="mt-8 w-full flex justify-center px-4 pb-16">
             <ErrorBoundary label="the dashboard">
               <Dashboard />
             </ErrorBoundary>
