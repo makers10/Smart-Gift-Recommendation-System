@@ -15,9 +15,10 @@
  *   - <nav> landmark with aria-label
  *   - Active item carries aria-current="page"
  *   - Hamburger button carries aria-expanded and aria-controls
- *   - Drawer traps focus when open (first/last item Tab cycles)
- *   - Escape key closes drawer
+ *   - Drawer is role="dialog" aria-modal="true" with a REAL focus trap
+ *   - Escape key closes drawer and returns focus to hamburger
  *   - Overlay click closes drawer
+ *   - Tab/Shift+Tab cycle stays within the drawer while it is open
  *   - All interactive elements have visible focus rings from global CSS
  *
  * Props:
@@ -79,21 +80,62 @@ const NAV_ITEMS = [
 
 export default function SiteHeader({ tab, onNavigate }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const drawerRef   = useRef(null);
+  const drawerRef    = useRef(null);
   const hamburgerRef = useRef(null);
 
-  // Close drawer on Escape key
-  const handleKeyDown = useCallback((e) => {
-    if (e.key === "Escape" && drawerOpen) {
+  // ── Focus trap inside the drawer ─────────────────────────────────────────
+  // When the drawer is open, Tab/Shift+Tab cycle only within focusable drawer
+  // elements, preventing keyboard users from reaching background content.
+  const handleDrawerKeyDown = useCallback((e) => {
+    if (!drawerOpen) return;
+
+    if (e.key === "Escape") {
       setDrawerOpen(false);
       hamburgerRef.current?.focus();
+      return;
+    }
+
+    if (e.key !== "Tab") return;
+
+    const drawer = drawerRef.current;
+    if (!drawer) return;
+
+    const focusable = drawer.querySelectorAll(
+      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    if (!focusable.length) return;
+
+    const first = focusable[0];
+    const last  = focusable[focusable.length - 1];
+
+    if (e.shiftKey) {
+      // Shift+Tab: if on first element, wrap to last
+      if (document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      // Tab: if on last element, wrap to first
+      if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     }
   }, [drawerOpen]);
 
   useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [handleKeyDown]);
+    document.addEventListener("keydown", handleDrawerKeyDown);
+    return () => document.removeEventListener("keydown", handleDrawerKeyDown);
+  }, [handleDrawerKeyDown]);
+
+  // Move focus into the drawer when it opens
+  useEffect(() => {
+    if (drawerOpen && drawerRef.current) {
+      // Focus the close button (first focusable element in the drawer header)
+      const firstFocusable = drawerRef.current.querySelector("button");
+      firstFocusable?.focus();
+    }
+  }, [drawerOpen]);
 
   // Prevent body scroll when drawer is open
   useEffect(() => {

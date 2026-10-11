@@ -207,12 +207,12 @@ These are particularly useful for Recharts `fill` and `stroke` props and inline 
 | V9 | Old card gradients still in GiftResults (replaced with brand palette in B) | Done ✓ |
 | V10 | Decorative gradient blobs in App.jsx (removed in B) | Done ✓ |
 | V11 | Grain texture body::before (removed in B) | Done ✓ |
-| V12 | Wishlist/History too narrow | F |
-| V13 | Dashboard stat card gradients | F |
+| V12 | Wishlist/History too narrow | ✅ Done — Stage F (max-w-md → max-w-3xl) |
+| V13 | Dashboard stat card gradients | ✅ Done — Stage F (ivory/white Card primitive) |
 | V15 | No mobile nav | ✅ Done — Stage C |
 | A1–A8 | Accessibility fixes | G |
 | P1–P2 | Bundle size / code splitting | H |
 
 ---
 
-*Last updated: Stage E — GiftForm + GiftResults Redesign*
+*Last updated: Stage F — Wishlist, History & Dashboard Redesign*
