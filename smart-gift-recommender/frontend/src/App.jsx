@@ -7,14 +7,8 @@ import History from "./components/History";
 import Hero from "./components/Hero";
 import Marketplace from "./components/Marketplace";
 import ErrorBoundary from "./components/ui/ErrorBoundary";
-
-const tabs = [
-  { id: "home",      label: "Find a Gift" },
-  { id: "custom",    label: "Custom Made" },
-  { id: "history",   label: "History" },
-  { id: "wishlist",  label: "Wishlist" },
-  { id: "dashboard", label: "Dashboard" },
-];
+import SiteHeader from "./components/SiteHeader";
+import SiteFooter from "./components/SiteFooter";
 
 export default function App() {
   const [result,  setResult]  = useState(null);
@@ -27,36 +21,22 @@ export default function App() {
     setTab("home");
   };
 
+  // Navigate to a tab, always resetting the result state
+  const handleNavigate = (id) => {
+    setTab(id);
+    setResult(null);
+  };
+
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "var(--color-ivory-100)" }}>
+    <div className="min-h-screen flex flex-col bg-ivory-100">
 
-      {/* Top nav — preserved as pill row; full responsive nav comes in Stage C */}
-      <nav
-        className="relative z-20 flex justify-center gap-2 pt-6 px-4 flex-wrap"
-        aria-label="Main navigation"
-      >
-        {tabs.map((t) => (
-          <button
-            key={t.id}
-            onClick={() => { setTab(t.id); setResult(null); }}
-            aria-current={tab === t.id ? "page" : undefined}
-            className={[
-              "px-5 py-2 rounded-full text-sm font-semibold tracking-wide transition-all cursor-pointer",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy-500 focus-visible:ring-offset-2",
-              tab === t.id
-                ? "bg-burgundy-600 text-white shadow-brand"
-                : "bg-white text-burgundy-600 border border-burgundy-200 hover:border-burgundy-400 hover:bg-burgundy-50 shadow-xs",
-            ].join(" ")}
-          >
-            {t.label}
-          </button>
-        ))}
-      </nav>
+      {/* ── Global header + navigation ───────────────────────────────────── */}
+      <SiteHeader tab={tab} onNavigate={handleNavigate} />
 
-      {/* Main content */}
-      <main className="flex-1 flex flex-col items-center px-4 pb-16">
+      {/* ── Main page content ────────────────────────────────────────────── */}
+      <main id="main-content" className="flex-1 flex flex-col items-center px-4 pb-16">
 
-        {/* Home — Find a Gift */}
+        {/* Home — Find a Gift ─────────────────────────────────────────── */}
         {tab === "home" && !result && <Hero />}
         {tab === "home" && (
           <div className={`w-full flex flex-col items-center ${!result ? "mt-0" : "mt-10"}`}>
@@ -72,7 +52,7 @@ export default function App() {
           </div>
         )}
 
-        {/* Custom Made */}
+        {/* Custom Made ────────────────────────────────────────────────── */}
         {tab === "custom" && (
           <div className="mt-8 w-full flex justify-center">
             <ErrorBoundary label="Custom Made">
@@ -81,7 +61,7 @@ export default function App() {
           </div>
         )}
 
-        {/* History */}
+        {/* History ────────────────────────────────────────────────────── */}
         {tab === "history" && (
           <div className="mt-8 w-full flex justify-center">
             <ErrorBoundary label="your search history">
@@ -90,7 +70,7 @@ export default function App() {
           </div>
         )}
 
-        {/* Wishlist */}
+        {/* Wishlist ───────────────────────────────────────────────────── */}
         {tab === "wishlist" && (
           <div className="mt-8 w-full flex justify-center">
             <ErrorBoundary label="your wishlist">
@@ -99,7 +79,7 @@ export default function App() {
           </div>
         )}
 
-        {/* Dashboard */}
+        {/* Dashboard ──────────────────────────────────────────────────── */}
         {tab === "dashboard" && (
           <div className="mt-8 w-full flex justify-center">
             <ErrorBoundary label="the dashboard">
@@ -109,9 +89,8 @@ export default function App() {
         )}
       </main>
 
-      <footer className="text-center py-5 text-burgundy-300 text-xs tracking-widest uppercase">
-        Made with love — Gift with Love
-      </footer>
+      {/* ── Global footer ────────────────────────────────────────────────── */}
+      <SiteFooter onNavigate={handleNavigate} />
     </div>
   );
 }

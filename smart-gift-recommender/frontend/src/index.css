@@ -105,6 +105,23 @@ select option {
   scrollbar-width: none;
 }
 
+/* ── MOBILE DRAWER TRANSITION ─────────────────────────────────────────────── */
+
+/*
+ * The drawer uses a CSS transform transition controlled by Tailwind utility
+ * classes (translate-x-0 / translate-x-full). The timing here is synced with
+ * the `duration-280` class added to the drawer element. Since Tailwind doesn't
+ * include 280 by default, we override it as a custom duration here.
+ */
+.duration-280 { transition-duration: 280ms; }
+
+/* ── HEADER HEIGHT COMPENSATION ───────────────────────────────────────────── */
+
+/*
+ * The header is sticky (h-16 = 4rem). Pages that need scroll-to-top with an
+ * offset can use the scroll-mt-20 Tailwind utility. Nothing extra needed here.
+ */
+
 /* ── REDUCED-MOTION ───────────────────────────────────────────────────────── */
 
 /*

@@ -22,6 +22,18 @@
     />
   </head>
   <body>
+    <!--
+      Skip-to-content link — visible on keyboard focus, invisible otherwise.
+      Allows keyboard and screen reader users to skip the repeated header navigation.
+    -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50
+             focus:px-4 focus:py-2 focus:bg-burgundy-600 focus:text-white
+             focus:text-sm focus:font-semibold focus:rounded-base focus:shadow-lg"
+    >
+      Skip to main content
+    </a>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
