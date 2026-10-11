@@ -2,17 +2,77 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Gift with Love — Global Styles
+ *
+ * Design tokens are expressed as CSS custom properties here so they can be
+ * referenced in contexts outside of Tailwind (e.g. Recharts fill colors,
+ * inline SVGs, third-party components).
+ *
+ * All Tailwind class names use the values in tailwind.config.js, which is
+ * kept in sync with src/tokens.js.
+ */
+
+/* ── DESIGN TOKEN CUSTOM PROPERTIES ──────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --color-ivory-100:    #faf5ef;
+  --color-ivory-200:    #f5ede0;
+  --color-ivory-300:    #ecdcc8;
+  --color-burgundy-500: #c2274b;
+  --color-burgundy-600: #9f1239;
+  --color-burgundy-700: #7e0f2e;
+  --color-rose-300:     #fda4af;
+  --color-rose-500:     #f43f5e;
+  --color-gold-300:     #f8d878;
+  --color-gold-400:     #f0b429;
+
+  /* Typography */
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans:  'Inter', system-ui, sans-serif;
+
+  /* Transitions */
+  --transition-fast:   120ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base:   180ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow:   280ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Focus ring */
+  --ring-color: var(--color-burgundy-500);
+  --ring-offset: 2px;
+}
+
+/* ── BASE STYLES ──────────────────────────────────────────────────────────── */
+
+html {
+  /* Smooth scroll for anchor-based navigation */
+  scroll-behavior: smooth;
+}
+
 body {
-  font-family: 'Inter', sans-serif;
-  background-color: #faf7f4;
+  /* Inter for all body text — resolves the Lato/Inter font conflict (V7) */
+  font-family: var(--font-sans);
+  background-color: var(--color-ivory-100);
+  color: #27272a; /* neutral-800 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, .font-serif {
-  font-family: 'Playfair Display', serif;
+/* Headings and explicit serif elements use Cormorant Garamond */
+h1, h2, h3, h4, h5, h6,
+.font-serif {
+  font-family: var(--font-serif);
 }
 
+/* ── FORM ELEMENTS ────────────────────────────────────────────────────────── */
+
+/*
+ * Custom select arrow — burgundy chevron.
+ * The arrow SVG stroke color matches --color-burgundy-600 (#9f1239).
+ * Sufficient contrast against the ivory-50 select background (A5 partial fix).
+ */
 select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23be123c'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239f1239'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 16px;
@@ -20,20 +80,46 @@ select {
 }
 
 select option {
-  background-color: #fff7f7;
-  color: #1a1a1a;
+  background-color: #fdfaf6;
+  color: #27272a;
 }
 
-/* Subtle grain texture overlay */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+/* ── FOCUS RING ───────────────────────────────────────────────────────────── */
+
+/*
+ * Global keyboard focus ring — visible, brand-coloured, offset.
+ * Suppressed for mouse/touch interactions via :focus-visible.
+ * Satisfies WCAG 2.4.7 Focus Visible.
+ */
+:focus-visible {
+  outline: 2px solid var(--ring-color);
+  outline-offset: var(--ring-offset);
+  border-radius: 4px;
 }
+
+/* ── SCROLLBAR UTILITY ────────────────────────────────────────────────────── */
 
 .scrollbar-hide::-webkit-scrollbar { display: none; }
-.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ── REDUCED-MOTION ───────────────────────────────────────────────────────── */
+
+/*
+ * When the user has requested reduced motion, disable all CSS animations and
+ * transitions except for essential focus indicators.
+ * JS-driven animations (e.g. Hero interval) should also check this via
+ * window.matchMedia('(prefers-reduced-motion: reduce)').
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
