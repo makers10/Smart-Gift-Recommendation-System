@@ -149,7 +149,8 @@ export default function GiftForm({ onRecommend, prefill, onPrefillUsed }) {
             {/* Gender */}
             <div>
               <label htmlFor="field-gender" className={labelCls}>
-                Their gender
+                Their gender{" "}
+                <span className="normal-case font-normal text-neutral-400 tracking-normal">(optional)</span>
               </label>
               <select
                 id="field-gender"
@@ -215,7 +216,7 @@ export default function GiftForm({ onRecommend, prefill, onPrefillUsed }) {
               className="mt-5 flex items-start gap-2.5 bg-burgundy-50 border border-burgundy-200
                 rounded-base px-4 py-3 text-sm text-burgundy-700"
             >
-              <span aria-hidden="true" className="mt-0.5 text-burgundy-500">
+              <span aria-hidden="true" className="mt-0.5 text-burgundy-500 shrink-0">
                 {/* Warning icon */}
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

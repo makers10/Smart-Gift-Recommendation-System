@@ -387,7 +387,7 @@ Following the spec's Stage A → H progression:
 | **D** | ✅ Homepage redesign | `Hero.jsx` rewritten: editorial hero, interactive occasion chips (18), relationship cards (6), Custom Made teaser, stats bar. Autoplay slideshow removed. All values wired to real `options.js` data. |
 | **E** | ✅ Find a Gift + GiftResults | `GiftForm.jsx` redesigned with design tokens, htmlFor labels, aria-required, loading skeleton, role=alert error; `GiftResults.jsx` redesigned with Card/Badge/Button primitives, aria-pressed, role=status; C3/C5/V1 fixed |
 | **F** | ✅ Wishlist, History, Dashboard | `Wishlist.jsx` and `History.jsx` widened to max-w-3xl with skeleton loading, error/empty states, aria-labels; `Dashboard.jsx` gradient stat cards replaced with ivory/white tokens, Skeleton.StatCard loading, brand chart palette, role=alert/status; V12/V13/C3 fixed |
-| **G** | Responsive, accessibility, motion | Mobile nav, ARIA attributes, `prefers-reduced-motion`, skeleton states |
+| **G** | ✅ Responsive, accessibility, motion | Focus trap in drawer (SiteHeader), Hero aria-labelledby on real h2, App tab-change live region, footer contrast (neutral-400→500), GiftForm icon aria-hidden + optional label, Marketplace A6 label linkage + div-as-button→button keyboard fix + offer/message aria-labels, scroll-margin-top for sticky header |
 | **H** | Testing, optimization, regression | Vitest setup, lazy-load Dashboard, code-split Recharts, Lighthouse run |
 
 **Immediate priorities before any visual work:**

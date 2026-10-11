@@ -43,39 +43,39 @@ function PostOrderForm({ onPosted }) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="text-xs font-bold text-rose-500 uppercase tracking-widest">Your Name</label>
-          <input className={inp} placeholder="e.g. Priya Sharma" value={form.buyer_name}
+          <label htmlFor="mp-buyer-name" className="text-xs font-bold text-rose-500 uppercase tracking-widest">Your Name</label>
+          <input id="mp-buyer-name" className={inp} placeholder="e.g. Priya Sharma" value={form.buyer_name}
             onChange={e => setForm({...form, buyer_name: e.target.value})} />
         </div>
         <div>
-          <label className="text-xs font-bold text-rose-500 uppercase tracking-widest">Occasion</label>
-          <input className={inp} placeholder="e.g. Sister's Wedding" value={form.occasion}
+          <label htmlFor="mp-occasion" className="text-xs font-bold text-rose-500 uppercase tracking-widest">Occasion</label>
+          <input id="mp-occasion" className={inp} placeholder="e.g. Sister's Wedding" value={form.occasion}
             onChange={e => setForm({...form, occasion: e.target.value})} />
         </div>
         <div className="sm:col-span-2">
-          <label className="text-xs font-bold text-rose-500 uppercase tracking-widest">Gift Title</label>
-          <input className={inp} placeholder="e.g. Handmade jewellery box for my sister" value={form.title}
+          <label htmlFor="mp-title" className="text-xs font-bold text-rose-500 uppercase tracking-widest">Gift Title</label>
+          <input id="mp-title" className={inp} placeholder="e.g. Handmade jewellery box for my sister" value={form.title}
             onChange={e => setForm({...form, title: e.target.value})} />
         </div>
         <div className="sm:col-span-2">
-          <label className="text-xs font-bold text-rose-500 uppercase tracking-widest">Description & Requirements</label>
-          <textarea className={`${inp} resize-none`} rows={3}
+          <label htmlFor="mp-description" className="text-xs font-bold text-rose-500 uppercase tracking-widest">Description &amp; Requirements</label>
+          <textarea id="mp-description" className={`${inp} resize-none`} rows={3}
             placeholder="Describe exactly what you want — material, size, colour, personalisation, etc."
             value={form.description} onChange={e => setForm({...form, description: e.target.value})} />
         </div>
         <div>
-          <label className="text-xs font-bold text-rose-500 uppercase tracking-widest">Min Budget (₹)</label>
-          <input type="number" className={inp} placeholder="500" value={form.budget_min}
+          <label htmlFor="mp-budget-min" className="text-xs font-bold text-rose-500 uppercase tracking-widest">Min Budget (₹)</label>
+          <input id="mp-budget-min" type="number" className={inp} placeholder="500" value={form.budget_min}
             onChange={e => setForm({...form, budget_min: e.target.value})} />
         </div>
         <div>
-          <label className="text-xs font-bold text-rose-500 uppercase tracking-widest">Max Budget (₹)</label>
-          <input type="number" className={inp} placeholder="2000" value={form.budget_max}
+          <label htmlFor="mp-budget-max" className="text-xs font-bold text-rose-500 uppercase tracking-widest">Max Budget (₹)</label>
+          <input id="mp-budget-max" type="number" className={inp} placeholder="2000" value={form.budget_max}
             onChange={e => setForm({...form, budget_max: e.target.value})} />
         </div>
         <div>
-          <label className="text-xs font-bold text-rose-500 uppercase tracking-widest">Deadline (optional)</label>
-          <input type="date" className={inp} value={form.deadline}
+          <label htmlFor="mp-deadline" className="text-xs font-bold text-rose-500 uppercase tracking-widest">Deadline (optional)</label>
+          <input id="mp-deadline" type="date" className={inp} value={form.deadline}
             onChange={e => setForm({...form, deadline: e.target.value})} />
         </div>
       </div>
@@ -136,7 +136,7 @@ function OrderDetail({ orderId, myUserId, onBack }) {
     load();
   };
 
-  if (loading) return <p className="text-center text-rose-300 py-10">Loading... 💕</p>;
+  if (loading) return <p className="text-center text-neutral-400 py-10" role="status">Loading order…</p>;
   if (!data) return null;
 
   const { order, offers, messages } = data;
@@ -194,13 +194,17 @@ function OrderDetail({ orderId, myUserId, onBack }) {
                 </div>
                 {isBuyer && o.status === "pending" && order.status === "open" && (
                   <div className="flex gap-2 shrink-0">
-                    <button onClick={() => updateOffer(o.id, "accepted")}
+                    <button
+                      onClick={() => updateOffer(o.id, "accepted")}
+                      aria-label="Accept this offer"
                       className="text-xs px-3 py-1.5 bg-emerald-500 text-white rounded-xl hover:bg-emerald-600 transition cursor-pointer font-semibold">
-                      ✓ Accept
+                      Accept
                     </button>
-                    <button onClick={() => updateOffer(o.id, "rejected")}
+                    <button
+                      onClick={() => updateOffer(o.id, "rejected")}
+                      aria-label="Reject this offer"
                       className="text-xs px-3 py-1.5 bg-gray-200 text-gray-600 rounded-xl hover:bg-gray-300 transition cursor-pointer">
-                      ✕ Reject
+                      Reject
                     </button>
                   </div>
                 )}
@@ -214,18 +218,44 @@ function OrderDetail({ orderId, myUserId, onBack }) {
           <form onSubmit={submitOffer} className="mt-5 pt-5 border-t border-rose-100 space-y-3">
             <h5 className="font-semibold text-rose-600 text-sm">Make an Offer</h5>
             <div className="grid grid-cols-2 gap-3">
-              <input className={inp} placeholder="Your name" value={offerForm.seller_name}
-                onChange={e => setOfferForm({...offerForm, seller_name: e.target.value})} required />
-              <input type="number" className={inp} placeholder="Your price (₹)" value={offerForm.price}
-                onChange={e => setOfferForm({...offerForm, price: e.target.value})} required />
-              <input type="number" className={inp} placeholder="Delivery days" value={offerForm.delivery_days}
-                onChange={e => setOfferForm({...offerForm, delivery_days: e.target.value})} />
+              <input
+                className={inp}
+                placeholder="Your name"
+                aria-label="Your name"
+                value={offerForm.seller_name}
+                onChange={e => setOfferForm({...offerForm, seller_name: e.target.value})}
+                required
+              />
+              <input
+                type="number"
+                className={inp}
+                placeholder="Your price (₹)"
+                aria-label="Your price in rupees"
+                value={offerForm.price}
+                onChange={e => setOfferForm({...offerForm, price: e.target.value})}
+                required
+              />
+              <input
+                type="number"
+                className={inp}
+                placeholder="Delivery days"
+                aria-label="Delivery days"
+                value={offerForm.delivery_days}
+                onChange={e => setOfferForm({...offerForm, delivery_days: e.target.value})}
+              />
             </div>
-            <textarea className={`${inp} resize-none`} rows={2} placeholder="Describe your offer — what you'll make, materials, customisation..."
-              value={offerForm.description} onChange={e => setOfferForm({...offerForm, description: e.target.value})} required />
+            <textarea
+              className={`${inp} resize-none`}
+              rows={2}
+              placeholder="Describe your offer — what you'll make, materials, customisation..."
+              aria-label="Offer description"
+              value={offerForm.description}
+              onChange={e => setOfferForm({...offerForm, description: e.target.value})}
+              required
+            />
             <button type="submit"
               className="w-full bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2.5 rounded-xl transition cursor-pointer text-sm">
-              💌 Submit Offer
+              Submit Offer
             </button>
           </form>
         )}
@@ -254,10 +284,22 @@ function OrderDetail({ orderId, myUserId, onBack }) {
           ))}
         </div>
         <form onSubmit={sendMsg} className="flex gap-2">
-          <input className={`${inp} flex-1`} placeholder="Your name" value={msgForm.sender_name}
-            onChange={e => setMsgForm({...msgForm, sender_name: e.target.value})} required />
-          <input className={`${inp} flex-[3]`} placeholder="Type a message..." value={msgForm.message}
-            onChange={e => setMsgForm({...msgForm, message: e.target.value})} required />
+          <input
+            className={`${inp} flex-1`}
+            placeholder="Your name"
+            aria-label="Your name"
+            value={msgForm.sender_name}
+            onChange={e => setMsgForm({...msgForm, sender_name: e.target.value})}
+            required
+          />
+          <input
+            className={`${inp} flex-[3]`}
+            placeholder="Type a message..."
+            aria-label="Message"
+            value={msgForm.message}
+            onChange={e => setMsgForm({...msgForm, message: e.target.value})}
+            required
+          />
           <button type="submit"
             className="bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-xl transition cursor-pointer text-sm font-semibold shrink-0">
             Send
@@ -353,7 +395,7 @@ export default function Marketplace() {
       </div>
 
       {/* Orders list */}
-      {loading && <p className="text-center text-rose-300 py-10">Loading requests... 💕</p>}
+      {loading && <p className="text-center text-neutral-400 py-10" role="status">Loading requests…</p>}
       {!loading && orders.length === 0 && (
         <div className="text-center py-16 bg-white rounded-3xl border border-rose-100 shadow-sm">
           <div className="text-5xl mb-3">🌹</div>
@@ -368,17 +410,21 @@ export default function Marketplace() {
 
       <div className="space-y-3">
         {orders.map((o) => (
-          <div key={o.id}
-            className="bg-white rounded-2xl border border-rose-100 shadow-sm hover:shadow-md hover:border-rose-200
-              transition-all cursor-pointer p-5"
-            onClick={() => { setSelected(o.id); setView("detail"); }}>
+          <button
+            key={o.id}
+            onClick={() => { setSelected(o.id); setView("detail"); }}
+            aria-label={`View request: ${o.title}`}
+            className="w-full text-left bg-white rounded-2xl border border-rose-100 shadow-sm
+              hover:shadow-md hover:border-rose-200 transition-all cursor-pointer p-5
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy-500 focus-visible:ring-offset-2"
+          >
             <div className="flex items-start justify-between gap-3 flex-wrap">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap mb-1">
                   <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${statusColors[o.status]}`}>
                     {fmt(o.status)}
                   </span>
-                  {o.occasion && <span className="text-xs text-rose-400">🎉 {o.occasion}</span>}
+                  {o.occasion && <span className="text-xs text-rose-400" aria-hidden="true">🎉 {o.occasion}</span>}
                 </div>
                 <h3 className="font-semibold text-gray-800 text-base truncate">{o.title}</h3>
                 <p className="text-sm text-gray-500 mt-1 line-clamp-2">{o.description}</p>
@@ -388,11 +434,11 @@ export default function Marketplace() {
                 {(o.budget_min > 0 || o.budget_max > 0) && (
                   <p className="mt-1 font-bold text-emerald-600">₹{o.budget_min}–₹{o.budget_max}</p>
                 )}
-                {o.deadline && <p className="mt-1">📅 {o.deadline}</p>}
+                {o.deadline && <p className="mt-1" aria-hidden="true">📅 {o.deadline}</p>}
                 <p className="mt-1 text-rose-300">{o.offer_count} offer{o.offer_count !== 1 ? "s" : ""}</p>
               </div>
             </div>
-          </div>
+          </button>
         ))}
       </div>
     </div>

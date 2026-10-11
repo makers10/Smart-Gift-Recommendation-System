@@ -331,7 +331,7 @@ export default function SiteHeader({ tab, onNavigate }) {
 
         {/* Drawer footer */}
         <div className="px-6 py-4 border-t border-ivory-300 shrink-0">
-          <p className="text-xs text-neutral-400 tracking-wide">
+          <p className="text-xs text-neutral-500 tracking-wide">
             Curated gifts for every heart &amp; occasion
           </p>
         </div>

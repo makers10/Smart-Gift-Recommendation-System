@@ -118,9 +118,14 @@ select option {
 /* ── HEADER HEIGHT COMPENSATION ───────────────────────────────────────────── */
 
 /*
- * The header is sticky (h-16 = 4rem). Pages that need scroll-to-top with an
- * offset can use the scroll-mt-20 Tailwind utility. Nothing extra needed here.
+ * The header is sticky (h-16 = 4rem). When scrolling to an anchor, add
+ * scroll-margin-top so content doesn't hide behind the sticky header.
+ * Use `scroll-mt-20` (5rem = 80px) Tailwind utility on anchor targets,
+ * or this rule as a global fallback.
  */
+[id] {
+  scroll-margin-top: 4.5rem; /* 72px — header height (64px) + small gap */
+}
 
 /* ── REDUCED-MOTION ───────────────────────────────────────────────────────── */
 
