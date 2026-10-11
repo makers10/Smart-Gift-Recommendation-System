@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { apiFetch } from "../utils/api";
+import { fmt } from "../utils/format";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend, LineChart, Line, CartesianGrid,
 } from "recharts";
 
-const COLORS = ["#f43f5e","#fb7185","#fda4af","#e11d48","#f97316","#ec4899","#a855f7","#8b5cf6","#14b8a6","#f59e0b"];
-const fmt = (s) => s.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+const COLORS = ["#c2274b","#e85c79","#f28fa0","#9f1239","#f0b429","#e11d48","#7e0f2e","#5f0a22","#d4941c","#f8d878"];
 
 function StatCard({ label, value, icon, color }) {
   const colors = {

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { apiFetch } from "../utils/api";
-
-const fmt = (s) => s.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+import { fmt, amazonLink } from "../utils/format";
 
 export default function Wishlist() {
   const [items, setItems] = useState([]);
@@ -49,7 +48,7 @@ export default function Wishlist() {
               </p>
             </div>
             <div className="flex gap-2 shrink-0 ml-3">
-              <a href={`https://www.amazon.in/s?k=${encodeURIComponent(item.gift_name)}`}
+              <a href={amazonLink(item.gift_name)}
                 target="_blank" rel="noreferrer"
                 className="text-xs px-2 py-1 rounded-full border border-orange-200 text-orange-500 hover:bg-orange-50 transition">
                 🛒

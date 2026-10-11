@@ -26,11 +26,6 @@ export default function History({ onReSearch }) {
     setItems([]);
   };
 
-  const formatDate = (dt) => {
-    if (!dt) return "";
-    const d = new Date(dt);
-    return d.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
-  };
 
   return (
     <div className="bg-white rounded-3xl shadow-xl shadow-rose-100 w-full max-w-md p-8 border border-rose-100">

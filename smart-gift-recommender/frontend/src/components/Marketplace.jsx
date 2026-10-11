@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { apiFetch, getUserId } from "../utils/api";
-
-const fmt = (s) => s?.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) || "";
+import { fmt } from "../utils/format";
 
 const statusColors = {
   open:        "bg-emerald-100 text-emerald-700",
