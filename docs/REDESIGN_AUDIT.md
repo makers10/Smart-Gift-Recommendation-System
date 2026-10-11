@@ -383,7 +383,7 @@ Following the spec's Stage A → H progression:
 |---|---|---|
 | **A** | ✅ Audit & baseline | This document |
 | **B** | ✅ Design tokens + shared components | `src/tokens.js`, `src/utils/format.js`, `ErrorBoundary`, skeleton components, font fix, env fix, index.html fix |
-| **C** | Global layout — header, nav, footer | Proper responsive nav bar (hamburger on mobile), brand wordmark, footer |
+| **C** | ✅ Global layout — header, nav, footer | `SiteHeader.jsx` (sticky, responsive, drawer), `SiteFooter.jsx`, skip-to-content link, neutral color scale |
 | **D** | Homepage redesign | Premium Hero (editorial, not slideshow-heavy), quick discovery entry, occasion/relationship sections |
 | **E** | Find a Gift + GiftResults | Redesigned form, premium gift cards, vote/wishlist interactions |
 | **F** | Custom Made, Wishlist, History, Dashboard | Widen Wishlist/History, dashboard density improvements |

@@ -209,10 +209,10 @@ These are particularly useful for Recharts `fill` and `stroke` props and inline 
 | V11 | Grain texture body::before (removed in B) | Done ✓ |
 | V12 | Wishlist/History too narrow | F |
 | V13 | Dashboard stat card gradients | F |
-| V15 | No mobile nav | C |
+| V15 | No mobile nav | ✅ Done — Stage C |
 | A1–A8 | Accessibility fixes | G |
 | P1–P2 | Bundle size / code splitting | H |
 
 ---
 
-*Last updated: Stage B — Design System & Foundation*
+*Last updated: Stage C — Global Navigation & Footer*
