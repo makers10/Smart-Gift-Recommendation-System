@@ -250,3 +250,143 @@ def analytics():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="127.0.0.1", port=3001, reload=True)
+
+
+# ─── CUSTOM GIFT MARKETPLACE ──────────────────────────────────
+
+class OrderPayload(BaseModel):
+    buyer_name: str
+    title: str
+    description: str
+    occasion: Optional[str] = ""
+    budget_min: int = 0
+    budget_max: int = 0
+    deadline: Optional[str] = ""
+
+class OfferPayload(BaseModel):
+    seller_name: str
+    description: str
+    price: int
+    delivery_days: int = 7
+
+class MessagePayload(BaseModel):
+    sender_name: str
+    message: str
+    offer_id: Optional[int] = None
+
+class OfferStatusPayload(BaseModel):
+    status: str  # accepted / rejected
+
+@app.post("/api/marketplace/orders")
+def create_order(payload: OrderPayload, x_user_id: Optional[str] = Header(default=None)):
+    db = get_db()
+    cur = db.execute(
+        """INSERT INTO custom_orders
+           (buyer_id,buyer_name,title,description,occasion,budget_min,budget_max,deadline)
+           VALUES (?,?,?,?,?,?,?,?)""",
+        (x_user_id, payload.buyer_name, payload.title, payload.description,
+         payload.occasion, payload.budget_min, payload.budget_max, payload.deadline)
+    )
+    db.commit()
+    order_id = cur.lastrowid
+    db.close()
+    return {"message": "Order posted", "order_id": order_id}
+
+@app.get("/api/marketplace/orders")
+def list_orders(status: str = "open"):
+    db = get_db()
+    rows = db.execute(
+        "SELECT * FROM custom_orders WHERE status=? ORDER BY created_at DESC",
+        (status,)
+    ).fetchall()
+    result = []
+    for r in rows:
+        o = dict(r)
+        o["offer_count"] = db.execute(
+            "SELECT COUNT(*) as c FROM custom_offers WHERE order_id=?", (o["id"],)
+        ).fetchone()["c"]
+        result.append(o)
+    db.close()
+    return result
+
+@app.get("/api/marketplace/orders/mine")
+def my_orders(x_user_id: Optional[str] = Header(default=None)):
+    db = get_db()
+    rows = db.execute(
+        "SELECT * FROM custom_orders WHERE buyer_id=? ORDER BY created_at DESC",
+        (x_user_id,)
+    ).fetchall()
+    db.close()
+    return [dict(r) for r in rows]
+
+@app.get("/api/marketplace/orders/{order_id}")
+def get_order(order_id: int):
+    db = get_db()
+    order = db.execute("SELECT * FROM custom_orders WHERE id=?", (order_id,)).fetchone()
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    offers = db.execute(
+        "SELECT * FROM custom_offers WHERE order_id=? ORDER BY created_at ASC", (order_id,)
+    ).fetchall()
+    messages = db.execute(
+        "SELECT * FROM custom_messages WHERE order_id=? ORDER BY created_at ASC", (order_id,)
+    ).fetchall()
+    db.close()
+    return {
+        "order": dict(order),
+        "offers": [dict(o) for o in offers],
+        "messages": [dict(m) for m in messages],
+    }
+
+@app.post("/api/marketplace/orders/{order_id}/offers")
+def make_offer(order_id: int, payload: OfferPayload, x_user_id: Optional[str] = Header(default=None)):
+    db = get_db()
+    cur = db.execute(
+        """INSERT INTO custom_offers
+           (order_id,seller_id,seller_name,description,price,delivery_days)
+           VALUES (?,?,?,?,?,?)""",
+        (order_id, x_user_id, payload.seller_name, payload.description,
+         payload.price, payload.delivery_days)
+    )
+    db.commit()
+    offer_id = cur.lastrowid
+    db.close()
+    return {"message": "Offer submitted", "offer_id": offer_id}
+
+@app.patch("/api/marketplace/offers/{offer_id}")
+def update_offer_status(offer_id: int, payload: OfferStatusPayload,
+                        x_user_id: Optional[str] = Header(default=None)):
+    if payload.status not in ("accepted", "rejected"):
+        raise HTTPException(status_code=400, detail="Invalid status")
+    db = get_db()
+    db.execute("UPDATE custom_offers SET status=? WHERE id=?", (payload.status, offer_id))
+    if payload.status == "accepted":
+        offer = db.execute("SELECT order_id FROM custom_offers WHERE id=?", (offer_id,)).fetchone()
+        if offer:
+            db.execute("UPDATE custom_orders SET status='in_progress' WHERE id=?", (offer["order_id"],))
+    db.commit()
+    db.close()
+    return {"message": f"Offer {payload.status}"}
+
+@app.post("/api/marketplace/orders/{order_id}/messages")
+def send_message(order_id: int, payload: MessagePayload,
+                 x_user_id: Optional[str] = Header(default=None)):
+    db = get_db()
+    db.execute(
+        "INSERT INTO custom_messages (order_id,offer_id,sender_id,sender_name,message) VALUES (?,?,?,?,?)",
+        (order_id, payload.offer_id, x_user_id, payload.sender_name, payload.message)
+    )
+    db.commit()
+    db.close()
+    return {"message": "Message sent"}
+
+@app.delete("/api/marketplace/orders/{order_id}")
+def close_order(order_id: int, x_user_id: Optional[str] = Header(default=None)):
+    db = get_db()
+    db.execute(
+        "UPDATE custom_orders SET status='closed' WHERE id=? AND buyer_id=?",
+        (order_id, x_user_id)
+    )
+    db.commit()
+    db.close()
+    return {"message": "Order closed"}

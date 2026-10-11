@@ -45,14 +45,14 @@ export default function GiftForm({ onRecommend, prefill, onPrefillUsed }) {
 
   const sel = `mt-1.5 w-full border-2 border-rose-100 rounded-2xl px-4 py-3 text-sm
     focus:outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-100
-    bg-white/80 text-gray-700 transition-all appearance-none cursor-pointer shadow-sm`;
+    bg-rose-50/50 text-gray-800 transition-all appearance-none cursor-pointer shadow-sm`;
 
   return (
     <div className="w-full max-w-2xl mx-auto">
-      <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl shadow-rose-100 border border-rose-100 overflow-hidden">
+      <div className="bg-white rounded-3xl shadow-xl shadow-rose-100 border border-rose-100 overflow-hidden">
 
         {/* Form header banner */}
-        <div className="bg-gradient-to-r from-rose-500 to-pink-500 px-8 py-6 text-white text-center">
+        <div className="bg-gradient-to-r from-rose-500 to-pink-600 px-8 py-6 text-white text-center">
           <div className="text-4xl mb-2">🎁</div>
           <h2 className="font-serif text-3xl font-bold">Find the Perfect Gift</h2>
           <p className="text-rose-100 text-sm mt-1 tracking-wide">Every gift tells a love story ✨</p>
@@ -110,16 +110,13 @@ export default function GiftForm({ onRecommend, prefill, onPrefillUsed }) {
               {error}
             </div>
           )}
-
           <button type="submit" disabled={loading}
             className="w-full mt-6 bg-gradient-to-r from-rose-500 to-pink-500
               hover:from-rose-600 hover:to-pink-600 disabled:opacity-50
               text-white font-bold py-4 rounded-2xl transition-all text-base tracking-wide
-              shadow-xl shadow-rose-200 hover:shadow-rose-300 hover:scale-[1.02] cursor-pointer">
+              shadow-lg shadow-rose-200 hover:scale-[1.02] cursor-pointer">
             {loading ? "Finding the perfect gift... 💭" : "✨ Discover Gifts 🎁"}
           </button>
-
-          {/* Trust badges */}
           <div className="flex justify-center gap-6 mt-5 text-xs text-rose-400">
             <span>🔒 Private & Secure</span>
             <span>💝 282+ Gift Ideas</span>

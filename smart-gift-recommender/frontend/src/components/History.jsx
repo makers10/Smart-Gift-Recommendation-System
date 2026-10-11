@@ -44,15 +44,13 @@ export default function History({ onReSearch }) {
   };
 
   return (
-    <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl shadow-rose-100 w-full max-w-md p-8 border border-rose-100">
+    <div className="bg-white rounded-3xl shadow-xl shadow-rose-100 w-full max-w-md p-8 border border-rose-100">
       <div className="text-center mb-6">
         <div className="text-4xl mb-1">🕰️</div>
         <h2 className="font-serif text-2xl font-bold text-rose-700">My Search History</h2>
         <p className="text-rose-400 text-xs mt-1 tracking-wide">Only your own searches — private to you</p>
       </div>
-
-      {loading && <p className="text-center text-rose-300 text-sm py-8">Loading your history... 💕</p>}
-
+      {loading && <p className="text-center text-rose-300 text-sm py-8">Loading... 💕</p>}
       {!loading && items.length === 0 && (
         <div className="text-center py-10">
           <div className="text-5xl mb-3">🌹</div>
@@ -60,7 +58,6 @@ export default function History({ onReSearch }) {
           <p className="text-rose-300 text-xs mt-1">Start finding gifts 💝</p>
         </div>
       )}
-
       {items.length > 0 && (
         <div className="flex justify-end mb-3">
           <button onClick={clearAll}
@@ -69,11 +66,10 @@ export default function History({ onReSearch }) {
           </button>
         </div>
       )}
-
       <ul className="space-y-3">
         {items.map((item) => (
           <li key={item.id}
-            className="bg-gradient-to-r from-rose-50 to-pink-50 border border-rose-100 rounded-2xl px-4 py-3 shadow-sm">
+            className="bg-rose-50 border border-rose-100 rounded-2xl px-4 py-3 hover:bg-rose-100/50 transition">
             <div className="flex items-start justify-between gap-2">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
@@ -88,16 +84,10 @@ export default function History({ onReSearch }) {
                 <p className="text-xs text-gray-400 mt-1">{formatDate(item.created_at)}</p>
               </div>
               <div className="flex gap-1 shrink-0">
-                <button
-                  onClick={() => onReSearch({ relationship: item.relationship, occasion: item.occasion, budget: item.budget, gender: item.gender })}
-                  className="text-xs px-2 py-1 rounded-full border border-rose-300 text-rose-500 hover:bg-rose-100 transition cursor-pointer"
-                  title="Search again">
-                  🔁
-                </button>
+                <button onClick={() => onReSearch({ relationship: item.relationship, occasion: item.occasion, budget: item.budget, gender: item.gender })}
+                  className="text-xs px-2 py-1 rounded-full border border-rose-200 text-rose-500 hover:bg-rose-50 transition cursor-pointer">🔁</button>
                 <button onClick={() => remove(item.id)}
-                  className="text-xs px-2 py-1 rounded-full border border-rose-200 text-rose-400 hover:bg-rose-50 transition cursor-pointer">
-                  ✕
-                </button>
+                  className="text-xs px-2 py-1 rounded-full border border-rose-200 text-rose-400 hover:bg-rose-50 transition cursor-pointer">✕</button>
               </div>
             </div>
           </li>

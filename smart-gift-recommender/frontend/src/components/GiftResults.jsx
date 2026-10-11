@@ -65,7 +65,7 @@ export default function GiftResults({ result, onReset }) {
       {/* Results header */}
       <div className="text-center mb-8">
         <div className="text-6xl mb-3">{emoji}</div>
-        <h2 className="font-serif text-4xl font-bold text-rose-700">Your Gift Ideas</h2>
+        <h2 className="font-serif text-4xl font-bold text-rose-800">Your Gift Ideas</h2>
         <p className="text-rose-400 text-sm mt-2">
           For your <span className="font-semibold text-rose-600">{fmt(result.relationship)}</span>
           {result.gender !== "any" && <span className="text-rose-400"> ({fmt(result.gender)})</span>}
@@ -85,8 +85,8 @@ export default function GiftResults({ result, onReset }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         {sorted.map((gift, i) => (
           <div key={gift.name}
-            className="group relative bg-white/80 backdrop-blur-sm border border-rose-100
-              rounded-3xl shadow-md hover:shadow-xl hover:shadow-rose-100
+            className="group relative bg-white border border-rose-100
+              rounded-3xl shadow-sm hover:shadow-lg hover:shadow-rose-100
               transition-all duration-300 hover:-translate-y-1 overflow-hidden">
 
             {/* Top color bar */}
@@ -162,9 +162,9 @@ export default function GiftResults({ result, onReset }) {
       {/* Search again */}
       <div className="text-center">
         <button onClick={onReset}
-          className="inline-flex items-center gap-2 px-8 py-3 border-2 border-rose-300
+          className="inline-flex items-center gap-2 px-8 py-3 border-2 border-rose-200
             text-rose-500 hover:bg-rose-500 hover:text-white font-semibold rounded-2xl
-            transition-all cursor-pointer text-sm tracking-wide shadow-sm hover:shadow-rose-200">
+            transition-all cursor-pointer text-sm tracking-wide shadow-sm">
           ← Search Again 🌹
         </button>
       </div>
