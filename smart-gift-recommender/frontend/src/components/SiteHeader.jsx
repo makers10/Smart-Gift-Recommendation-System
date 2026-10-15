@@ -264,7 +264,7 @@ export default function SiteHeader({ tab, onNavigate }) {
                 aria-expanded={drawerOpen}
                 aria-controls="mobile-nav-drawer"
                 aria-label={drawerOpen ? "Close navigation menu" : "Open navigation menu"}
-                className="p-2 rounded-base text-neutral-600 hover:text-burgundy-600
+                className="min-w-[44px] min-h-[44px] p-2.5 flex items-center justify-center rounded-base text-neutral-600 hover:text-burgundy-600
                   hover:bg-burgundy-50 transition-colors duration-150
                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy-500
                   focus-visible:ring-offset-2"
@@ -293,11 +293,12 @@ export default function SiteHeader({ tab, onNavigate }) {
         role="dialog"
         aria-label="Navigation menu"
         aria-modal="true"
+        aria-hidden={!drawerOpen}
         className={[
           "fixed top-0 right-0 bottom-0 z-50 w-72 bg-white shadow-xl",
           "flex flex-col md:hidden",
-          "transition-transform duration-280 ease-out",
-          drawerOpen ? "translate-x-0" : "translate-x-full",
+          "transition-all duration-200 ease-out",
+          drawerOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none invisible",
         ].join(" ")}
       >
         {/* Drawer header */}
@@ -308,7 +309,7 @@ export default function SiteHeader({ tab, onNavigate }) {
           <button
             onClick={() => { setDrawerOpen(false); hamburgerRef.current?.focus(); }}
             aria-label="Close navigation menu"
-            className="p-2 rounded-base text-neutral-500 hover:text-burgundy-600
+            className="min-w-[44px] min-h-[44px] p-2.5 flex items-center justify-center rounded-base text-neutral-500 hover:text-burgundy-600
               hover:bg-burgundy-50 transition-colors duration-150
               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy-500
               focus-visible:ring-offset-2"

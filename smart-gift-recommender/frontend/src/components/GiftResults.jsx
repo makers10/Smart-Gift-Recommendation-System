@@ -182,7 +182,7 @@ function GiftCard({ gift, index, result, scores, voted, wishlisted, feedback, on
               aria-pressed={voted[gift.name] === 1}
               aria-label={`Recommend ${gift.name}`}
               className={[
-                "flex items-center justify-center gap-1.5 py-2 rounded-base text-xs font-medium",
+                "flex items-center justify-center gap-1.5 py-2.5 min-h-[44px] rounded-base text-xs font-medium",
                 "border transition-colors duration-150 cursor-pointer",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy-500 focus-visible:ring-offset-1",
                 "disabled:cursor-not-allowed disabled:opacity-60",
@@ -201,7 +201,7 @@ function GiftCard({ gift, index, result, scores, voted, wishlisted, feedback, on
               aria-pressed={voted[gift.name] === -1}
               aria-label={`Not for me: ${gift.name}`}
               className={[
-                "flex items-center justify-center gap-1.5 py-2 rounded-base text-xs font-medium",
+                "flex items-center justify-center gap-1.5 py-2.5 min-h-[44px] rounded-base text-xs font-medium",
                 "border transition-colors duration-150 cursor-pointer",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy-500 focus-visible:ring-offset-1",
                 "disabled:cursor-not-allowed disabled:opacity-60",
@@ -223,7 +223,7 @@ function GiftCard({ gift, index, result, scores, voted, wishlisted, feedback, on
               aria-pressed={isSaved}
               aria-label={isSaved ? `${gift.name} saved to wishlist` : `Save ${gift.name} to wishlist`}
               className={[
-                "flex items-center justify-center gap-1.5 py-2 rounded-base text-xs font-medium",
+                "flex items-center justify-center gap-1.5 py-2.5 min-h-[44px] rounded-base text-xs font-medium",
                 "border transition-colors duration-150 cursor-pointer",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy-500 focus-visible:ring-offset-1",
                 "disabled:cursor-not-allowed",
@@ -242,7 +242,7 @@ function GiftCard({ gift, index, result, scores, voted, wishlisted, feedback, on
               rel="noreferrer"
               aria-label={`Buy ${gift.name} on Amazon India`}
               className={[
-                "flex items-center justify-center gap-1.5 py-2 rounded-base text-xs font-medium",
+                "flex items-center justify-center gap-1.5 py-2.5 min-h-[44px] rounded-base text-xs font-medium",
                 "border border-ivory-300 text-neutral-600",
                 "hover:border-neutral-300 hover:bg-neutral-50",
                 "transition-colors duration-150",

@@ -193,74 +193,156 @@ export default function Hero({ onQuickSearch }) {
         aria-labelledby="hero-heading"
         className="relative w-full bg-ivory-100 overflow-hidden"
       >
-        {/* Subtle warm tint on right side — purely decorative, no blob overlay */}
+        {/* Soft, seamless ambient gradient — no harsh vertical seam */}
         <div
-          className="absolute inset-y-0 right-0 w-1/2 bg-ivory-200 opacity-50 pointer-events-none"
+          className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-ivory-200/30 pointer-events-none"
           aria-hidden="true"
         />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
-          <div className="max-w-2xl">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-18 lg:py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
 
-            {/* Eyebrow label */}
-            <p className="inline-flex items-center gap-2 text-xs font-semibold text-burgundy-500
-              tracking-widest uppercase mb-6 border border-burgundy-200 bg-burgundy-50
-              px-3 py-1.5 rounded-full">
-              <IconStar className="w-3 h-3 text-gold-400" />
-              Thoughtfully curated gifts
-            </p>
+            {/* Left Column: Editorial Headline & Actions */}
+            <div className="lg:col-span-7 max-w-2xl">
+              {/* Eyebrow label */}
+              <p className="inline-flex items-center gap-2 text-xs font-semibold text-burgundy-500
+                tracking-widest uppercase mb-6 border border-burgundy-200 bg-burgundy-50
+                px-3 py-1.5 rounded-full">
+                <IconStar className="w-3 h-3 text-gold-400" />
+                Thoughtfully curated gifts
+              </p>
 
-            {/* Headline */}
-            <h1
-              id="hero-heading"
-              className="font-serif text-5xl sm:text-6xl lg:text-7xl font-semibold
-                text-burgundy-800 leading-none tracking-tight mb-6"
-            >
-              The right gift,<br />
-              <span className="italic text-burgundy-600">for every heart.</span>
-            </h1>
-
-            {/* Supporting copy */}
-            <p className="text-lg text-neutral-600 leading-relaxed mb-8 max-w-lg">
-              Tell us who you are gifting and the occasion — we'll surface the
-              most thoughtful options across every relationship and budget.
-            </p>
-
-            {/* CTAs */}
-            <div className="flex flex-wrap gap-3 items-center">
-              <Button
-                variant="primary"
-                size="lg"
-                onClick={scrollToForm}
-                className="group"
+              {/* Headline */}
+              <h1
+                id="hero-heading"
+                className="font-serif text-5xl sm:text-6xl lg:text-7xl font-semibold
+                  text-burgundy-800 leading-none tracking-tight mb-6"
               >
-                <IconGift className="w-4 h-4" />
-                Find a Gift
-                <IconArrowDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
-              </Button>
-              <Button
-                variant="secondary"
-                size="lg"
-                onClick={() => onQuickSearch && onQuickSearch({ __navigate: "custom" })}
-              >
-                <IconScissors className="w-4 h-4" />
-                Custom Made
-              </Button>
+                The right gift,<br />
+                <span className="italic text-burgundy-600">for every heart.</span>
+              </h1>
+
+              {/* Supporting copy */}
+              <p className="text-lg text-neutral-600 leading-relaxed mb-8 max-w-lg">
+                Tell us who you are gifting and the occasion — we'll surface the
+                most thoughtful options across every relationship and budget.
+              </p>
+
+              {/* CTAs */}
+              <div className="flex flex-wrap gap-3 items-center">
+                <Button
+                  variant="primary"
+                  size="lg"
+                  onClick={scrollToForm}
+                  className="group"
+                >
+                  <IconGift className="w-4 h-4" />
+                  Find a Gift
+                  <IconArrowDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  onClick={() => onQuickSearch && onQuickSearch({ __navigate: "custom" })}
+                >
+                  <IconScissors className="w-4 h-4" />
+                  Custom Made
+                </Button>
+              </div>
+
+              {/* Trust indicators — real platform stats */}
+              <div className="flex flex-wrap gap-6 mt-10 pt-8 border-t border-ivory-300">
+                {[
+                  { value: "282+", label: "Gift combinations" },
+                  { value: "20+",  label: "Relationships" },
+                  { value: "30+",  label: "Occasions covered" },
+                ].map((s) => (
+                  <div key={s.label}>
+                    <p className="font-serif text-2xl font-semibold text-burgundy-700">{s.value}</p>
+                    <p className="text-xs text-neutral-500 mt-0.5">{s.label}</p>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Trust indicators — only real platform stats */}
-            <div className="flex flex-wrap gap-6 mt-10 pt-8 border-t border-ivory-300">
-              {[
-                { value: "282+", label: "Gift combinations" },
-                { value: "20+",  label: "Relationships" },
-                { value: "30+",  label: "Occasions covered" },
-              ].map((s) => (
-                <div key={s.label}>
-                  <p className="font-serif text-2xl font-semibold text-burgundy-700">{s.value}</p>
-                  <p className="text-xs text-neutral-500 mt-0.5">{s.label}</p>
+            {/* Right Column: Curated Spotlight Preview Card */}
+            <div className="lg:col-span-5 w-full">
+              <div className="relative mx-auto max-w-md lg:max-w-none bg-white rounded-2xl border border-ivory-300 p-6 sm:p-7 shadow-lg">
+                {/* Header tag */}
+                <div className="flex items-center justify-between gap-3 mb-5 pb-4 border-b border-ivory-200">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-burgundy-50 text-burgundy-700 border border-burgundy-200">
+                    <IconStar className="w-3.5 h-3.5 text-gold-500" />
+                    Trending Recommendation
+                  </span>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
+                    Top Pick
+                  </span>
                 </div>
-              ))}
+
+                {/* Featured item body */}
+                <div className="space-y-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <span className="text-xs font-semibold uppercase tracking-wider text-burgundy-600">
+                        Birthday • Partner or Sister
+                      </span>
+                      <h3 className="font-serif text-2xl font-semibold text-neutral-900 mt-1 leading-snug">
+                        Artisan Leather Keepsake Journal
+                      </h3>
+                    </div>
+                    <span className="shrink-0 inline-flex items-center justify-center px-2.5 py-1 rounded-full text-xs font-bold bg-burgundy-600 text-white shadow-xs">
+                      +12 Score
+                    </span>
+                  </div>
+
+                  <p className="text-sm text-neutral-600 leading-relaxed">
+                    Hand-stitched full-grain leather binding with archival-quality deckle paper. A timeless, sentimental keepsake designed to last for generations.
+                  </p>
+
+                  <div className="flex items-center justify-between text-xs text-neutral-500 pt-2 border-t border-ivory-100">
+                    <span>Budget: <strong className="text-neutral-700 font-medium">₹2,000 – ₹5,000</strong></span>
+                    <span className="text-emerald-700 font-medium">✓ Highly rated</span>
+                  </div>
+
+                  {/* Action button */}
+                  <div className="pt-2">
+                    <button
+                      onClick={() => handleOccasion("birthday")}
+                      aria-label="Discover Birthday gift ideas"
+                      className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-base text-sm font-semibold text-white bg-burgundy-600 hover:bg-burgundy-700 active:bg-burgundy-800 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy-500 focus-visible:ring-offset-2"
+                    >
+                      <span>Discover Birthday Gifts</span>
+                      <IconChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Popular searches footer */}
+                <div className="mt-5 pt-4 border-t border-ivory-200">
+                  <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2.5">
+                    Popular searches this week
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      { label: "Anniversary", value: "anniversary", symbol: "💑" },
+                      { label: "Mother's Day", value: "mothers_day", symbol: "🌸" },
+                      { label: "Housewarming", value: "housewarming", symbol: "🏠" },
+                    ].map((item) => (
+                      <button
+                        key={item.value}
+                        onClick={() => handleOccasion(item.value)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-ivory-100 text-neutral-700 border border-ivory-300 hover:bg-burgundy-50 hover:border-burgundy-300 hover:text-burgundy-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy-500"
+                      >
+                        <span aria-hidden="true">{item.symbol}</span>
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
             </div>
+
           </div>
         </div>
       </section>

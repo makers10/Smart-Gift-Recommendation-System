@@ -111,7 +111,7 @@ function HistoryItem({ item, onReSearch, onRemove }) {
               gender:       item.gender,
             })}
             aria-label={`Search again: ${fmt(item.occasion)} for ${fmt(item.relationship)}`}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-base text-xs font-medium
+            className="flex items-center gap-1.5 px-3 py-2 min-h-[44px] rounded-base text-xs font-medium
               border border-burgundy-200 text-burgundy-600
               hover:bg-burgundy-50 hover:border-burgundy-400
               transition-colors duration-150
@@ -125,7 +125,7 @@ function HistoryItem({ item, onReSearch, onRemove }) {
           <button
             onClick={() => onRemove(item.id)}
             aria-label={`Remove ${fmt(item.occasion)} search from history`}
-            className="flex items-center justify-center w-8 h-8 rounded-base
+            className="flex items-center justify-center min-w-[44px] min-h-[44px] rounded-base
               border border-transparent text-neutral-400
               hover:border-rose-200 hover:text-rose-500 hover:bg-rose-50
               transition-colors duration-150

@@ -1,14 +1,40 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import GiftForm from "./components/GiftForm";
 import GiftResults from "./components/GiftResults";
-import Dashboard from "./components/Dashboard";
 import Wishlist from "./components/Wishlist";
 import History from "./components/History";
 import Hero from "./components/Hero";
 import Marketplace from "./components/Marketplace";
 import ErrorBoundary from "./components/ui/ErrorBoundary";
+import Skeleton from "./components/ui/Skeleton";
 import SiteHeader from "./components/SiteHeader";
 import SiteFooter from "./components/SiteFooter";
+
+/**
+ * Dashboard is lazy-loaded so Recharts + lodash + d3 (~440 KB) are
+ * excluded from the initial bundle and only fetched when the user
+ * navigates to the Dashboard tab.
+ */
+const Dashboard = lazy(() => import("./components/Dashboard"));
+
+/** Fallback shown while the Dashboard chunk is being fetched. */
+function DashboardFallback() {
+  return (
+    <div className="w-full max-w-4xl space-y-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <Skeleton.StatCard key={i} />
+        ))}
+      </div>
+      <Skeleton className="h-64 w-full rounded-card" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Skeleton className="h-52 rounded-card" />
+        <Skeleton className="h-52 rounded-card" />
+      </div>
+      <p className="sr-only" role="status">Loading dashboard…</p>
+    </div>
+  );
+}
 
 export default function App() {
   const [result,  setResult]  = useState(null);
@@ -33,20 +59,18 @@ export default function App() {
    * or a "Custom Made" CTA.
    *
    * Accepts a partial params object:
-   *   { occasion: "birthday" }           → prefills + scrolls to form
-   *   { relationship: "mom" }             → prefills + scrolls to form
-   *   { __navigate: "custom" }            → navigates to Custom Made tab
+   *   { occasion: "birthday" }      → prefills + scrolls to form
+   *   { relationship: "mom" }        → prefills + scrolls to form
+   *   { __navigate: "custom" }       → navigates to Custom Made tab
    */
   const handleQuickSearch = (params) => {
     if (params.__navigate) {
       handleNavigate(params.__navigate);
       return;
     }
-    // Prefill the form and scroll down to it
     setPrefill(params);
     setResult(null);
     setTab("home");
-    // Small timeout so the DOM rerenders the form before we try to scroll
     setTimeout(() => {
       document.getElementById("gift-discovery-form")?.scrollIntoView({
         behavior: "smooth",
@@ -55,7 +79,7 @@ export default function App() {
     }, 80);
   };
 
-  // Derive a human-readable page name for the live announcement
+  // Human-readable page name announced to screen readers on tab change
   const PAGE_NAMES = {
     home:      "Find a Gift",
     custom:    "Custom Made",
@@ -67,11 +91,7 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col bg-ivory-100">
 
-      {/*
-        Visually hidden live region — announces the current page name to
-        screen readers whenever the tab changes (WCAG 4.1.3 Status Messages,
-        helps with WCAG 2.4.2 Page Titled in SPA contexts).
-      */}
+      {/* Live region — announces tab name to screen readers on navigation */}
       <div
         role="status"
         aria-live="polite"
@@ -93,10 +113,6 @@ export default function App() {
         )}
 
         {tab === "home" && (
-          /*
-           * Scroll anchor placed here so the hero "Find a Gift" CTA can
-           * smoothly scroll the viewport to the GiftForm.
-           */
           <div
             id="gift-discovery-form"
             className={`w-full flex flex-col items-center px-4 ${!result ? "py-12 sm:py-16" : "py-10"}`}
@@ -140,11 +156,13 @@ export default function App() {
           </div>
         )}
 
-        {/* ── Dashboard ────────────────────────────────────────────────────── */}
+        {/* ── Dashboard — lazy-loaded to exclude Recharts from initial bundle ── */}
         {tab === "dashboard" && (
           <div className="mt-8 w-full flex justify-center px-4 pb-16">
             <ErrorBoundary label="the dashboard">
-              <Dashboard />
+              <Suspense fallback={<DashboardFallback />}>
+                <Dashboard />
+              </Suspense>
             </ErrorBoundary>
           </div>
         )}

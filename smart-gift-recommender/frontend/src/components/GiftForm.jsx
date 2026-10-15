@@ -26,7 +26,7 @@
  *   - role="alert" on error message (A4 fix)
  *   - Consistent focus-visible rings via global CSS
  */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { relationships, occasions, budgets } from "../data/options";
 import { apiFetch } from "../utils/api";
 import Button from "./ui/Button";
@@ -64,8 +64,18 @@ export default function GiftForm({ onRecommend, prefill, onPrefillUsed }) {
   const [loading, setLoading] = useState(false);
   const [error,   setError]   = useState("");
 
-  // Consume the prefill exactly once after it's been applied to state
-  if (prefill && onPrefillUsed) onPrefillUsed();
+  // Sync state when prefill changes after initial mount
+  useEffect(() => {
+    if (prefill) {
+      setForm((prev) => ({
+        relationship: prefill.relationship !== undefined ? prefill.relationship : prev.relationship,
+        occasion:     prefill.occasion     !== undefined ? prefill.occasion     : prev.occasion,
+        budget:       prefill.budget       !== undefined ? prefill.budget       : prev.budget,
+        gender:       prefill.gender       !== undefined ? prefill.gender       : prev.gender,
+      }));
+      onPrefillUsed?.();
+    }
+  }, [prefill, onPrefillUsed]);
 
   const handleChange = (e) =>
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));

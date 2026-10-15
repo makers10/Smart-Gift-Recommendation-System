@@ -104,7 +104,7 @@ function WishlistItem({ item, onRemove }) {
           target="_blank"
           rel="noreferrer"
           aria-label={`Buy ${item.gift_name} on Amazon India`}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-base text-xs font-medium
+          className="flex items-center gap-1.5 px-3 py-2 min-h-[44px] rounded-base text-xs font-medium
             border border-ivory-300 text-neutral-600
             hover:border-neutral-300 hover:bg-neutral-50
             transition-colors duration-150
@@ -117,7 +117,7 @@ function WishlistItem({ item, onRemove }) {
         <button
           onClick={() => onRemove(item.id)}
           aria-label={`Remove ${item.gift_name} from wishlist`}
-          className="flex items-center justify-center w-8 h-8 rounded-base
+          className="flex items-center justify-center min-w-[44px] min-h-[44px] rounded-base
             border border-transparent text-neutral-400
             hover:border-rose-200 hover:text-rose-500 hover:bg-rose-50
             transition-colors duration-150

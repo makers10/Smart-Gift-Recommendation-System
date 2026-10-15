@@ -210,9 +210,24 @@ These are particularly useful for Recharts `fill` and `stroke` props and inline 
 | V12 | Wishlist/History too narrow | ✅ Done — Stage F (max-w-md → max-w-3xl) |
 | V13 | Dashboard stat card gradients | ✅ Done — Stage F (ivory/white Card primitive) |
 | V15 | No mobile nav | ✅ Done — Stage C |
-| A1–A8 | Accessibility fixes | G |
-| P1–P2 | Bundle size / code splitting | H |
+| A1–A8 | Accessibility fixes | ✅ Done — Stages E, F, G (see detail below) |
+
+**A1** — Emoji in button labels: Fixed in GiftForm (Stage E), GiftResults (Stage E), Hero buttons use aria-label (Stage D), Marketplace loading/buttons (Stage G).  
+**A2** — Carousel prev/next: N/A — carousel removed in Stage D.  
+**A3** — Hero dot indicators: N/A — carousel removed in Stage D.  
+**A4** — role=status/alert: Fixed in GiftForm (Stage E), GiftResults (Stage E), Wishlist/History/Dashboard (Stage F), Marketplace loading (Stage G), App tab live region (Stage G).  
+**A5** — lang="en": Fixed in Stage B.  
+**A6** — Marketplace label linkage: Fixed in Stage G (htmlFor/id on PostOrderForm; aria-label on offer and message form inputs).  
+**A7** — Remove buttons without aria-label: Fixed in Wishlist and History (Stage F).  
+**A8** — Select arrow contrast: Arrow is burgundy-600 (#9f1239) on ivory background — passes WCAG AA. Documented in Stage B.
+| P1–P2 | Bundle size / code splitting | ✅ Done — Stage H (Dashboard lazy-loaded; initial bundle reduced from 608.99 kB to 221.80 kB / 63.63 kB gzip; >500 kB chunk warning resolved) |
+
+**Stage H Verification & Test Coverage Summary:**
+- **Automated Testing Suite**: Vitest + React Testing Library configured in `vite.config.js` and `package.json`. 6 focused test suites covering App navigation, GiftForm, GiftResults, Wishlist, History, and Dashboard (31/31 tests passing, 87.05% statement coverage).
+- **Bundle Splitting**: `Dashboard.jsx` (Recharts + d3 + lodash) split into a standalone dynamic chunk (`Dashboard-*.js` ~420.85 kB). Initial client JS reduced by 63.6% (608.99 kB → 221.80 kB; 171.20 kB → 63.63 kB gzipped).
+- **Touch Targets**: Systematic upgrade across `SiteHeader` (hamburger, drawer close), `GiftResults` (vote, save, buy), `Wishlist` (remove, buy), and `History` (remove, re-search) to ensure interactive controls meet 44 × 44 CSS pixels.
+- **Dynamic Prefill Bug Fixed**: Added `useEffect` in `GiftForm.jsx` to ensure shortcut chips on the homepage properly prefill the form when already mounted.
 
 ---
 
-*Last updated: Stage F — Wishlist, History & Dashboard Redesign*
+*Last updated: Stage H — Testing, Optimization & Regression Verification (Complete)*
