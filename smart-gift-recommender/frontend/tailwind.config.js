@@ -73,22 +73,23 @@ export default {
           500: "#d4941c",
         },
 
-        // ── GIFTVERSE FUTURISTIC PALETTE ─────────────────────────────
-        midnight: {
-          950: "#02040a",
-          900: "#060b18",
-          850: "#091024",
-          800: "#0e1738",
-          700: "#152252",
+        // ── CHAMPAGNE DREAM LUXURY DESIGN TOKENS ────────────────────
+        luxury: {
+          main: "#100D12",
+          secondary: "#19141B",
+          card: "#211923",
+          elevated: "#2A2028",
+          text: "#FFF7E9",
+          muted: "#C5B8B5",
+          border: "#493641",
+          burgundy: "#5A2438",
+          rose: "#A66B7D",
         },
-        cyber: {
-          cyan: "#00f2fe",
-          cyanBright: "#38bdf8",
-          cyanDark: "#0284c7",
-          violet: "#8b5cf6",
-          violetBright: "#a855f7",
-          pink: "#ff007a",
-          pinkBright: "#f43f5e",
+        champagne: {
+          DEFAULT: "#D6B675",
+          light: "#F5DDA0",
+          dark: "#B89650",
+          glow: "rgba(245, 221, 160, 0.25)",
         },
       },
 
@@ -116,10 +117,11 @@ export default {
         xl:          "0 20px 48px -12px rgb(0 0 0 / 0.14), 0 8px 24px -6px rgb(0 0 0 / 0.08)",
         brand:       "0 4px 16px -4px rgb(194 39 75 / 0.28)",
         "brand-lg":  "0 8px 28px -6px rgb(194 39 75 / 0.22)",
-        "neon-cyan": "0 0 30px -4px rgba(0, 242, 254, 0.45)",
-        "neon-violet": "0 0 30px -4px rgba(139, 92, 246, 0.45)",
-        "neon-pink": "0 0 30px -4px rgba(255, 0, 122, 0.45)",
-        "glass-glow": "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.15)",
+        "champagne-glow": "0 0 35px -5px rgba(245, 221, 160, 0.25)",
+        "champagne-sm": "0 0 16px -2px rgba(214, 182, 117, 0.3)",
+        "burgundy-glow": "0 10px 30px -5px rgba(90, 36, 56, 0.4)",
+        "luxury-card": "0 10px 30px -10px rgba(16, 13, 18, 0.8), 0 0 1px 1px rgba(73, 54, 65, 0.6)",
+        "glass-luxury": "0 8px 32px 0 rgba(16, 13, 18, 0.5), inset 0 1px 1px 0 rgba(245, 221, 160, 0.15)",
       },
 
       // ── BORDER RADIUS ──────────────────────────────────────────────────
