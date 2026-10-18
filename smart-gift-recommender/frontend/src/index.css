@@ -50,12 +50,37 @@ html {
 }
 
 body {
-  /* Inter for all body text — resolves the Lato/Inter font conflict (V7) */
   font-family: var(--font-sans);
-  background-color: var(--color-ivory-100);
-  color: #27272a; /* neutral-800 */
+  background-color: #02040a;
+  color: #f1f5f9;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Futuristic Cyber Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #060b18;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 242, 254, 0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00f2fe;
+  box-shadow: 0 0 10px #00f2fe;
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 12s linear infinite;
 }
 
 /* Headings and explicit serif elements use Cormorant Garamond */

@@ -72,19 +72,39 @@ export default {
           400: "#f0b429",
           500: "#d4941c",
         },
+
+        // ── GIFTVERSE FUTURISTIC PALETTE ─────────────────────────────
+        midnight: {
+          950: "#02040a",
+          900: "#060b18",
+          850: "#091024",
+          800: "#0e1738",
+          700: "#152252",
+        },
+        cyber: {
+          cyan: "#00f2fe",
+          cyanBright: "#38bdf8",
+          cyanDark: "#0284c7",
+          violet: "#8b5cf6",
+          violetBright: "#a855f7",
+          pink: "#ff007a",
+          pinkBright: "#f43f5e",
+        },
       },
 
       // ── TYPOGRAPHY ─────────────────────────────────────────────────────
       fontFamily: {
         // Cormorant Garamond — luxury editorial serif for display headings
         serif: ["'Cormorant Garamond'", "Georgia", "serif"],
-        // Inter — legible sans-serif for body and UI text
-        sans:  ["'Inter'", "system-ui", "sans-serif"],
+        // Inter / Plus Jakarta Sans — legible modern sans-serif
+        sans:  ["'Plus Jakarta Sans'", "'Inter'", "system-ui", "sans-serif"],
+        display: ["'Outfit'", "'Plus Jakarta Sans'", "sans-serif"],
       },
 
       // Letter-spacing utilities
       letterSpacing: {
         widest: "0.16em",
+        ultra: "0.25em",
       },
 
       // ── SHADOWS ────────────────────────────────────────────────────────
@@ -96,6 +116,10 @@ export default {
         xl:          "0 20px 48px -12px rgb(0 0 0 / 0.14), 0 8px 24px -6px rgb(0 0 0 / 0.08)",
         brand:       "0 4px 16px -4px rgb(194 39 75 / 0.28)",
         "brand-lg":  "0 8px 28px -6px rgb(194 39 75 / 0.22)",
+        "neon-cyan": "0 0 30px -4px rgba(0, 242, 254, 0.45)",
+        "neon-violet": "0 0 30px -4px rgba(139, 92, 246, 0.45)",
+        "neon-pink": "0 0 30px -4px rgba(255, 0, 122, 0.45)",
+        "glass-glow": "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.15)",
       },
 
       // ── BORDER RADIUS ──────────────────────────────────────────────────
