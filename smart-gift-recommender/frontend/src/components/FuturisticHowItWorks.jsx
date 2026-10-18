@@ -17,26 +17,26 @@ const WORK_STEPS = [
     step: "01",
     title: "Define Bond & Occasion",
     desc: "Specify who you are honoring and the milestone being celebrated. We adapt the emotional weighting accordingly.",
-    icon: <Compass className="w-6 h-6 text-cyber-cyan" />,
+    icon: <Compass className="w-6 h-6 text-champagne" />,
   },
   {
     step: "02",
-    title: "Synthesize 282+ Verified Gems",
-    desc: "Our neural matching algorithm filters across relationships, tastes, and budgets with zero arbitrary guessing.",
-    icon: <Cpu className="w-6 h-6 text-cyber-violet" />,
+    title: "Synthesize 282+ Verified Gifts",
+    desc: "Our recommendation algorithm filters across relationships, tastes, and budgets with zero arbitrary guessing.",
+    icon: <Cpu className="w-6 h-6 text-champagne-light" />,
   },
   {
     step: "03",
     title: "Reveal, Personalize & Cherish",
     desc: "Save to your persistent wishlist, customize through independent artisans, and deliver unforgettable sentiment.",
-    icon: <Gift className="w-6 h-6 text-cyber-pink" />,
+    icon: <Gift className="w-6 h-6 text-champagne" />,
   },
 ];
 
 const FAQS = [
   {
     q: "How does Giftverse generate recommendations?",
-    a: "We analyze relationship depth, occasion significance, budget boundaries, and personal interests against a curated database of 282+ verified gift combinations. Every recommendation features an explicit rationale explaining why it was chosen.",
+    a: "We analyze relationship depth, occasion significance, budget boundaries, and personal interests against a curated catalog of 282+ verified gift combinations. Every recommendation features an explicit rationale explaining why it was chosen.",
   },
   {
     q: "Are the prices and budget tiers real?",
@@ -60,44 +60,44 @@ export default function FuturisticHowItWorks() {
   };
 
   return (
-    <div className="w-full bg-midnight-950 text-white relative z-10 py-20 lg:py-28 overflow-hidden">
+    <div className="w-full bg-luxury-main text-luxury-text relative z-10 py-20 lg:py-28 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* ── HOW IT WORKS ─────────────────────────────────────────────── */}
         <div className="text-center max-w-2xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono uppercase tracking-widest text-cyan-300 bg-midnight-900 border border-cyber-cyan/30 mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-cyber-cyan" />
-            <span>The Giftverse Architecture</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-serif uppercase tracking-widest text-champagne-light bg-luxury-card border border-luxury-border mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-champagne" />
+            <span>The Giftverse Experience</span>
           </div>
 
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-luxury-text tracking-tight">
             How The Discovery Operates
           </h2>
-          <p className="mt-3 text-sm sm:text-base text-slate-400 font-sans">
-            Three simple stages bridging sentimental thought with tangible physical wonders.
+          <p className="mt-3 text-sm sm:text-base text-luxury-muted font-sans font-light">
+            Three simple stages bridging heartfelt sentiment with tangible physical wonders.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
-          {WORK_STEPS.map((s, idx) => (
+          {WORK_STEPS.map((s) => (
             <div
               key={s.step}
-              className="relative rounded-3xl bg-midnight-900/80 border border-slate-800 p-8 flex flex-col justify-between hover:border-slate-700 hover:shadow-2xl transition-all"
+              className="relative rounded-3xl bg-luxury-card/90 border border-luxury-border p-8 flex flex-col justify-between hover:border-champagne/40 hover:shadow-luxury-card transition-all"
             >
               <div>
                 <div className="flex items-center justify-between mb-6">
-                  <div className="w-14 h-14 rounded-2xl bg-midnight-950 border border-slate-800 flex items-center justify-center shadow-inner">
+                  <div className="w-14 h-14 rounded-2xl bg-luxury-elevated border border-luxury-border flex items-center justify-center shadow-inner">
                     {s.icon}
                   </div>
-                  <span className="font-mono text-2xl font-bold text-slate-700">
+                  <span className="font-serif text-2xl font-bold text-luxury-muted/40">
                     {s.step}
                   </span>
                 </div>
 
-                <h3 className="font-serif text-2xl font-bold text-white mb-2">
+                <h3 className="font-serif text-2xl font-bold text-luxury-text mb-2">
                   {s.title}
                 </h3>
-                <p className="text-sm text-slate-400 font-sans leading-relaxed">
+                <p className="text-sm text-luxury-muted font-sans font-light leading-relaxed">
                   {s.desc}
                 </p>
               </div>
@@ -106,20 +106,20 @@ export default function FuturisticHowItWorks() {
         </div>
 
         {/* ── WHY GIFTVERSE PILLARS ───────────────────────────────────────── */}
-        <div className="rounded-3xl bg-gradient-to-br from-midnight-900 via-midnight-850 to-midnight-900 border border-slate-800 p-8 sm:p-12 mb-24 shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-cyber-cyan/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="rounded-3xl bg-gradient-to-br from-luxury-card via-luxury-elevated to-luxury-card border border-luxury-border p-8 sm:p-12 mb-24 shadow-luxury-card relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-80 h-80 bg-champagne-glow rounded-full blur-3xl pointer-events-none" />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-5">
-              <span className="text-xs font-mono uppercase tracking-widest text-cyber-cyan block mb-2">
+              <span className="text-xs font-serif uppercase tracking-widest text-champagne block mb-2">
                 Engineered for Sentiment
               </span>
-              <h3 className="font-display text-3xl sm:text-4xl font-extrabold text-white mb-4 leading-tight">
+              <h3 className="font-serif text-3xl sm:text-4xl font-bold text-luxury-text mb-4 leading-tight">
                 Why Millions Never Guess a Gift Again
               </h3>
-              <p className="text-sm text-slate-300 font-sans leading-relaxed">
+              <p className="text-sm text-luxury-muted font-sans font-light leading-relaxed">
                 Traditional ecommerce bombards you with generic ads. Giftverse analyzes interpersonal
-                psychology, occasions, and artisan craftsmanship to curate things that resonate for a lifetime.
+                sentiment, occasions, and artisan craftsmanship to curate things that resonate for a lifetime.
               </p>
             </div>
 
@@ -130,12 +130,12 @@ export default function FuturisticHowItWorks() {
                 { title: "Direct Artisan Escrow", desc: "Collaborate safely with custom makers with milestone protection." },
                 { title: "Universal Currency", desc: "Configured transparently in ₹ for reliable local availability." },
               ].map((item) => (
-                <div key={item.title} className="p-4 rounded-2xl bg-midnight-950/80 border border-slate-800/80">
+                <div key={item.title} className="p-4 rounded-2xl bg-luxury-secondary/80 border border-luxury-border">
                   <div className="flex items-center gap-2 mb-1.5">
-                    <Check className="w-4 h-4 text-cyber-cyan" />
-                    <h4 className="text-sm font-bold text-white">{item.title}</h4>
+                    <Check className="w-4 h-4 text-champagne" />
+                    <h4 className="text-sm font-serif font-bold text-luxury-text">{item.title}</h4>
                   </div>
-                  <p className="text-xs text-slate-400 leading-relaxed">{item.desc}</p>
+                  <p className="text-xs text-luxury-muted font-sans font-light leading-relaxed">{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -145,10 +145,10 @@ export default function FuturisticHowItWorks() {
         {/* ── FAQ ACCORDION ──────────────────────────────────────────────── */}
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-10">
-            <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-white">
+            <h3 className="font-serif text-2xl sm:text-3xl font-bold text-luxury-text">
               Frequently Asked Questions
             </h3>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            <p className="text-xs sm:text-sm text-luxury-muted font-sans font-light mt-1">
               Everything you need to know about the Giftverse discovery algorithm.
             </p>
           </div>
@@ -159,15 +159,15 @@ export default function FuturisticHowItWorks() {
               return (
                 <div
                   key={faq.q}
-                  className="rounded-2xl bg-midnight-900/80 border border-slate-800 overflow-hidden transition-colors"
+                  className="rounded-2xl bg-luxury-card/90 border border-luxury-border overflow-hidden transition-colors"
                 >
                   <button
                     onClick={() => toggleFaq(idx)}
                     className="w-full text-left p-5 flex items-center justify-between gap-4 cursor-pointer"
                   >
-                    <span className="font-semibold text-sm text-white">{faq.q}</span>
+                    <span className="font-serif font-semibold text-sm text-luxury-text">{faq.q}</span>
                     <ChevronDown
-                      className={`w-4 h-4 text-cyan-400 transition-transform duration-200 shrink-0 ${
+                      className={`w-4 h-4 text-champagne transition-transform duration-200 shrink-0 ${
                         isOpen ? "rotate-180" : ""
                       }`}
                     />
@@ -179,7 +179,7 @@ export default function FuturisticHowItWorks() {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="px-5 pb-5 text-xs text-slate-300 font-sans leading-relaxed border-t border-slate-800/60 pt-3"
+                        className="px-5 pb-5 text-xs text-luxury-muted font-sans font-light leading-relaxed border-t border-luxury-border/60 pt-3"
                       >
                         {faq.a}
                       </motion.div>

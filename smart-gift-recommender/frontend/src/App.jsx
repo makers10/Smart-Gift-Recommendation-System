@@ -18,13 +18,13 @@ const Dashboard = lazy(() => import("./components/Dashboard"));
 
 function DashboardFallback() {
   return (
-    <div className="w-full max-w-4xl space-y-6 py-12 text-white">
+    <div className="w-full max-w-4xl space-y-6 py-12 text-luxury-text">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="h-28 rounded-2xl bg-midnight-900 animate-pulse border border-slate-800" />
+          <div key={i} className="h-28 rounded-2xl bg-luxury-card animate-pulse border border-luxury-border" />
         ))}
       </div>
-      <div className="h-64 w-full rounded-2xl bg-midnight-900 animate-pulse border border-slate-800" />
+      <div className="h-64 w-full rounded-2xl bg-luxury-card animate-pulse border border-luxury-border" />
       <p className="sr-only" role="status">Loading dashboard…</p>
     </div>
   );
@@ -114,9 +114,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-midnight-950 text-slate-100 relative overflow-x-hidden selection:bg-cyber-cyan selection:text-midnight-950">
+    <div className="min-h-screen flex flex-col bg-luxury-main text-luxury-text relative overflow-x-hidden selection:bg-champagne selection:text-luxury-main">
       
-      {/* ── 1. Futuristic Sticky Header ───────────────────────────── */}
+      {/* ── 1. Luxury Sticky Header ───────────────────────────────── */}
       <FuturisticHeader
         tab={tab}
         onNavigate={handleNavigate}
@@ -129,7 +129,7 @@ export default function App() {
       {/* ── 2. Main Dimension Experience ──────────────────────────── */}
       <main id="main-content" className="flex-1 flex flex-col">
         
-        {/* HOME DIMENSION */}
+        {/* HOME EXPERIENCE */}
         {tab === "home" && (
           <>
             {/* Cinematic 3D Hero Scene */}
@@ -182,7 +182,7 @@ export default function App() {
 
         {/* CUSTOM MADE ATELIER */}
         {tab === "custom" && (
-          <div className="w-full flex justify-center px-4 py-16 bg-midnight-950 text-white">
+          <div className="w-full flex justify-center px-4 py-16 bg-luxury-main text-luxury-text">
             <ErrorBoundary label="Custom Made">
               <div className="w-full max-w-6xl">
                 <Marketplace />
@@ -193,7 +193,7 @@ export default function App() {
 
         {/* SEARCH HISTORY */}
         {tab === "history" && (
-          <div className="w-full flex justify-center px-4 py-16 bg-midnight-950 text-white">
+          <div className="w-full flex justify-center px-4 py-16 bg-luxury-main text-luxury-text">
             <ErrorBoundary label="your search history">
               <div className="w-full max-w-4xl">
                 <History onReSearch={handleReSearch} />
@@ -204,7 +204,7 @@ export default function App() {
 
         {/* WISHLIST */}
         {tab === "wishlist" && (
-          <div className="w-full flex justify-center px-4 py-16 bg-midnight-950 text-white">
+          <div className="w-full flex justify-center px-4 py-16 bg-luxury-main text-luxury-text">
             <ErrorBoundary label="your wishlist">
               <div className="w-full max-w-4xl">
                 <Wishlist />
@@ -215,7 +215,7 @@ export default function App() {
 
         {/* ANALYTICS DASHBOARD */}
         {tab === "dashboard" && (
-          <div className="w-full flex justify-center px-4 py-16 bg-midnight-950 text-white">
+          <div className="w-full flex justify-center px-4 py-16 bg-luxury-main text-luxury-text">
             <ErrorBoundary label="the dashboard">
               <Suspense fallback={<DashboardFallback />}>
                 <div className="w-full max-w-5xl">
@@ -228,7 +228,7 @@ export default function App() {
 
       </main>
 
-      {/* ── 3. Futuristic Cyber Footer ────────────────────────────── */}
+      {/* ── 3. Luxury Champagne Footer ────────────────────────────── */}
       <FuturisticFooter onNavigate={handleNavigate} />
     </div>
   );
