@@ -9,6 +9,7 @@ import ErrorBoundary from "./components/ui/ErrorBoundary";
 import Skeleton from "./components/ui/Skeleton";
 import SiteHeader from "./components/SiteHeader";
 import SiteFooter from "./components/SiteFooter";
+import AmbientBackground from "./components/AmbientBackground";
 
 /**
  * Dashboard is lazy-loaded so Recharts + lodash + d3 (~440 KB) are
@@ -89,7 +90,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-ivory-100">
+    <div className="min-h-screen flex flex-col bg-ivory-100 relative overflow-x-hidden">
+      {/* ThreeUI / 21st.dev style Ambient Canvas & Floating Mesh */}
+      <AmbientBackground />
 
       {/* Live region — announces tab name to screen readers on navigation */}
       <div
