@@ -217,44 +217,59 @@ export default function SiteHeader({ tab, onNavigate }) {
     <>
       {/* ── HEADER BAR ───────────────────────────────────────────────────── */}
       <header
-        className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-sm border-b border-ivory-300"
-        style={{ boxShadow: "0 1px 0 0 #ecdcc8" }}
+        className="sticky top-0 z-40 w-full backdrop-blur-md bg-[#FCF9F2]/80 border-b border-rose-100/60 shadow-xs"
         aria-label="Site header"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center h-16">
+          <div className="flex items-center justify-between h-18">
 
             {/* ── Wordmark ───────────────────────────────────────────────── */}
             <button
               onClick={() => navigate("home")}
-              className="flex items-center gap-2.5 mr-8 shrink-0 group
+              className="flex items-center gap-3 mr-8 shrink-0 group
                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy-500
-                focus-visible:ring-offset-2 rounded-sm"
+                focus-visible:ring-offset-2 rounded-lg p-1"
               aria-label="Gift with Love — home"
             >
-              <span
-                className="flex items-center justify-center w-8 h-8 rounded-full
-                  bg-burgundy-600 text-white shadow-sm
-                  group-hover:bg-burgundy-700 transition-colors duration-150"
+              <div
+                className="flex items-center justify-center w-9 h-9 rounded-xl
+                  bg-gradient-to-br from-burgundy-700 to-burgundy-900 text-white shadow-sm
+                  group-hover:scale-105 transition-all duration-200"
                 aria-hidden="true"
               >
-                <IconGift className="w-4 h-4" />
-              </span>
-              <span className="font-serif text-xl font-semibold text-burgundy-700
-                group-hover:text-burgundy-900 transition-colors duration-150 leading-none">
-                Gift with Love
-              </span>
+                <IconGift className="w-5 h-5 transition-transform group-hover:rotate-12" />
+              </div>
+              <div className="text-left">
+                <span className="font-serif text-2xl font-bold text-burgundy-800
+                  group-hover:text-burgundy-950 transition-colors duration-150 leading-tight block">
+                  Gift with Love
+                </span>
+                <span className="text-[10px] tracking-widest uppercase font-semibold text-burgundy-500 block">
+                  Atelier of Thoughtful Giving
+                </span>
+              </div>
             </button>
 
             {/* ── Desktop navigation ─────────────────────────────────────── */}
             <nav
-              className="hidden md:flex items-center gap-1 flex-1"
+              className="hidden md:flex items-center gap-1.5 bg-white/70 px-3 py-1.5 rounded-full border border-rose-200/60 shadow-2xs backdrop-blur-sm"
               aria-label="Main navigation"
             >
               {NAV_ITEMS.map((item) => (
                 <DesktopLink key={item.id} item={item} />
               ))}
             </nav>
+
+            {/* ── Right Action: Bespoke Concierge ────────────────────────── */}
+            <div className="hidden lg:flex items-center gap-3">
+              <button
+                onClick={() => navigate("custom")}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider text-burgundy-800 bg-gradient-to-r from-amber-100/90 via-rose-100/80 to-amber-100/90 border border-amber-300/70 shadow-xs hover:shadow-md transition-all active:scale-95"
+              >
+                <span className="text-amber-600 animate-pulse">✨</span>
+                <span>Bespoke Concierge</span>
+              </button>
+            </div>
 
             {/* ── Mobile hamburger ───────────────────────────────────────── */}
             <div className="flex md:hidden ml-auto">

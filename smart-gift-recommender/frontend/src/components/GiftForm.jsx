@@ -27,10 +27,14 @@
  *   - Consistent focus-visible rings via global CSS
  */
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Sparkles, ArrowRight, Gift } from "lucide-react";
 import { relationships, occasions, budgets } from "../data/options";
 import { apiFetch } from "../utils/api";
 import Button from "./ui/Button";
 import Skeleton from "./ui/Skeleton";
+import SpotlightCard from "./ui/SpotlightCard";
+import BorderBeam from "./ui/BorderBeam";
 
 const genders = [
   { value: "any",        label: "Any / Not specified" },
@@ -118,17 +122,26 @@ export default function GiftForm({ onRecommend, prefill, onPrefillUsed }) {
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
-      {/* Card wrapper */}
-      <div className="bg-white border border-ivory-300 rounded-panel shadow-md overflow-hidden">
+    <div className="w-full max-w-2xl mx-auto relative">
+      {/* 21st.dev style Spotlight & BorderBeam Card */}
+      <SpotlightCard
+        enableTilt={false}
+        spotlightColor="rgba(190, 18, 60, 0.08)"
+        className="relative bg-white/95 border border-rose-200/90 rounded-3xl shadow-2xl overflow-hidden p-0 backdrop-blur-xl"
+      >
+        <BorderBeam size={320} duration={12} colorFrom="#881337" colorTo="#F59E0B" />
 
         {/* Form header */}
-        <div className="bg-burgundy-600 px-8 py-7 text-white">
-          <h2 className="font-serif text-3xl font-semibold leading-tight mb-1">
+        <div className="bg-gradient-to-r from-burgundy-800 via-burgundy-700 to-burgundy-800 px-8 py-7 text-white">
+          <div className="flex items-center gap-2 text-rose-200 text-xs font-semibold uppercase tracking-wider mb-1">
+            <Gift className="w-4 h-4 text-amber-300" />
+            <span>Intelligent Finder</span>
+          </div>
+          <h2 className="font-serif text-3xl font-bold leading-tight mb-1">
             Find the Perfect Gift
           </h2>
-          <p className="text-sm text-burgundy-200">
-            Tell us about the person and occasion — we'll do the rest.
+          <p className="text-sm text-rose-100/90 font-sans">
+            Tell us about the person and occasion — our recommendation engine will surface heartfelt matches.
           </p>
         </div>
 
@@ -240,15 +253,17 @@ export default function GiftForm({ onRecommend, prefill, onPrefillUsed }) {
           )}
 
           {/* Submit */}
-          <Button
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             type="submit"
-            variant="primary"
-            size="lg"
-            className="w-full mt-6"
+            className="w-full mt-6 py-4 px-6 rounded-full text-base font-bold text-white bg-gradient-to-r from-burgundy-700 via-burgundy-600 to-burgundy-800 hover:from-burgundy-600 hover:to-burgundy-700 shadow-lg shadow-burgundy-900/20 border border-rose-300/30 transition-all duration-200 flex items-center justify-center gap-2.5 cursor-pointer"
             aria-label="Discover gift recommendations"
           >
-            Discover Gifts
-          </Button>
+            <Sparkles className="w-5 h-5 text-amber-300 animate-pulse" />
+            <span>Discover Gifts</span>
+            <ArrowRight className="w-5 h-5 text-rose-200" />
+          </motion.button>
 
           {/* Trust footer */}
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-1 mt-5 text-xs text-neutral-400">
@@ -259,7 +274,7 @@ export default function GiftForm({ onRecommend, prefill, onPrefillUsed }) {
             <span>30+ occasions</span>
           </div>
         </form>
-      </div>
+      </SpotlightCard>
     </div>
   );
 }
