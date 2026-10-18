@@ -26,9 +26,9 @@ export default function FuturisticHeader({ tab, onNavigate, onLaunchWizard }) {
   }, []);
 
   const navItems = [
-    { id: "home", label: "Universe", icon: <Gift className="w-3.5 h-3.5" /> },
+    { id: "home", label: "Experience", icon: <Gift className="w-3.5 h-3.5" /> },
     { id: "wizard", label: "Gift Wizard", icon: <Sliders className="w-3.5 h-3.5" />, isAction: true },
-    { id: "categories", label: "Categories", icon: <Compass className="w-3.5 h-3.5" /> },
+    { id: "categories", label: "Collections", icon: <Compass className="w-3.5 h-3.5" /> },
     { id: "custom", label: "Custom Atelier", icon: <Scissors className="w-3.5 h-3.5" /> },
     { id: "wishlist", label: "Wishlist", icon: <Heart className="w-3.5 h-3.5" /> },
     { id: "history", label: "History", icon: <Clock className="w-3.5 h-3.5" /> },
@@ -59,8 +59,8 @@ export default function FuturisticHeader({ tab, onNavigate, onLaunchWizard }) {
       className={`sticky top-0 z-50 w-full transition-all duration-300 backdrop-blur-xl border-b
         ${
           isScrolled
-            ? "bg-midnight-950/90 border-slate-800 shadow-2xl py-3"
-            : "bg-midnight-950/75 border-slate-800/80 py-4"
+            ? "bg-luxury-main/95 border-luxury-border shadow-luxury-card py-3"
+            : "bg-luxury-main/80 border-luxury-border/60 py-4"
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -72,38 +72,38 @@ export default function FuturisticHeader({ tab, onNavigate, onLaunchWizard }) {
             className="group flex items-center gap-3 text-left focus:outline-none cursor-pointer"
             aria-label="Giftverse Home"
           >
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-cyber-cyan via-cyber-violet to-cyber-pink text-midnight-950 shadow-neon-cyan group-hover:scale-105 transition-transform">
-              <Gift className="w-5 h-5 text-midnight-950 transition-transform group-hover:rotate-12" />
+            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-luxury-burgundy border border-champagne/40 text-champagne shadow-champagne-sm group-hover:scale-105 transition-transform">
+              <Gift className="w-5 h-5 text-champagne transition-transform group-hover:rotate-12" />
             </div>
 
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-display text-2xl font-black tracking-tight text-white block leading-none">
+                <span className="font-serif text-2xl font-bold tracking-wider text-luxury-text block leading-none">
                   GIFTVERSE
                 </span>
-                <span className="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold uppercase tracking-wider bg-cyber-cyan/15 text-cyber-cyan border border-cyber-cyan/30">
-                  3D AI
+                <span className="px-1.5 py-0.5 rounded text-[9px] font-sans font-semibold uppercase tracking-wider bg-luxury-burgundy text-champagne-light border border-champagne/30">
+                  Luxury 3D
                 </span>
               </div>
-              <span className="text-[10px] uppercase font-mono tracking-widest text-slate-400 block mt-0.5">
+              <span className="text-[10px] uppercase font-sans tracking-widest text-luxury-muted block mt-0.5">
                 Every Gift Has a Story
               </span>
             </div>
           </button>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1 bg-midnight-900/90 p-1 rounded-full border border-slate-800 shadow-inner">
+          <nav className="hidden lg:flex items-center gap-1 bg-luxury-card/90 p-1 rounded-full border border-luxury-border shadow-inner">
             {navItems.map((item) => {
               const isActive = tab === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => handleItemClick(item.id)}
-                  className={`relative px-3.5 py-1.5 text-xs font-semibold rounded-full transition-all duration-200 flex items-center gap-1.5 cursor-pointer
+                  className={`relative px-3.5 py-1.5 text-xs font-medium rounded-full transition-all duration-200 flex items-center gap-1.5 cursor-pointer
                     ${
                       isActive
-                        ? "text-midnight-950 font-bold bg-gradient-to-r from-cyber-cyan to-cyan-300 shadow-neon-cyan"
-                        : "text-slate-400 hover:text-white hover:bg-midnight-800"
+                        ? "text-luxury-main font-semibold bg-gradient-to-r from-champagne to-champagne-light shadow-champagne-sm"
+                        : "text-luxury-muted hover:text-luxury-text hover:bg-luxury-elevated"
                     }`}
                 >
                   <span>{item.icon}</span>
@@ -122,9 +122,9 @@ export default function FuturisticHeader({ tab, onNavigate, onLaunchWizard }) {
                   document.getElementById("gift-wizard-section")?.scrollIntoView({ behavior: "smooth" });
                 }, 50);
               }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-extrabold uppercase tracking-wider text-midnight-950 bg-gradient-to-r from-cyber-cyan to-cyan-300 hover:from-cyan-300 hover:to-cyber-cyan shadow-neon-cyan cursor-pointer transition-all active:scale-95"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider text-luxury-main bg-gradient-to-r from-champagne to-champagne-light hover:brightness-105 shadow-champagne-sm cursor-pointer transition-all active:scale-95"
             >
-              <Sparkles className="w-3.5 h-3.5 fill-midnight-950" />
+              <Sparkles className="w-3.5 h-3.5 fill-luxury-main text-luxury-main" />
               <span>Launch Wizard</span>
             </button>
           </div>
@@ -132,7 +132,7 @@ export default function FuturisticHeader({ tab, onNavigate, onLaunchWizard }) {
           {/* Mobile Menu Hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden flex items-center justify-center w-10 h-10 rounded-xl bg-midnight-900 border border-slate-800 text-slate-300 hover:text-white cursor-pointer"
+            className="lg:hidden flex items-center justify-center w-10 h-10 rounded-xl bg-luxury-card border border-luxury-border text-luxury-muted hover:text-luxury-text cursor-pointer"
             aria-label="Toggle Navigation"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -147,20 +147,20 @@ export default function FuturisticHeader({ tab, onNavigate, onLaunchWizard }) {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-midnight-950 border-t border-slate-800 px-4 py-4"
+            className="lg:hidden bg-luxury-main border-t border-luxury-border px-4 py-4"
           >
             <div className="flex flex-col gap-1.5">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleItemClick(item.id)}
-                  className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-semibold text-slate-300 hover:bg-midnight-900 hover:text-white transition-colors cursor-pointer text-left"
+                  className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-medium text-luxury-muted hover:bg-luxury-card hover:text-luxury-text transition-colors cursor-pointer text-left"
                 >
                   <div className="flex items-center gap-2.5">
-                    <span className="text-cyber-cyan">{item.icon}</span>
+                    <span className="text-champagne">{item.icon}</span>
                     <span>{item.label}</span>
                   </div>
-                  <span className="text-xs text-slate-600">→</span>
+                  <span className="text-xs text-luxury-muted">→</span>
                 </button>
               ))}
             </div>
