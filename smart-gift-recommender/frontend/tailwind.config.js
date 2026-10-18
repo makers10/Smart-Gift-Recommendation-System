@@ -113,6 +113,25 @@ export default {
         // Subtle grain texture (kept extremely subtle, opacity controlled in CSS)
         "grain": "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")",
       },
+
+      animation: {
+        shimmer: "shimmer 3s infinite linear",
+        pulseSubtle: "pulseSubtle 4s ease-in-out infinite",
+        borderBeam: "borderBeam calc(var(--duration)*1s) infinite linear",
+      },
+      keyframes: {
+        shimmer: {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
+        pulseSubtle: {
+          "0%, 100%": { opacity: "0.4", transform: "scale(1)" },
+          "50%": { opacity: "0.8", transform: "scale(1.04)" },
+        },
+        borderBeam: {
+          "100%": { "offset-distance": "100%" },
+        },
+      },
     },
   },
 
