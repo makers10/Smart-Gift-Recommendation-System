@@ -247,10 +247,6 @@ def analytics():
         "daily_searches": [dict(r) for r in daily],
     }
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("main:app", host="127.0.0.1", port=3001, reload=True)
-
 
 # ─── CUSTOM GIFT MARKETPLACE ──────────────────────────────────
 
@@ -390,3 +386,8 @@ def close_order(order_id: int, x_user_id: Optional[str] = Header(default=None)):
     db.commit()
     db.close()
     return {"message": "Order closed"}
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="127.0.0.1", port=3001, reload=True)
