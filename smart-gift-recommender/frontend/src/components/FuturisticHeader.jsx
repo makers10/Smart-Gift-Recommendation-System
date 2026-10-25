@@ -59,8 +59,8 @@ export default function FuturisticHeader({ tab, onNavigate, onLaunchWizard }) {
       className={`sticky top-0 z-50 w-full transition-all duration-300 backdrop-blur-xl border-b
         ${
           isScrolled
-            ? "bg-luxury-main/95 border-luxury-border shadow-luxury-card py-3"
-            : "bg-luxury-main/80 border-luxury-border/60 py-4"
+            ? "bg-[#17131A]/95 border-[#4A1830] shadow-[0_4px_25px_rgba(0,0,0,0.5)] py-3"
+            : "bg-[#17131A]/85 border-[#4A1830]/70 py-4"
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -72,27 +72,27 @@ export default function FuturisticHeader({ tab, onNavigate, onLaunchWizard }) {
             className="group flex items-center gap-3 text-left focus:outline-none cursor-pointer"
             aria-label="Giftverse Home"
           >
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-luxury-burgundy border border-champagne/40 text-champagne shadow-champagne-sm group-hover:scale-105 transition-transform">
-              <Gift className="w-5 h-5 text-champagne transition-transform group-hover:rotate-12" />
+            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-[#4A1830] to-[#2B101D] border border-[#C69A55]/40 text-[#C69A55] shadow-sm group-hover:scale-105 transition-transform">
+              <Gift className="w-5 h-5 text-[#C69A55] transition-transform group-hover:rotate-12" />
             </div>
 
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-serif text-2xl font-bold tracking-wider text-luxury-text block leading-none">
+                <span className="font-serif text-2xl font-bold tracking-wider text-[#FFF7E9] block leading-none">
                   GIFTVERSE
                 </span>
-                <span className="px-1.5 py-0.5 rounded text-[9px] font-sans font-semibold uppercase tracking-wider bg-luxury-burgundy text-champagne-light border border-champagne/30">
+                <span className="px-1.5 py-0.5 rounded text-[9px] font-sans font-semibold uppercase tracking-wider bg-[#4A1830] text-[#E9D7B8] border border-[#C69A55]/30">
                   Luxury 3D
                 </span>
               </div>
-              <span className="text-[10px] uppercase font-sans tracking-widest text-luxury-muted block mt-0.5">
+              <span className="text-[10px] uppercase font-sans tracking-widest text-[#E9D7B8]/75 block mt-0.5">
                 Every Gift Has a Story
               </span>
             </div>
           </button>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1 bg-luxury-card/90 p-1 rounded-full border border-luxury-border shadow-inner">
+          <nav className="hidden lg:flex items-center gap-1 bg-[#241620]/95 p-1 rounded-full border border-[#4A1830] shadow-inner">
             {navItems.map((item) => {
               const isActive = tab === item.id;
               return (
@@ -102,8 +102,8 @@ export default function FuturisticHeader({ tab, onNavigate, onLaunchWizard }) {
                   className={`relative px-3.5 py-1.5 text-xs font-medium rounded-full transition-all duration-200 flex items-center gap-1.5 cursor-pointer
                     ${
                       isActive
-                        ? "text-luxury-main font-semibold bg-gradient-to-r from-champagne to-champagne-light shadow-champagne-sm"
-                        : "text-luxury-muted hover:text-luxury-text hover:bg-luxury-elevated"
+                        ? "text-[#17131A] font-bold bg-gradient-to-r from-[#C69A55] via-[#DCB372] to-[#E9D7B8] shadow-[0_2px_12px_rgba(198,154,85,0.4)]"
+                        : "text-[#E9D7B8]/80 hover:text-[#FFF7E9] hover:bg-[#4A1830]/50"
                     }`}
                 >
                   <span>{item.icon}</span>
@@ -122,9 +122,9 @@ export default function FuturisticHeader({ tab, onNavigate, onLaunchWizard }) {
                   document.getElementById("gift-wizard-section")?.scrollIntoView({ behavior: "smooth" });
                 }, 50);
               }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider text-luxury-main bg-gradient-to-r from-champagne to-champagne-light hover:brightness-105 shadow-champagne-sm cursor-pointer transition-all active:scale-95"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider text-[#17131A] bg-gradient-to-r from-[#C69A55] via-[#DCB372] to-[#E9D7B8] hover:brightness-105 shadow-[0_2px_14px_rgba(198,154,85,0.35)] cursor-pointer transition-all active:scale-95"
             >
-              <Sparkles className="w-3.5 h-3.5 fill-luxury-main text-luxury-main" />
+              <Sparkles className="w-3.5 h-3.5 fill-[#17131A] text-[#17131A]" />
               <span>Launch Wizard</span>
             </button>
           </div>

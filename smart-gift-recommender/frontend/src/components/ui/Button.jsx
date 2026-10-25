@@ -17,43 +17,48 @@ import { forwardRef } from "react";
 const base = [
   "inline-flex items-center justify-center gap-2",
   "font-sans font-semibold",
-  "border transition-all",
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy-500 focus-visible:ring-offset-2",
+  "border transition-all duration-200",
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C69A55] focus-visible:ring-offset-2 focus-visible:ring-offset-[#17131A]",
   "disabled:pointer-events-none disabled:opacity-50",
   "cursor-pointer select-none",
 ].join(" ");
 
 const variants = {
   primary: [
-    "bg-burgundy-600 text-white border-burgundy-600",
-    "hover:bg-burgundy-700 hover:border-burgundy-700",
-    "active:bg-burgundy-800",
-    "shadow-brand hover:shadow-brand-lg",
+    "bg-gradient-to-r from-[#C69A55] via-[#DCB372] to-[#E9D7B8] text-[#17131A] font-bold border-transparent",
+    "hover:brightness-105 hover:shadow-[0_4px_20px_rgba(198,154,85,0.4)]",
+    "active:scale-95",
+  ].join(" "),
+
+  gold: [
+    "bg-gradient-to-r from-[#C69A55] via-[#DCB372] to-[#E9D7B8] text-[#17131A] font-bold border-transparent",
+    "hover:brightness-105 hover:shadow-[0_4px_20px_rgba(198,154,85,0.4)]",
+    "active:scale-95",
   ].join(" "),
 
   secondary: [
-    "bg-ivory-50 text-burgundy-600 border-burgundy-200",
-    "hover:bg-burgundy-50 hover:border-burgundy-400",
-    "active:bg-burgundy-100",
+    "bg-[#241620] text-[#FFF7E9] border-[#4A1830]",
+    "hover:bg-[#311C2C] hover:border-[#C69A55]/60 hover:text-[#C69A55]",
+    "active:scale-95",
   ].join(" "),
 
   ghost: [
-    "bg-transparent text-burgundy-600 border-transparent",
-    "hover:bg-burgundy-50 hover:border-burgundy-100",
-    "active:bg-burgundy-100",
+    "bg-transparent text-[#E9D7B8] border-transparent",
+    "hover:bg-[#4A1830]/40 hover:text-[#FFF7E9]",
+    "active:bg-[#4A1830]/60",
   ].join(" "),
 
   danger: [
-    "bg-transparent text-rose-600 border-rose-200",
-    "hover:bg-rose-50 hover:border-rose-400",
-    "active:bg-rose-100",
+    "bg-[#241620] text-rose-300 border-[#4A1830]",
+    "hover:bg-rose-950/40 hover:border-rose-500/50 hover:text-rose-200",
+    "active:scale-95",
   ].join(" "),
 };
 
 const sizes = {
-  sm: "text-xs px-3 py-1.5 rounded-base",
-  md: "text-sm px-5 py-2.5 rounded-md",
-  lg: "text-base px-7 py-3 rounded-md",
+  sm: "text-xs px-3.5 py-1.5 min-h-[36px] rounded-xl",
+  md: "text-sm px-5 py-2.5 min-h-[44px] rounded-full",
+  lg: "text-base px-7 py-3 min-h-[48px] rounded-full",
 };
 
 const Button = forwardRef(function Button(

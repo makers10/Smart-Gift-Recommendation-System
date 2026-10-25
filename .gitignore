@@ -19,3 +19,8 @@ playwright-report/
 **/playwright-report/
 blob-report/
 **/blob-report/
+
+# Tooling and IDE
+.agents/
+.vscode/
+gstack/

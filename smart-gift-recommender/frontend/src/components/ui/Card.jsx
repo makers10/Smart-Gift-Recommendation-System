@@ -19,9 +19,10 @@ export function Card({
   ...props
 }) {
   const variantClasses = {
-    default: "bg-white border border-ivory-300 shadow-sm",
-    flat:    "bg-ivory-100 border border-ivory-200",
-    lifted:  "bg-white border border-ivory-300 shadow-md hover:shadow-lg transition-shadow",
+    default: "bg-[#241620]/95 border border-[#4A1830] text-[#FFF7E9] shadow-[0_10px_35px_rgba(0,0,0,0.5)] backdrop-blur-xl",
+    flat:    "bg-[#1C131A]/90 border border-[#4A1830]/70 text-[#FFF7E9]",
+    lifted:  "bg-[#2B1825]/95 border border-[#4A1830] hover:border-[#C69A55]/60 text-[#FFF7E9] shadow-[0_12px_40px_rgba(0,0,0,0.6)] hover:shadow-[0_16px_45px_rgba(198,154,85,0.2)] transition-all",
+    luxury:  "bg-gradient-to-br from-[#261722]/95 via-[#1E131B]/95 to-[#17131A]/95 border border-[#4A1830] hover:border-[#C69A55]/60 text-[#FFF7E9] shadow-[0_12px_40px_rgba(198,154,85,0.2)] transition-all",
   };
 
   const paddingClasses = {
@@ -34,8 +35,8 @@ export function Card({
   return (
     <Tag
       className={[
-        "rounded-card overflow-hidden",
-        variantClasses[variant],
+        "rounded-2xl overflow-hidden",
+        variantClasses[variant] || variantClasses.default,
         paddingClasses[padding],
         className,
       ].join(" ")}
@@ -62,7 +63,7 @@ export function CardTitle({ className = "", children, ...props }) {
   return (
     <h3
       className={[
-        "font-serif text-xl font-semibold text-burgundy-700 leading-snug",
+        "font-serif text-xl sm:text-2xl font-bold text-[#FFF7E9] tracking-wide leading-snug",
         className,
       ].join(" ")}
       {...props}

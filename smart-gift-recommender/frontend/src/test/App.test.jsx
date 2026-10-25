@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, within, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, within } from "@testing-library/react";
 import App from "../App";
 
 describe("App Root SPA", () => {
@@ -11,50 +11,44 @@ describe("App Root SPA", () => {
     });
   });
 
-  it("renders default home view with header, hero, gift form, and footer", () => {
+  it("renders default home view with header, hero, wizard, and footer", () => {
     render(<App />);
 
     // Brand title in header
     expect(screen.getByRole("banner")).toBeInTheDocument();
-    expect(screen.getAllByText("Gift with Love").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("GIFTVERSE").length).toBeGreaterThan(0);
 
     // Hero section
-    expect(screen.getByRole("heading", { name: /the right gift, for every heart\./i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /every gift has/i })).toBeInTheDocument();
 
-    // GiftForm
-    expect(screen.getByRole("heading", { name: /find the perfect gift/i })).toBeInTheDocument();
+    // Gift Discovery Wizard
+    expect(screen.getByRole("heading", { name: /gift discovery questionnaire/i })).toBeInTheDocument();
 
     // Footer
     expect(screen.getByRole("contentinfo")).toBeInTheDocument();
   });
 
-  it("navigates across all five primary sections and updates screen reader live region", async () => {
+  it("navigates across all primary sections", async () => {
     render(<App />);
 
-    const liveRegion = screen.getByRole("status", { hidden: true });
-    expect(liveRegion).toHaveTextContent("Find a Gift");
+    const header = screen.getByRole("banner");
 
-    const mainNav = screen.getByRole("navigation", { name: /main navigation/i });
-
-    // 1. Navigate to Custom Made
-    const customNavBtn = within(mainNav).getByRole("button", { name: /^custom made/i });
+    // 1. Navigate to Custom Atelier
+    const customNavBtn = within(header).getByRole("button", { name: /custom atelier/i });
     fireEvent.click(customNavBtn);
-    expect(liveRegion).toHaveTextContent("Custom Made");
-    expect(screen.getByText(/custom made corner/i)).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /custom made atelier/i })).toBeInTheDocument();
 
     // 2. Navigate to History
-    const historyNavBtn = within(mainNav).getByRole("button", { name: /^history/i });
+    const historyNavBtn = within(header).getByRole("button", { name: /history/i });
     fireEvent.click(historyNavBtn);
-    expect(liveRegion).toHaveTextContent("Search History");
     expect(await screen.findByRole("heading", { name: /search history/i })).toBeInTheDocument();
 
     // 3. Navigate to Wishlist
-    const wishlistNavBtn = within(mainNav).getByRole("button", { name: /^wishlist/i });
+    const wishlistNavBtn = within(header).getByRole("button", { name: /^wishlist$/i });
     fireEvent.click(wishlistNavBtn);
-    expect(liveRegion).toHaveTextContent("Wishlist");
     expect(await screen.findByRole("heading", { name: /my wishlist/i })).toBeInTheDocument();
 
-    // 4. Navigate to Dashboard (lazy-loaded)
+    // 4. Navigate to Analytics (Dashboard)
     global.fetch = vi.fn().mockResolvedValue({
       ok: true,
       json: async () => ({
@@ -70,55 +64,34 @@ describe("App Root SPA", () => {
       }),
     });
 
-    const dashboardNavBtn = within(mainNav).getByRole("button", { name: /^dashboard/i });
+    const dashboardNavBtn = within(header).getByRole("button", { name: /analytics/i });
     fireEvent.click(dashboardNavBtn);
-    expect(liveRegion).toHaveTextContent("Dashboard");
     expect(await screen.findByText("Total Searches", {}, { timeout: 5000 })).toBeInTheDocument();
 
-    // 5. Navigate back to Find a Gift (home)
-    const homeNavBtn = within(mainNav).getByRole("button", { name: /^find a gift/i });
+    // 5. Navigate back to Experience (home)
+    const homeNavBtn = within(header).getByRole("button", { name: /experience/i });
     fireEvent.click(homeNavBtn);
-    expect(liveRegion).toHaveTextContent("Find a Gift");
-    expect(screen.getByRole("heading", { name: /the right gift, for every heart\./i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /every gift has/i })).toBeInTheDocument();
   });
 
-  it("handles mobile drawer open, navigation, and close interactions", () => {
+  it("handles mobile drawer open, navigation, and close interactions", async () => {
     render(<App />);
 
-    const openDrawerBtn = screen.getByRole("button", { name: /open navigation menu/i });
-    expect(openDrawerBtn).toHaveAttribute("aria-expanded", "false");
+    const openDrawerBtn = screen.getByRole("button", { name: /toggle navigation/i });
+    expect(openDrawerBtn).toBeInTheDocument();
 
     // Open mobile drawer
     fireEvent.click(openDrawerBtn);
-    expect(openDrawerBtn).toHaveAttribute("aria-expanded", "true");
 
-    const drawer = screen.getByRole("dialog", { name: /navigation menu/i });
-    expect(drawer).toBeInTheDocument();
+    // Click Custom Atelier in mobile menu
+    const customButtons = screen.getAllByRole("button", { name: /custom atelier/i });
+    fireEvent.click(customButtons[customButtons.length - 1]);
 
-    // Mobile nav item click
-    const mobileNav = within(drawer).getByRole("navigation", { name: /mobile navigation/i });
-    const customLink = within(mobileNav).getByRole("button", { name: /^custom made/i });
-    fireEvent.click(customLink);
-
-    // Should navigate and close drawer
-    expect(screen.getByText(/custom made corner/i)).toBeInTheDocument();
-    expect(openDrawerBtn).toHaveAttribute("aria-expanded", "false");
+    // Should navigate
+    expect(await screen.findByRole("heading", { name: /custom made atelier/i })).toBeInTheDocument();
   });
 
-  it("pre-fills form and stays on home when clicking an occasion shortcut chip in Hero", async () => {
-    render(<App />);
-
-    // Click "Find gifts for Birthday" shortcut chip in Hero
-    const birthdayChip = screen.getByRole("button", { name: /find gifts for birthday/i });
-    fireEvent.click(birthdayChip);
-
-    // Occasion select in GiftForm should now be prefilled
-    await waitFor(() => {
-      expect(screen.getByLabelText(/what's the occasion\?/i)).toHaveValue("birthday");
-    });
-  });
-
-  it("transitions to GiftResults upon receiving recommendations, and resets on 'Search Again'", async () => {
+  it("transitions to GiftResults upon receiving recommendations, and resets on 'New Search'", async () => {
     const mockRecommendData = {
       relationship: "sister",
       occasion: "birthday",
@@ -136,30 +109,38 @@ describe("App Root SPA", () => {
 
     render(<App />);
 
-    // Fill form with valid options
-    fireEvent.change(screen.getByLabelText(/who are you gifting\?/i), {
-      target: { value: "sister" },
-    });
-    fireEvent.change(screen.getByLabelText(/what's the occasion\?/i), {
-      target: { value: "birthday" },
-    });
-    fireEvent.change(screen.getByLabelText(/your budget/i), {
-      target: { value: "medium" },
-    });
+    // Step 1: Click Sister option card
+    const sisterCard = await screen.findByRole("button", { name: /sister/i });
+    fireEvent.click(sisterCard);
+    fireEvent.click(screen.getByRole("button", { name: /continue/i }));
 
-    fireEvent.click(screen.getByRole("button", { name: /discover gift recommendations/i }));
+    // Step 2: Click Birthday option card
+    const birthdayCard = await screen.findByRole("button", { name: /birthday/i });
+    fireEvent.click(birthdayCard);
+    fireEvent.click(screen.getByRole("button", { name: /continue/i }));
 
-    // GiftResults should mount and Hero should unmount
-    expect(await screen.findByText("Indoor Bonsai Tree")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /gift ideas for you/i })).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: /the right gift, for every heart\./i })).not.toBeInTheDocument();
+    // Step 3: Interests
+    const continueBtn3 = await screen.findByRole("button", { name: /continue/i });
+    fireEvent.click(continueBtn3);
 
-    // Click Search Again
-    const searchAgainBtn = screen.getByRole("button", { name: /start a new gift search/i });
-    fireEvent.click(searchAgainBtn);
+    // Step 4: Budget
+    const continueBtn4 = await screen.findByRole("button", { name: /continue/i });
+    fireEvent.click(continueBtn4);
 
-    // Hero and GiftForm should mount again
-    expect(await screen.findByRole("heading", { name: /the right gift, for every heart\./i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /find the perfect gift/i })).toBeInTheDocument();
+    // Step 5: Reveal Curated Gifts
+    const revealBtn = await screen.findByRole("button", { name: /reveal curated gifts/i });
+    fireEvent.click(revealBtn);
+
+    // GiftResults should mount and display the recommendation
+    expect(await screen.findByText("Indoor Bonsai Tree", {}, { timeout: 4000 })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /thoughtful gifts/i })).toBeInTheDocument();
+
+    // Click New Search to reset
+    const newSearchBtn = screen.getByRole("button", { name: /new search/i });
+    fireEvent.click(newSearchBtn);
+
+    // Hero and Wizard should be visible again
+    expect(await screen.findByRole("heading", { name: /every gift has/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /gift discovery questionnaire/i })).toBeInTheDocument();
   });
 });

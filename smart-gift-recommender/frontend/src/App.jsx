@@ -64,11 +64,22 @@ export default function App() {
     setApiError("");
     setPreferences(userPreferences);
 
+    // Map budget to backend-supported values (low | medium | high)
+    const backendBudget =
+      userPreferences.budgetBackend ||
+      (userPreferences.budget === "under-500" || userPreferences.budget === "500-1000"
+        ? "low"
+        : userPreferences.budget === "2500-5000" || userPreferences.budget === "above-5000"
+        ? "high"
+        : userPreferences.budget === "low" || userPreferences.budget === "high"
+        ? userPreferences.budget
+        : "medium");
+
     try {
       const q = new URLSearchParams({
         relationship: userPreferences.relationship || "partner",
         occasion: userPreferences.occasion || "birthday",
-        budget: userPreferences.budget || "1000-2500",
+        budget: backendBudget,
         gender: userPreferences.gender || "any",
       }).toString();
 
@@ -79,7 +90,10 @@ export default function App() {
         throw new Error(data.detail || "Unable to retrieve recommendations.");
       }
 
-      setResult(data);
+      setResult({
+        ...data,
+        budgetDisplay: userPreferences.budget || backendBudget,
+      });
       setTab("home");
 
       // Smooth scroll to results
@@ -114,7 +128,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-luxury-main text-luxury-text relative overflow-x-hidden selection:bg-champagne selection:text-luxury-main">
+    <div className="min-h-screen flex flex-col bg-transparent text-luxury-text relative overflow-x-hidden selection:bg-champagne selection:text-luxury-main">
       
       {/* ── 1. Luxury Sticky Header ───────────────────────────────── */}
       <FuturisticHeader
@@ -182,7 +196,7 @@ export default function App() {
 
         {/* CUSTOM MADE ATELIER */}
         {tab === "custom" && (
-          <div className="w-full flex justify-center px-4 py-16 bg-luxury-main text-luxury-text">
+          <div className="w-full flex justify-center px-4 py-16 bg-transparent text-luxury-text">
             <ErrorBoundary label="Custom Made">
               <div className="w-full max-w-6xl">
                 <Marketplace />
@@ -193,7 +207,7 @@ export default function App() {
 
         {/* SEARCH HISTORY */}
         {tab === "history" && (
-          <div className="w-full flex justify-center px-4 py-16 bg-luxury-main text-luxury-text">
+          <div className="w-full flex justify-center px-4 py-16 bg-transparent text-luxury-text">
             <ErrorBoundary label="your search history">
               <div className="w-full max-w-4xl">
                 <History onReSearch={handleReSearch} />
@@ -204,7 +218,7 @@ export default function App() {
 
         {/* WISHLIST */}
         {tab === "wishlist" && (
-          <div className="w-full flex justify-center px-4 py-16 bg-luxury-main text-luxury-text">
+          <div className="w-full flex justify-center px-4 py-16 bg-transparent text-luxury-text">
             <ErrorBoundary label="your wishlist">
               <div className="w-full max-w-4xl">
                 <Wishlist />
@@ -215,7 +229,7 @@ export default function App() {
 
         {/* ANALYTICS DASHBOARD */}
         {tab === "dashboard" && (
-          <div className="w-full flex justify-center px-4 py-16 bg-luxury-main text-luxury-text">
+          <div className="w-full flex justify-center px-4 py-16 bg-transparent text-luxury-text">
             <ErrorBoundary label="the dashboard">
               <Suspense fallback={<DashboardFallback />}>
                 <div className="w-full max-w-5xl">

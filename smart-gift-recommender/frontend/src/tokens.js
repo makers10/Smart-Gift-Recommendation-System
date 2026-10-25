@@ -74,6 +74,31 @@ export const colors = {
     800: "#27272a",
     900: "#18181b",
   },
+
+  // ── LUXURY SEMANTIC TOKENS ──────────────────────────────────────
+  espresso: {
+    DEFAULT: "#17131A",
+    dark:    "#100D13",
+    light:   "#231B24",
+  },
+  champagne: {
+    DEFAULT: "#E9D7B8",
+    light:   "#F5EADB",
+    dark:    "#D4BE97",
+    glow:    "rgba(233, 215, 184, 0.25)",
+  },
+  luxury: {
+    main:      "#17131A",
+    secondary: "#1F161E",
+    card:      "#261722",
+    elevated:  "#331C2C",
+    text:      "#FFF7E9",
+    muted:     "#D8CABA",
+    border:    "#4A1830",
+    gold:      "#C69A55",
+    champagne: "#E9D7B8",
+    burgundy:  "#4A1830",
+  },
 };
 
 // ─── TYPOGRAPHY ───────────────────────────────────────────────────────────────

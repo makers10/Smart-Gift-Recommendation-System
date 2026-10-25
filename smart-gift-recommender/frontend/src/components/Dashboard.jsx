@@ -1,7 +1,7 @@
 /**
- * Dashboard — Gift with Love
+ * Dashboard — Gift with Love / Giftverse
  *
- * Analytics dashboard showing global gift-search statistics.
+ * Analytics dashboard showing platform gift-search statistics.
  *
  * API call preserved:
  *   GET /api/analytics — fetches all metrics on mount
@@ -13,17 +13,6 @@
  *   - Pie chart: festival vs occasion
  *   - Line chart: daily searches (7-day)
  *   - Table: top voted gifts
- *
- * Design changes (Stage F):
- *   - V13 fixed: gradient stat cards replaced with ivory/white design-token surfaces
- *   - Skeleton.StatCard used during loading (C3 continuation)
- *   - Chart colors updated to brand palette (burgundy/rose/gold)
- *   - Chart grid and tick colors use neutral palette
- *   - Section headings use design-token typography
- *   - Emoji removed from headings (V1); used as aria-hidden decorative only
- *   - role="status" on loading state (A4)
- *   - role="alert" on error state (A4)
- *   - Responsive grid for stat cards
  */
 import { useEffect, useState } from "react";
 import { apiFetch } from "../utils/api";
@@ -37,18 +26,18 @@ import Badge from "./ui/Badge";
 import Skeleton from "./ui/Skeleton";
 import Button from "./ui/Button";
 
-// Brand-aligned chart color palette
+// Luxury brand chart color palette
 const CHART_COLORS = [
-  "#9f1239", // burgundy-600
-  "#c2274b", // burgundy-500
-  "#e85c79", // burgundy-400
-  "#f28fa0", // burgundy-300
-  "#d4941c", // gold-500
-  "#f0b429", // gold-400
-  "#f8d878", // gold-300
-  "#7e0f2e", // burgundy-700
-  "#5f0a22", // burgundy-800
-  "#f43f5e", // rose-500
+  "#C69A55", // gold
+  "#8E2045", // ruby burgundy
+  "#DFB775", // champagne
+  "#E5A93C", // amber gold
+  "#50142A", // deep wine
+  "#F3E5D0", // light ivory
+  "#B83256", // bright rose
+  "#9E7432", // bronze gold
+  "#3D0E20", // dark plum
+  "#D97706", // warm amber
 ];
 
 // ── Custom chart tooltip ───────────────────────────────────────────────────
@@ -56,9 +45,9 @@ const CHART_COLORS = [
 function ChartTooltip({ active, payload, label }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-white border border-ivory-300 rounded-base px-3 py-2 shadow-md text-xs">
-      <p className="font-semibold text-neutral-700 mb-0.5">{label}</p>
-      <p className="text-burgundy-600">{payload[0].value} {payload[0].name || "searches"}</p>
+    <div className="bg-[#1E131B]/95 border border-[#4A1830] rounded-xl px-3.5 py-2.5 shadow-2xl backdrop-blur-md text-xs text-[#FFF7E9]">
+      <p className="font-serif font-semibold text-[#FFF7E9] mb-1">{label}</p>
+      <p className="text-[#C69A55] font-medium">{payload[0].value} {payload[0].name || "searches"}</p>
     </div>
   );
 }
@@ -67,13 +56,13 @@ function ChartTooltip({ active, payload, label }) {
 
 function StatCard({ label, value, description }) {
   return (
-    <Card variant="default" padding="sm" className="text-center">
-      <p className="font-serif text-3xl font-semibold text-burgundy-700 mb-1 leading-none">
+    <Card variant="luxury" padding="sm" className="text-center border border-[#4A1830]/80 bg-[#1E131B]/90 backdrop-blur-md">
+      <p className="font-serif text-3xl font-bold text-[#C69A55] mb-1 leading-none tracking-tight">
         {value}
       </p>
-      <p className="text-sm font-medium text-neutral-700">{label}</p>
+      <p className="text-xs uppercase tracking-wider font-medium text-[#D8CABA]">{label}</p>
       {description && (
-        <p className="text-xs text-neutral-400 mt-1">{description}</p>
+        <p className="text-[11px] text-[#A8988B] mt-1">{description}</p>
       )}
     </Card>
   );
@@ -83,8 +72,8 @@ function StatCard({ label, value, description }) {
 
 function Section({ title, children, className = "" }) {
   return (
-    <Card variant="default" padding="md" className={className}>
-      <h2 className="font-serif text-lg font-semibold text-burgundy-700 mb-5">{title}</h2>
+    <Card variant="luxury" padding="md" className={`border border-[#4A1830]/80 bg-[#1E131B]/90 backdrop-blur-md ${className}`}>
+      <h2 className="font-serif text-xl font-bold text-[#FFF7E9] mb-5 tracking-wide">{title}</h2>
       {children}
     </Card>
   );
@@ -95,7 +84,7 @@ function Section({ title, children, className = "" }) {
 function EmptyChart({ message = "No data yet" }) {
   return (
     <div className="flex items-center justify-center h-32">
-      <p className="text-sm text-neutral-400">{message}</p>
+      <p className="text-sm text-[#A8988B] font-light">{message}</p>
     </div>
   );
 }
@@ -121,7 +110,7 @@ export default function Dashboard() {
   // ── Loading state ────────────────────────────────────────────────────────
   if (loading) {
     return (
-      <div className="w-full max-w-4xl space-y-6" role="status" aria-label="Loading dashboard">
+      <div className="w-full max-w-5xl space-y-6" role="status" aria-label="Loading dashboard">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {Array.from({ length: 4 }).map((_, i) => <Skeleton.StatCard key={i} />)}
         </div>
@@ -140,12 +129,12 @@ export default function Dashboard() {
     return (
       <div
         role="alert"
-        className="w-full max-w-4xl bg-burgundy-50 border border-burgundy-200 rounded-card p-8 text-center"
+        className="w-full max-w-5xl bg-[#1E131B] border border-[#7E0F2E] rounded-card p-8 text-center text-[#FFF7E9]"
       >
-        <p className="text-sm font-medium text-burgundy-700 mb-3">
+        <p className="text-sm font-medium text-[#FFF7E9] mb-3">
           Unable to load analytics. Please try again.
         </p>
-        <Button variant="secondary" size="sm" onClick={fetchAnalytics}>
+        <Button variant="gold" size="sm" onClick={fetchAnalytics}>
           Retry
         </Button>
       </div>
@@ -159,7 +148,22 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="w-full max-w-4xl space-y-6">
+    <div className="w-full max-w-5xl space-y-8">
+
+      {/* ── Page Header ─────────────────────────────────────────────────── */}
+      <div className="flex items-start justify-between gap-4 mb-2 flex-wrap">
+        <div>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-serif uppercase tracking-widest text-[#E9D7B8] bg-[#261722]/95 border border-[#4A1830] shadow-sm mb-2">
+            <span>Gifting Intelligence & Trends</span>
+          </div>
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#FFF7E9]">
+            Analytics Dashboard
+          </h1>
+          <p className="text-sm text-[#E9D7B8]/80 mt-1 font-sans font-light">
+            Real-time metrics, search patterns, and recipient sentiments across the platform.
+          </p>
+        </div>
+      </div>
 
       {/* ── Stat cards ─────────────────────────────────────────────────── */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -187,9 +191,9 @@ export default function Dashboard() {
           ? <EmptyChart message="No searches recorded yet" />
           : <ResponsiveContainer width="100%" height={220}>
               <BarChart data={data.top_occasions.map((o) => ({ ...o, occasion: fmt(o.occasion) }))}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#ecdcc8" vertical={false} />
-                <XAxis dataKey="occasion" tick={{ fontSize: 10, fill: "#71717a" }} />
-                <YAxis tick={{ fontSize: 11, fill: "#a1a1aa" }} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#4A1830" opacity={0.6} vertical={false} />
+                <XAxis dataKey="occasion" tick={{ fontSize: 10, fill: "#D8CABA" }} stroke="#4A1830" />
+                <YAxis tick={{ fontSize: 11, fill: "#A8988B" }} stroke="#4A1830" />
                 <Tooltip content={<ChartTooltip />} />
                 <Bar dataKey="count" radius={[4, 4, 0, 0]}>
                   {data.top_occasions.map((_, i) => (
@@ -212,11 +216,12 @@ export default function Dashboard() {
                   layout="vertical"
                   data={data.top_relationships.map((r) => ({ ...r, relationship: fmt(r.relationship) }))}
                 >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#ecdcc8" horizontal={false} />
-                  <XAxis type="number" tick={{ fontSize: 10, fill: "#a1a1aa" }} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#4A1830" opacity={0.6} horizontal={false} />
+                  <XAxis type="number" tick={{ fontSize: 10, fill: "#A8988B" }} stroke="#4A1830" />
                   <YAxis
                     dataKey="relationship" type="category"
-                    tick={{ fontSize: 10, fill: "#71717a" }} width={90}
+                    tick={{ fontSize: 10, fill: "#D8CABA" }} width={90}
+                    stroke="#4A1830"
                   />
                   <Tooltip content={<ChartTooltip />} />
                   <Bar dataKey="count" radius={[0, 4, 4, 0]}>
@@ -245,7 +250,7 @@ export default function Dashboard() {
                       <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <Tooltip content={<ChartTooltip />} />
                 </PieChart>
               </ResponsiveContainer>
           }
@@ -266,11 +271,11 @@ export default function Dashboard() {
                 labelLine={false}
               >
                 {festivalData.map((_, i) => (
-                  <Cell key={i} fill={CHART_COLORS[i]} />
+                  <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
                 ))}
               </Pie>
-              <Legend />
-              <Tooltip />
+              <Legend wrapperStyle={{ color: "#D8CABA", fontSize: "12px", paddingTop: "8px" }} />
+              <Tooltip content={<ChartTooltip />} />
             </PieChart>
           </ResponsiveContainer>
         </Section>
@@ -280,17 +285,17 @@ export default function Dashboard() {
             ? <EmptyChart />
             : <ResponsiveContainer width="100%" height={200}>
                 <LineChart data={data.daily_searches}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#ecdcc8" vertical={false} />
-                  <XAxis dataKey="day" tick={{ fontSize: 10, fill: "#a1a1aa" }} />
-                  <YAxis tick={{ fontSize: 11, fill: "#a1a1aa" }} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#4A1830" opacity={0.6} vertical={false} />
+                  <XAxis dataKey="day" tick={{ fontSize: 10, fill: "#D8CABA" }} stroke="#4A1830" />
+                  <YAxis tick={{ fontSize: 11, fill: "#A8988B" }} stroke="#4A1830" />
                   <Tooltip content={<ChartTooltip />} />
                   <Line
                     type="monotone"
                     dataKey="count"
-                    stroke="#9f1239"
-                    strokeWidth={2}
-                    dot={{ r: 4, fill: "#9f1239", stroke: "#fff", strokeWidth: 2 }}
-                    activeDot={{ r: 6 }}
+                    stroke="#C69A55"
+                    strokeWidth={2.5}
+                    dot={{ r: 4, fill: "#C69A55", stroke: "#1E131B", strokeWidth: 2 }}
+                    activeDot={{ r: 6, fill: "#FFF7E9", stroke: "#C69A55" }}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -303,7 +308,7 @@ export default function Dashboard() {
         {data.top_gifts.length === 0
           ? (
             <div className="text-center py-8">
-              <p className="text-sm text-neutral-400">
+              <p className="text-sm text-[#A8988B]">
                 No gift votes yet. Start rating gifts in the Find a Gift results.
               </p>
             </div>
@@ -312,20 +317,20 @@ export default function Dashboard() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm" aria-label="Top voted gifts">
                 <thead>
-                  <tr className="border-b border-ivory-300">
-                    <th className="pb-3 pr-4 text-left text-xs font-semibold text-neutral-500 uppercase tracking-wider">
+                  <tr className="border-b border-[#4A1830]">
+                    <th className="pb-3 pr-4 text-left text-xs font-semibold text-[#C69A55] uppercase tracking-wider">
                       Gift
                     </th>
-                    <th className="pb-3 pr-4 text-left text-xs font-semibold text-neutral-500 uppercase tracking-wider">
+                    <th className="pb-3 pr-4 text-left text-xs font-semibold text-[#C69A55] uppercase tracking-wider">
                       Recipient
                     </th>
-                    <th className="pb-3 pr-4 text-left text-xs font-semibold text-neutral-500 uppercase tracking-wider">
+                    <th className="pb-3 pr-4 text-left text-xs font-semibold text-[#C69A55] uppercase tracking-wider">
                       Occasion
                     </th>
-                    <th className="pb-3 pr-4 text-left text-xs font-semibold text-neutral-500 uppercase tracking-wider">
+                    <th className="pb-3 pr-4 text-left text-xs font-semibold text-[#C69A55] uppercase tracking-wider">
                       Score
                     </th>
-                    <th className="pb-3 text-left text-xs font-semibold text-neutral-500 uppercase tracking-wider">
+                    <th className="pb-3 text-left text-xs font-semibold text-[#C69A55] uppercase tracking-wider">
                       Votes
                     </th>
                   </tr>
@@ -334,9 +339,9 @@ export default function Dashboard() {
                   {data.top_gifts.map((g, i) => (
                     <tr
                       key={i}
-                      className="border-b border-ivory-200 last:border-0 hover:bg-ivory-100 transition-colors duration-150"
+                      className="border-b border-[#4A1830]/40 last:border-0 hover:bg-[#2B1825]/60 transition-colors duration-150"
                     >
-                      <td className="py-3 pr-4 font-medium text-neutral-800">
+                      <td className="py-3 pr-4 font-medium text-[#FFF7E9]">
                         <div className="flex items-center gap-2">
                           {i === 0 && (
                             <Badge variant="gold" size="xs">Top</Badge>
@@ -344,17 +349,17 @@ export default function Dashboard() {
                           {g.gift_name}
                         </div>
                       </td>
-                      <td className="py-3 pr-4 text-xs text-neutral-500">{fmt(g.relationship)}</td>
-                      <td className="py-3 pr-4 text-xs text-neutral-500">{fmt(g.occasion)}</td>
+                      <td className="py-3 pr-4 text-xs text-[#D8CABA]">{fmt(g.relationship)}</td>
+                      <td className="py-3 pr-4 text-xs text-[#D8CABA]">{fmt(g.occasion)}</td>
                       <td className="py-3 pr-4">
                         <span className={[
                           "text-sm font-semibold",
-                          g.score > 0 ? "text-burgundy-600" : g.score < 0 ? "text-neutral-400" : "text-neutral-400",
+                          g.score > 0 ? "text-[#C69A55]" : "text-[#A8988B]",
                         ].join(" ")}>
                           {g.score > 0 ? "+" : ""}{g.score}
                         </span>
                       </td>
-                      <td className="py-3 text-xs text-neutral-400">{g.votes}</td>
+                      <td className="py-3 text-xs text-[#A8988B]">{g.votes}</td>
                     </tr>
                   ))}
                 </tbody>

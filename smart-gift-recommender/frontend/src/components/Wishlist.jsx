@@ -76,8 +76,8 @@ function WishlistItem({ item, onRemove }) {
 
       {/* Icon mark */}
       <div
-        className="w-10 h-10 rounded-base bg-burgundy-50 border border-burgundy-100
-          flex items-center justify-center shrink-0 text-burgundy-500"
+        className="w-11 h-11 rounded-xl bg-[#4A1830] border border-[#C69A55]/40
+          flex items-center justify-center shrink-0 text-[#C69A55] shadow-sm"
         aria-hidden="true"
       >
         <IconGift />
@@ -85,14 +85,14 @@ function WishlistItem({ item, onRemove }) {
 
       {/* Content */}
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold text-neutral-800 truncate leading-snug">
+        <p className="text-base font-serif font-bold text-[#FFF7E9] truncate leading-snug">
           {item.gift_name}
         </p>
-        <p className="text-xs text-neutral-500 mt-0.5">
+        <p className="text-xs text-[#E9D7B8]/80 mt-1 font-sans">
           {fmt(item.relationship)}
-          <span className="mx-1.5 text-neutral-300">·</span>
+          <span className="mx-1.5 text-[#C69A55]">·</span>
           {fmt(item.occasion)}
-          <span className="mx-1.5 text-neutral-300">·</span>
+          <span className="mx-1.5 text-[#C69A55]">·</span>
           {fmt(item.budget)}
         </p>
       </div>
@@ -102,26 +102,26 @@ function WishlistItem({ item, onRemove }) {
         <a
           href={amazonLink(item.gift_name)}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           aria-label={`Buy ${item.gift_name} on Amazon India`}
-          className="flex items-center gap-1.5 px-3 py-2 min-h-[44px] rounded-base text-xs font-medium
-            border border-ivory-300 text-neutral-600
-            hover:border-neutral-300 hover:bg-neutral-50
-            transition-colors duration-150
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy-500 focus-visible:ring-offset-1"
+          className="flex items-center gap-1.5 px-3.5 py-2 min-h-[44px] rounded-xl text-xs font-bold uppercase tracking-wider
+            text-[#17131A] bg-gradient-to-r from-[#C69A55] via-[#DCB372] to-[#E9D7B8]
+            hover:brightness-105 shadow-[0_2px_12px_rgba(198,154,85,0.35)]
+            transition-all duration-150
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C69A55] focus-visible:ring-offset-2"
         >
           <IconShoppingBag />
-          Buy
+          <span>Buy</span>
         </a>
 
         <button
           onClick={() => onRemove(item.id)}
           aria-label={`Remove ${item.gift_name} from wishlist`}
-          className="flex items-center justify-center min-w-[44px] min-h-[44px] rounded-base
-            border border-transparent text-neutral-400
-            hover:border-rose-200 hover:text-rose-500 hover:bg-rose-50
-            transition-colors duration-150
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy-500 focus-visible:ring-offset-1
+          className="flex items-center justify-center min-w-[44px] min-h-[44px] rounded-xl
+            border border-[#4A1830]/60 text-[#D8CABA]/60 bg-[#1E131B]
+            hover:border-rose-900/60 hover:text-rose-300 hover:bg-rose-950/40
+            transition-all duration-150
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C69A55] focus-visible:ring-offset-2
             cursor-pointer"
         >
           <IconTrash />
@@ -135,14 +135,14 @@ function WishlistItem({ item, onRemove }) {
 
 function WishlistSkeleton() {
   return (
-    <div className="bg-white border border-ivory-300 rounded-card px-5 py-4 flex items-center gap-4 shadow-xs"
+    <div className="bg-[#241620]/95 border border-[#4A1830] rounded-2xl px-5 py-4 flex items-center gap-4 shadow-sm"
       role="status" aria-label="Loading wishlist item…">
-      <div className="w-10 h-10 bg-ivory-300 animate-pulse rounded-base shrink-0" />
+      <div className="w-11 h-11 bg-[#311C2C] animate-pulse rounded-xl shrink-0" />
       <div className="flex-1 space-y-2">
-        <div className="h-3.5 bg-ivory-300 animate-pulse rounded w-2/3" />
-        <div className="h-3 bg-ivory-200 animate-pulse rounded w-1/2" />
+        <div className="h-3.5 bg-[#311C2C] animate-pulse rounded w-2/3" />
+        <div className="h-3 bg-[#1E131B] animate-pulse rounded w-1/2" />
       </div>
-      <div className="h-7 w-16 bg-ivory-200 animate-pulse rounded-base shrink-0" />
+      <div className="h-9 w-20 bg-[#311C2C] animate-pulse rounded-xl shrink-0" />
       <span className="sr-only">Loading wishlist item…</span>
     </div>
   );
@@ -181,9 +181,9 @@ export default function Wishlist() {
 
       {/* Page header */}
       <div className="mb-6">
-        <h1 className="font-serif text-3xl font-semibold text-burgundy-800">My Wishlist</h1>
-        <p className="text-sm text-neutral-500 mt-1">
-          Gifts you've saved — ready to buy when the time is right.
+        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#FFF7E9]">My Wishlist</h1>
+        <p className="text-sm text-[#E9D7B8]/80 mt-1 font-sans font-light">
+          Curated gifts you've saved — ready to order whenever the moment arrives.
         </p>
       </div>
 
@@ -196,11 +196,11 @@ export default function Wishlist() {
 
       {/* Error state */}
       {!loading && error && (
-        <div role="alert" className="bg-burgundy-50 border border-burgundy-200 rounded-card p-6 text-center">
-          <p className="text-sm font-medium text-burgundy-700 mb-3">
+        <div role="alert" className="bg-[#1E131B] border border-[#7E0F2E] rounded-2xl p-6 text-center text-[#FFF7E9]">
+          <p className="text-sm font-medium text-[#FFF7E9] mb-3">
             Unable to load your wishlist. Please try again.
           </p>
-          <Button variant="secondary" size="sm" onClick={fetchWishlist}>
+          <Button variant="gold" size="sm" onClick={fetchWishlist}>
             Retry
           </Button>
         </div>
@@ -208,18 +208,18 @@ export default function Wishlist() {
 
       {/* Empty state */}
       {!loading && !error && items.length === 0 && (
-        <Card variant="flat" padding="lg" className="text-center">
+        <Card variant="default" padding="lg" className="text-center p-10">
           <div
-            className="w-16 h-16 rounded-full bg-burgundy-50 border border-burgundy-100
-              flex items-center justify-center mx-auto mb-4 text-burgundy-400"
+            className="w-16 h-16 rounded-2xl bg-[#4A1830] border border-[#C69A55]/40
+              flex items-center justify-center mx-auto mb-4 text-[#C69A55]"
             aria-hidden="true"
           >
-            <IconGift className="w-7 h-7" />
+            <IconGift className="w-8 h-8" />
           </div>
-          <h2 className="font-serif text-xl font-semibold text-burgundy-700 mb-2">
+          <h2 className="font-serif text-2xl font-bold text-[#FFF7E9] mb-2">
             Your wishlist is empty
           </h2>
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-[#E9D7B8]/75 font-sans">
             When you find a gift you love, save it here for later.
           </p>
         </Card>

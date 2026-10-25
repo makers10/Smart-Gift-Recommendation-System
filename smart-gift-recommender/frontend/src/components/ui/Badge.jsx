@@ -20,13 +20,14 @@ export default function Badge({
   ...props
 }) {
   const variants = {
-    brand:   "bg-burgundy-600 text-white border-transparent",
-    rose:    "bg-rose-100 text-rose-700 border-rose-200",
-    gold:    "bg-gold-200 text-gold-500 border-gold-300",
-    neutral: "bg-neutral-100 text-neutral-600 border-neutral-200",
-    success: "bg-emerald-100 text-emerald-700 border-emerald-200",
-    warning: "bg-amber-100 text-amber-700 border-amber-200",
-    outline: "bg-transparent text-burgundy-600 border-burgundy-200",
+    brand:     "bg-[#4A1830] text-[#E9D7B8] border-[#C69A55]/30",
+    rose:      "bg-[#4A1830]/80 text-rose-200 border-rose-900/60",
+    gold:      "bg-[#C69A55]/15 text-[#DCB372] border-[#C69A55]/40",
+    champagne: "bg-[#E9D7B8]/15 text-[#E9D7B8] border-[#E9D7B8]/30",
+    neutral:   "bg-[#17131A]/90 text-[#D8CABA] border-[#4A1830]",
+    success:   "bg-emerald-950/60 text-emerald-300 border-emerald-800/60",
+    warning:   "bg-amber-950/60 text-amber-300 border-amber-800/60",
+    outline:   "bg-transparent text-[#E9D7B8] border-[#4A1830]",
   };
 
   const sizes = {

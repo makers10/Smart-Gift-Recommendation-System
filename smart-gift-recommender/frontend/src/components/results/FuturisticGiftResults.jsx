@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { apiFetch } from "../../utils/api";
+import { amazonLink } from "../../utils/format";
 
 export default function FuturisticGiftResults({
   result,
@@ -177,21 +178,21 @@ export default function FuturisticGiftResults({
       </AnimatePresence>
 
       {/* Results Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-luxury-border">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-[#4A1830]">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-serif uppercase tracking-widest text-champagne-light bg-luxury-card border border-luxury-border mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-champagne animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-serif uppercase tracking-widest text-[#E9D7B8] bg-[#261722]/95 border border-[#4A1830] shadow-[0_2px_12px_rgba(74,24,48,0.4)] mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-[#C69A55] animate-pulse" />
             <span>Curated Gifting Selection</span>
           </div>
 
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-luxury-text tracking-tight">
-            Thoughtful gifts, <span className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-champagne via-champagne-light to-[#fcf5e5]">picked for them.</span>
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#FFF7E9] tracking-tight">
+            Thoughtful gifts, <span className="italic font-normal text-[#C69A55] drop-shadow-[0_2px_12px_rgba(198,154,85,0.4)]">picked for them.</span>
           </h2>
 
-          <p className="mt-2 text-sm text-luxury-muted font-sans font-light">
-            Curated for <strong className="text-luxury-text font-serif capitalize">{result?.relationship || "Partner"}</strong>'s{" "}
-            <strong className="text-luxury-text font-serif capitalize">{result?.occasion || "Birthday"}</strong> • Budget:{" "}
-            <strong className="text-champagne-light font-serif uppercase">{result?.budget || "Standard"}</strong>
+          <p className="mt-2 text-sm text-[#E9D7B8]/80 font-sans font-light">
+            Curated for <strong className="text-[#FFF7E9] font-serif capitalize">{result?.relationship || "Partner"}</strong>'s{" "}
+            <strong className="text-[#FFF7E9] font-serif capitalize">{result?.occasion || "Birthday"}</strong> • Budget:{" "}
+            <strong className="text-[#C69A55] font-serif uppercase">{result?.budget || "Standard"}</strong>
           </p>
         </div>
 
@@ -199,25 +200,25 @@ export default function FuturisticGiftResults({
         <div className="flex flex-wrap items-center gap-3">
           <button
             onClick={handleSurpriseMe}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider text-luxury-main bg-gradient-to-r from-champagne to-champagne-light hover:brightness-105 shadow-champagne-sm cursor-pointer active:scale-95 transition-all"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider text-[#17131A] bg-gradient-to-r from-[#C69A55] via-[#DCB372] to-[#E9D7B8] hover:brightness-105 shadow-[0_4px_18px_rgba(198,154,85,0.4)] cursor-pointer active:scale-95 transition-all"
           >
-            <Zap className="w-3.5 h-3.5 fill-luxury-main text-luxury-main" />
+            <Zap className="w-3.5 h-3.5 fill-[#17131A] text-[#17131A]" />
             <span>Surprise Me</span>
           </button>
 
           <button
             onClick={onModify || onReset}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-medium text-luxury-text bg-luxury-card hover:bg-luxury-elevated border border-luxury-border hover:border-champagne/40 transition-all cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-medium text-[#FFF7E9] bg-[#261722] hover:bg-[#331C2C] border border-[#4A1830] hover:border-[#C69A55]/40 transition-all cursor-pointer"
           >
-            <SlidersHorizontal className="w-3.5 h-3.5 text-champagne" />
+            <SlidersHorizontal className="w-3.5 h-3.5 text-[#C69A55]" />
             <span>Modify Answers</span>
           </button>
 
           <button
             onClick={onReset}
-            className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-full text-xs text-luxury-muted hover:text-luxury-text transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-full text-xs text-[#E9D7B8]/80 hover:text-[#FFF7E9] transition-colors cursor-pointer"
           >
-            <RotateCcw className="w-3.5 h-3.5 text-champagne" />
+            <RotateCcw className="w-3.5 h-3.5 text-[#C69A55]" />
             <span>New Search</span>
           </button>
         </div>
@@ -226,7 +227,7 @@ export default function FuturisticGiftResults({
       {/* Filter Bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 py-6">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-serif uppercase text-luxury-muted">Filter Tone:</span>
+          <span className="text-xs font-serif uppercase text-[#E9D7B8]">Filter Tone:</span>
           {["all", "sentimental", "practical"].map((s) => (
             <button
               key={s}
@@ -234,8 +235,8 @@ export default function FuturisticGiftResults({
               className={`px-3 py-1 rounded-full text-xs font-medium capitalize transition-all cursor-pointer
                 ${
                   activeFilterStyle === s
-                    ? "bg-gradient-to-r from-champagne to-champagne-light text-luxury-main font-semibold shadow-champagne-sm"
-                    : "bg-luxury-card text-luxury-muted border border-luxury-border hover:text-luxury-text"
+                    ? "bg-gradient-to-r from-[#C69A55] to-[#E9D7B8] text-[#17131A] font-bold shadow-sm"
+                    : "bg-[#261722] text-[#E9D7B8] border border-[#4A1830] hover:text-[#FFF7E9]"
                 }`}
             >
               {s}
@@ -243,7 +244,7 @@ export default function FuturisticGiftResults({
           ))}
         </div>
 
-        <span className="text-xs font-serif text-luxury-muted">
+        <span className="text-xs font-serif text-[#E9D7B8]/80">
           Showing {filteredGifts.length} Curated Presents
         </span>
       </div>
@@ -260,42 +261,43 @@ export default function FuturisticGiftResults({
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: idx * 0.08 }}
-              className="group relative rounded-3xl bg-luxury-card/90 hover:bg-luxury-elevated border border-luxury-border hover:border-champagne/60 p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-champagne-sm hover:-translate-y-1.5 backdrop-blur-xl"
+              className="group relative rounded-3xl bg-gradient-to-br from-[#261722]/95 via-[#1E131B]/95 to-[#17131A]/95 hover:from-[#311D2C] hover:to-[#1E131B] border border-[#4A1830] hover:border-[#C69A55]/60 p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_12px_40px_rgba(198,154,85,0.2)] hover:-translate-y-1.5 backdrop-blur-xl"
             >
               {/* Card Top Details */}
               <div>
                 <div className="flex items-center justify-between gap-2 mb-3">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-serif font-semibold bg-luxury-secondary text-champagne-light border border-luxury-border">
-                    <Sparkles className="w-3 h-3 text-champagne" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-serif font-semibold bg-[#4A1830]/80 text-[#E9D7B8] border border-[#C69A55]/30">
+                    <Sparkles className="w-3 h-3 text-[#C69A55]" />
                     <span>{gift.matchScore}</span>
                   </span>
 
                   <button
                     onClick={() => handleSaveWishlist(gift)}
-                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+                    className={`min-w-[44px] min-h-[44px] rounded-full flex items-center justify-center transition-all cursor-pointer ${
                       isSaved
-                        ? "bg-luxury-burgundy text-champagne-light border border-champagne/50 shadow-champagne-sm"
-                        : "bg-luxury-elevated text-luxury-muted hover:text-champagne hover:bg-luxury-card border border-luxury-border"
+                        ? "bg-[#4A1830] text-[#C69A55] border border-[#C69A55] shadow-sm"
+                        : "bg-[#261722] text-[#E9D7B8] hover:text-[#C69A55] hover:bg-[#331C2C] border border-[#4A1830]"
                     }`}
                     title={isSaved ? "Saved in Wishlist" : "Save to Wishlist"}
+                    aria-label={isSaved ? `Remove ${gift.name} from Wishlist` : `Save ${gift.name} to Wishlist`}
                   >
-                    <Heart className={`w-4 h-4 ${isSaved ? "fill-champagne text-champagne" : ""}`} />
+                    <Heart className={`w-4 h-4 ${isSaved ? "fill-[#C69A55] text-[#C69A55]" : ""}`} />
                   </button>
                 </div>
 
                 {/* Gift Name */}
-                <h3 className="font-serif text-2xl font-bold text-luxury-text group-hover:text-champagne-light transition-colors leading-snug">
+                <h3 className="font-serif text-2xl font-bold text-[#FFF7E9] group-hover:text-[#C69A55] transition-colors leading-snug">
                   {gift.name}
                 </h3>
 
                 {/* Price Display */}
-                <p className="mt-1.5 font-serif text-xl font-bold text-champagne-light">
+                <p className="mt-1.5 font-serif text-2xl font-bold text-[#C69A55]">
                   {gift.price}
                 </p>
 
                 {/* Rationale explanation box */}
-                <div className="mt-3.5 p-3 rounded-xl bg-luxury-secondary/70 border border-luxury-border/80 text-xs text-luxury-muted font-sans font-light leading-relaxed">
-                  <span className="text-[10px] font-serif uppercase tracking-wider text-champagne block mb-1">
+                <div className="mt-3.5 p-3 rounded-xl bg-[#17131A]/80 border border-[#4A1830] text-xs text-[#E9D7B8]/80 font-sans font-light leading-relaxed">
+                  <span className="text-[10px] font-serif uppercase tracking-wider text-[#C69A55] block mb-1">
                     ✦ Why it matches
                   </span>
                   {gift.rationale}
@@ -306,7 +308,7 @@ export default function FuturisticGiftResults({
                   {gift.tags.map((t) => (
                     <span
                       key={t}
-                      className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-luxury-secondary text-luxury-muted border border-luxury-border"
+                      className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-[#261722] text-[#E9D7B8]/80 border border-[#4A1830]"
                     >
                       {t}
                     </span>
@@ -315,41 +317,58 @@ export default function FuturisticGiftResults({
               </div>
 
               {/* Card Footer Actions */}
-              <div className="mt-6 pt-4 border-t border-luxury-border/80 flex items-center justify-between">
+              <div className="mt-6 pt-4 border-t border-[#4A1830] flex flex-wrap items-center justify-between gap-2.5">
                 {/* Community Feedback Up / Down */}
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1.5">
                   <button
                     onClick={() => handleVote(gift, 1)}
-                    className={`p-1.5 rounded-lg border transition-all cursor-pointer ${
+                    className={`min-w-[44px] min-h-[44px] rounded-xl border flex items-center justify-center transition-all cursor-pointer ${
                       vote === 1
-                        ? "bg-luxury-burgundy border-champagne text-champagne-light"
-                        : "border-luxury-border text-luxury-muted hover:text-luxury-text"
+                        ? "bg-[#4A1830] border-[#C69A55] text-[#E9D7B8]"
+                        : "border-[#4A1830] bg-[#1E131B] text-[#D8CABA] hover:text-[#FFF7E9] hover:border-[#C69A55]/40"
                     }`}
                     title="Helpful recommendation"
+                    aria-label={`Vote up ${gift.name}`}
                   >
-                    <ThumbsUp className="w-3.5 h-3.5" />
+                    <ThumbsUp className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleVote(gift, -1)}
-                    className={`p-1.5 rounded-lg border transition-all cursor-pointer ${
+                    className={`min-w-[44px] min-h-[44px] rounded-xl border flex items-center justify-center transition-all cursor-pointer ${
                       vote === -1
-                        ? "bg-luxury-secondary border-luxury-border text-rose-300"
-                        : "border-luxury-border text-luxury-muted hover:text-luxury-text"
+                        ? "bg-[#331021] border-[#4A1830] text-rose-300"
+                        : "border-[#4A1830] bg-[#1E131B] text-[#D8CABA] hover:text-[#FFF7E9] hover:border-[#C69A55]/40"
                     }`}
                     title="Not suitable"
+                    aria-label={`Vote down ${gift.name}`}
                   >
-                    <ThumbsDown className="w-3.5 h-3.5" />
+                    <ThumbsDown className="w-4 h-4" />
                   </button>
                 </div>
 
-                {/* Quick View Button */}
-                <button
-                  onClick={() => setQuickViewItem(gift)}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-champagne hover:text-champagne-light transition-colors cursor-pointer group/btn"
-                >
-                  <Eye className="w-3.5 h-3.5" />
-                  <span>Inspect Details</span>
-                </button>
+                <div className="flex items-center gap-2">
+                  {/* Inspect Details */}
+                  <button
+                    onClick={() => setQuickViewItem(gift)}
+                    className="inline-flex items-center gap-1.5 px-3 py-2 min-h-[44px] rounded-xl border border-[#4A1830] bg-[#1E131B] text-xs font-semibold text-[#E9D7B8] hover:text-[#FFF7E9] hover:border-[#C69A55]/50 transition-colors cursor-pointer"
+                    aria-label={`Inspect details for ${gift.name}`}
+                  >
+                    <Eye className="w-3.5 h-3.5 text-[#C69A55]" />
+                    <span>Details</span>
+                  </button>
+
+                  {/* Buy on Amazon Link */}
+                  <a
+                    href={amazonLink(gift.name)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 min-h-[44px] rounded-xl text-xs font-bold uppercase tracking-wider text-[#17131A] bg-gradient-to-r from-[#C69A55] via-[#DCB372] to-[#E9D7B8] hover:brightness-105 shadow-[0_2px_12px_rgba(198,154,85,0.35)] transition-all cursor-pointer active:scale-95"
+                    aria-label={`Buy ${gift.name} on Amazon India`}
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    <span>Buy</span>
+                  </a>
+                </div>
               </div>
             </motion.div>
           );
@@ -395,19 +414,28 @@ export default function FuturisticGiftResults({
                 <p className="text-xs text-luxury-muted leading-relaxed">{quickViewItem.rationale}</p>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <button
                   onClick={() => {
                     handleSaveWishlist(quickViewItem);
                     setQuickViewItem(null);
                   }}
-                  className="flex-1 py-3 px-5 rounded-full text-xs font-semibold uppercase tracking-wider text-luxury-main bg-gradient-to-r from-champagne to-champagne-light shadow-champagne-sm cursor-pointer transition-all active:scale-95"
+                  className="flex-1 py-3 px-4 min-h-[44px] rounded-full text-xs font-semibold uppercase tracking-wider text-[#FFF7E9] bg-[#2C1726] border border-[#4A1830] hover:border-[#C69A55] transition-all cursor-pointer text-center"
                 >
                   Save to Wishlist
                 </button>
+                <a
+                  href={amazonLink(quickViewItem.name)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 py-3 px-4 min-h-[44px] rounded-full text-xs font-bold uppercase tracking-wider text-[#17131A] bg-gradient-to-r from-[#C69A55] via-[#DCB372] to-[#E9D7B8] shadow-md flex items-center justify-center gap-1.5 hover:brightness-105 transition-all cursor-pointer"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>Buy on Amazon</span>
+                </a>
                 <button
                   onClick={() => setQuickViewItem(null)}
-                  className="py-3 px-5 rounded-full text-xs font-medium text-luxury-text bg-luxury-elevated border border-luxury-border hover:bg-luxury-secondary cursor-pointer"
+                  className="py-3 px-5 min-h-[44px] rounded-full text-xs font-medium text-[#FFF7E9] bg-[#1E131B] border border-[#4A1830] hover:bg-[#2C1726] cursor-pointer"
                 >
                   Close
                 </button>

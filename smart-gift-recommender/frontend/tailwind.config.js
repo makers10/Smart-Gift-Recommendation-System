@@ -21,6 +21,9 @@ export default {
           100: "#faf5ef",   // default page background
           200: "#f5ede0",
           300: "#ecdcc8",
+          DEFAULT: "#FFF7E9",
+          pure: "#FFFDF9",
+          muted: "#D9CDBF",
         },
 
         // Deep Burgundy — primary brand color
@@ -35,6 +38,10 @@ export default {
           700: "#7e0f2e",
           800: "#5f0a22",
           900: "#3d0615",
+          DEFAULT: "#4A1830",
+          dark: "#331021",
+          light: "#632242",
+          glow: "rgba(74, 24, 48, 0.5)",
         },
 
         // Rose — secondary accent (keep existing rose scale for compatibility)
@@ -64,32 +71,44 @@ export default {
           900: "#18181b",
         },
 
-        // Champagne Gold — sparingly
+        // Champagne Gold — metallic & accents
         gold: {
           100: "#fef9ec",
           200: "#fdf0c8",
           300: "#f8d878",
           400: "#f0b429",
           500: "#d4941c",
+          DEFAULT: "#C69A55",
+          light: "#DCB372",
+          dark: "#AA803D",
+          glow: "rgba(198, 154, 85, 0.35)",
         },
 
-        // ── CHAMPAGNE DREAM LUXURY DESIGN TOKENS ────────────────────
-        luxury: {
-          main: "#100D12",
-          secondary: "#19141B",
-          card: "#211923",
-          elevated: "#2A2028",
-          text: "#FFF7E9",
-          muted: "#C5B8B5",
-          border: "#493641",
-          burgundy: "#5A2438",
-          rose: "#A66B7D",
+        // ── USER'S EXACT 5 LUXURY BRAND COLORS ───────────────────────
+        espresso: {
+          DEFAULT: "#17131A",
+          dark: "#100D13",
+          light: "#231B24",
         },
         champagne: {
-          DEFAULT: "#D6B675",
-          light: "#F5DDA0",
-          dark: "#B89650",
-          glow: "rgba(245, 221, 160, 0.25)",
+          DEFAULT: "#E9D7B8",
+          light: "#F5EADB",
+          dark: "#D4BE97",
+          glow: "rgba(233, 215, 184, 0.25)",
+        },
+
+        // ── LUXURY SEMANTIC TOKENS ──────────────────────────────────
+        luxury: {
+          main: "#17131A",         // Espresso canvas base
+          secondary: "#1F161E",    // Soft Espresso
+          card: "#261722",         // Espresso-Burgundy card surface
+          elevated: "#331C2C",     // Elevated Burgundy-tinted surface
+          text: "#FFF7E9",         // Ivory primary text
+          muted: "#D8CABA",        // Soft Champagne/Ivory secondary text
+          border: "#4A1830",       // Burgundy luxury border
+          gold: "#C69A55",         // Gold metallic accent
+          champagne: "#E9D7B8",    // Champagne highlight
+          burgundy: "#4A1830",     // Burgundy brand tone
         },
       },
 

@@ -16,7 +16,18 @@
 /* ── DESIGN TOKEN CUSTOM PROPERTIES ──────────────────────────────────────── */
 
 :root {
-  /* Brand */
+  /* Luxury Dark Palette */
+  --color-luxury-main:      #17131A;
+  --color-luxury-secondary: #1F161E;
+  --color-luxury-card:      #261722;
+  --color-luxury-elevated:  #331C2C;
+  --color-luxury-text:      #FFF7E9;
+  --color-luxury-muted:     #D8CABA;
+  --color-luxury-border:    #4A1830;
+  --color-luxury-gold:      #C69A55;
+  --color-luxury-champagne: #E9D7B8;
+
+  /* Legacy & Chart Palette */
   --color-ivory-100:    #faf5ef;
   --color-ivory-200:    #f5ede0;
   --color-ivory-300:    #ecdcc8;
@@ -27,18 +38,19 @@
   --color-rose-500:     #f43f5e;
   --color-gold-300:     #f8d878;
   --color-gold-400:     #f0b429;
+  --color-gold-500:     #C69A55;
 
   /* Typography */
   --font-serif: 'Cormorant Garamond', Georgia, serif;
-  --font-sans:  'Inter', system-ui, sans-serif;
+  --font-sans:  'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
 
   /* Transitions */
   --transition-fast:   120ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base:   180ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow:   280ms cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Focus ring */
-  --ring-color: var(--color-burgundy-500);
+  /* Focus ring: Warm Metallic Gold */
+  --ring-color: #C69A55;
   --ring-offset: 2px;
 }
 
@@ -51,27 +63,33 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background-color: #100D12;
+  background-color: #17131A;
+  background-image: 
+    radial-gradient(ellipse 95% 65% at 50% 0%, #4A1830 0%, rgba(74, 24, 48, 0.45) 45%, #17131A 100%),
+    radial-gradient(circle at 85% 15%, rgba(198, 154, 85, 0.22) 0%, transparent 45%),
+    radial-gradient(circle at 15% 40%, rgba(74, 24, 48, 0.35) 0%, transparent 50%),
+    radial-gradient(circle at 50% 75%, rgba(74, 24, 48, 0.28) 0%, transparent 60%);
+  background-attachment: fixed;
   color: #FFF7E9;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Luxury Champagne Scrollbar */
+/* Luxury Champagne & Gold Scrollbar */
 ::-webkit-scrollbar {
   width: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #19141B;
+  background: #17131A;
 }
 ::-webkit-scrollbar-thumb {
-  background: #493641;
+  background: #4A1830;
   border-radius: 9999px;
-  border: 1px solid rgba(214, 182, 117, 0.2);
+  border: 1px solid rgba(198, 154, 85, 0.3);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #D6B675;
-  box-shadow: 0 0 10px rgba(214, 182, 117, 0.5);
+  background: #C69A55;
+  box-shadow: 0 0 12px rgba(198, 154, 85, 0.6);
 }
 
 @keyframes spinSlow {
@@ -92,12 +110,10 @@ h1, h2, h3, h4, h5, h6,
 /* ── FORM ELEMENTS ────────────────────────────────────────────────────────── */
 
 /*
- * Custom select arrow — burgundy chevron.
- * The arrow SVG stroke color matches --color-burgundy-600 (#9f1239).
- * Sufficient contrast against the ivory-50 select background (A5 partial fix).
+ * Custom select arrow — gold chevron with dark options.
  */
 select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239f1239'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23C69A55'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 16px;
@@ -105,21 +121,21 @@ select {
 }
 
 select option {
-  background-color: #fdfaf6;
-  color: #27272a;
+  background-color: #241620;
+  color: #FFF7E9;
 }
 
 /* ── FOCUS RING ───────────────────────────────────────────────────────────── */
 
 /*
- * Global keyboard focus ring — visible, brand-coloured, offset.
+ * Global keyboard focus ring — visible, metallic gold, offset.
  * Suppressed for mouse/touch interactions via :focus-visible.
  * Satisfies WCAG 2.4.7 Focus Visible.
  */
 :focus-visible {
   outline: 2px solid var(--ring-color);
   outline-offset: var(--ring-offset);
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 /* ── SCROLLBAR UTILITY ────────────────────────────────────────────────────── */

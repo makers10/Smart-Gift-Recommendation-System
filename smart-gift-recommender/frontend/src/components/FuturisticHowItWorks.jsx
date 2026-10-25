@@ -60,20 +60,20 @@ export default function FuturisticHowItWorks() {
   };
 
   return (
-    <div className="w-full bg-luxury-main text-luxury-text relative z-10 py-20 lg:py-28 overflow-hidden">
+    <div className="w-full bg-transparent text-[#FFF7E9] relative z-10 py-20 lg:py-28 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* ── HOW IT WORKS ─────────────────────────────────────────────── */}
         <div className="text-center max-w-2xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-serif uppercase tracking-widest text-champagne-light bg-luxury-card border border-luxury-border mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-champagne" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-serif uppercase tracking-widest text-[#E9D7B8] bg-[#261722]/95 border border-[#4A1830] shadow-[0_2px_12px_rgba(74,24,48,0.4)] mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-[#C69A55]" />
             <span>The Giftverse Experience</span>
           </div>
 
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-luxury-text tracking-tight">
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#FFF7E9] tracking-tight">
             How The Discovery Operates
           </h2>
-          <p className="mt-3 text-sm sm:text-base text-luxury-muted font-sans font-light">
+          <p className="mt-3 text-sm sm:text-base text-[#E9D7B8]/80 font-sans font-light">
             Three simple stages bridging heartfelt sentiment with tangible physical wonders.
           </p>
         </div>
@@ -82,22 +82,22 @@ export default function FuturisticHowItWorks() {
           {WORK_STEPS.map((s) => (
             <div
               key={s.step}
-              className="relative rounded-3xl bg-luxury-card/90 border border-luxury-border p-8 flex flex-col justify-between hover:border-champagne/40 hover:shadow-luxury-card transition-all"
+              className="relative rounded-3xl bg-gradient-to-br from-[#261722]/95 via-[#1E131B]/95 to-[#17131A]/95 border border-[#4A1830] p-8 flex flex-col justify-between hover:border-[#C69A55]/60 hover:shadow-[0_12px_40px_rgba(198,154,85,0.2)] transition-all"
             >
               <div>
                 <div className="flex items-center justify-between mb-6">
-                  <div className="w-14 h-14 rounded-2xl bg-luxury-elevated border border-luxury-border flex items-center justify-center shadow-inner">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#4A1830] to-[#17131A] border border-[#C69A55]/40 flex items-center justify-center shadow-inner">
                     {s.icon}
                   </div>
-                  <span className="font-serif text-2xl font-bold text-luxury-muted/40">
+                  <span className="font-serif text-3xl font-bold text-[#C69A55]/70">
                     {s.step}
                   </span>
                 </div>
 
-                <h3 className="font-serif text-2xl font-bold text-luxury-text mb-2">
+                <h3 className="font-serif text-2xl font-bold text-[#FFF7E9] mb-2">
                   {s.title}
                 </h3>
-                <p className="text-sm text-luxury-muted font-sans font-light leading-relaxed">
+                <p className="text-sm text-[#E9D7B8]/80 font-sans font-light leading-relaxed">
                   {s.desc}
                 </p>
               </div>
@@ -106,18 +106,18 @@ export default function FuturisticHowItWorks() {
         </div>
 
         {/* ── WHY GIFTVERSE PILLARS ───────────────────────────────────────── */}
-        <div className="rounded-3xl bg-gradient-to-br from-luxury-card via-luxury-elevated to-luxury-card border border-luxury-border p-8 sm:p-12 mb-24 shadow-luxury-card relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-champagne-glow rounded-full blur-3xl pointer-events-none" />
+        <div className="rounded-3xl bg-gradient-to-br from-[#2D1623] via-[#21141D] to-[#17131A] border border-[#4A1830] p-8 sm:p-12 mb-24 shadow-[0_14px_45px_rgba(0,0,0,0.6)] relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-80 h-80 bg-[#C69A55]/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-5">
-              <span className="text-xs font-serif uppercase tracking-widest text-champagne block mb-2">
+              <span className="text-xs font-serif uppercase tracking-widest text-[#C69A55] block mb-2">
                 Engineered for Sentiment
               </span>
-              <h3 className="font-serif text-3xl sm:text-4xl font-bold text-luxury-text mb-4 leading-tight">
+              <h3 className="font-serif text-3xl sm:text-4xl font-bold text-[#FFF7E9] mb-4 leading-tight">
                 Why Millions Never Guess a Gift Again
               </h3>
-              <p className="text-sm text-luxury-muted font-sans font-light leading-relaxed">
+              <p className="text-sm text-[#E9D7B8]/80 font-sans font-light leading-relaxed">
                 Traditional ecommerce bombards you with generic ads. Giftverse analyzes interpersonal
                 sentiment, occasions, and artisan craftsmanship to curate things that resonate for a lifetime.
               </p>
@@ -130,12 +130,12 @@ export default function FuturisticHowItWorks() {
                 { title: "Direct Artisan Escrow", desc: "Collaborate safely with custom makers with milestone protection." },
                 { title: "Universal Currency", desc: "Configured transparently in ₹ for reliable local availability." },
               ].map((item) => (
-                <div key={item.title} className="p-4 rounded-2xl bg-luxury-secondary/80 border border-luxury-border">
+                <div key={item.title} className="p-4 rounded-2xl bg-[#17131A]/80 border border-[#4A1830] hover:border-[#C69A55]/50 transition-colors">
                   <div className="flex items-center gap-2 mb-1.5">
-                    <Check className="w-4 h-4 text-champagne" />
-                    <h4 className="text-sm font-serif font-bold text-luxury-text">{item.title}</h4>
+                    <Check className="w-4 h-4 text-[#C69A55]" />
+                    <h4 className="text-sm font-serif font-bold text-[#FFF7E9]">{item.title}</h4>
                   </div>
-                  <p className="text-xs text-luxury-muted font-sans font-light leading-relaxed">{item.desc}</p>
+                  <p className="text-xs text-[#E9D7B8]/75 font-sans font-light leading-relaxed">{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -145,10 +145,10 @@ export default function FuturisticHowItWorks() {
         {/* ── FAQ ACCORDION ──────────────────────────────────────────────── */}
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-10">
-            <h3 className="font-serif text-2xl sm:text-3xl font-bold text-luxury-text">
+            <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#FFF7E9]">
               Frequently Asked Questions
             </h3>
-            <p className="text-xs sm:text-sm text-luxury-muted font-sans font-light mt-1">
+            <p className="text-xs sm:text-sm text-[#E9D7B8]/80 font-sans font-light mt-1">
               Everything you need to know about the Giftverse discovery algorithm.
             </p>
           </div>
@@ -159,7 +159,7 @@ export default function FuturisticHowItWorks() {
               return (
                 <div
                   key={faq.q}
-                  className="rounded-2xl bg-luxury-card/90 border border-luxury-border overflow-hidden transition-colors"
+                  className="rounded-2xl bg-[#261722]/90 border border-[#4A1830] overflow-hidden transition-colors"
                 >
                   <button
                     onClick={() => toggleFaq(idx)}

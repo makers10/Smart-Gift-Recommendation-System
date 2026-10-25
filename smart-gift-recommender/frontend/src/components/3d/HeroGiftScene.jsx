@@ -20,6 +20,7 @@ export default function HeroGiftScene({ onBoxClick }) {
   const [animPhase, setAnimPhase] = useState("playing"); // 'playing' | 'opened'
   const [isHovered, setIsHovered] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [webGlAvailable, setWebGlAvailable] = useState(true);
   const restartAnimRef = useRef(null);
 
   // Check reduced motion preference
@@ -41,25 +42,38 @@ export default function HeroGiftScene({ onBoxClick }) {
     const container = mountRef.current;
     if (!container) return;
 
-    // ── 1. Scene & Camera ──────────────────────────────────────────
+    // ── 1. WebGL Feature Detection ─────────────────────────────────
+    let renderer;
+    try {
+      const testCanvas = document.createElement("canvas");
+      const gl = testCanvas.getContext("webgl") || testCanvas.getContext("experimental-webgl");
+      if (!gl) {
+        throw new Error("WebGL context unavailable");
+      }
+      renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true,
+        powerPreference: "high-performance",
+      });
+    } catch (err) {
+      console.warn("WebGL not available, activating luxury 2.5D fallback:", err.message);
+      setWebGlAvailable(false);
+      return;
+    }
+
+    // ── 2. Scene & Camera ──────────────────────────────────────────
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
       42,
-      container.clientWidth / container.clientHeight,
+      (container.clientWidth || 400) / (container.clientHeight || 400),
       0.1,
       100
     );
     // Initial camera position for Phase 1
     camera.position.set(0, 1.1, 6.8);
 
-    // ── 2. WebGL Renderer with High-End Tone Mapping ───────────────
-    const renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: true,
-      powerPreference: "high-performance",
-    });
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth || 400, container.clientHeight || 400);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.35;
     renderer.shadowMap.enabled = true;
@@ -111,45 +125,52 @@ export default function HeroGiftScene({ onBoxClick }) {
     bgPlane.position.set(0, 0, -2.0);
     scene.add(bgPlane);
 
-    // ── 4. Luxury Materials ────────────────────────────────────────
-    // Deep Burgundy Satin Velvet for Box Body & Outer Lid
+    // ── 4. Luxury Materials (User's Exact 5 Palette Colors) ───────
+    // Burgundy: #4A1830 — Deep Royal Burgundy Satin Velvet
     const boxMat = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x421223), // Rich deep burgundy
-      metalness: 0.15,
-      roughness: 0.35,
-      clearcoat: 0.6,
-      clearcoatRoughness: 0.25,
-      reflectivity: 0.5,
+      color: new THREE.Color(0x4A1830),
+      metalness: 0.12,
+      roughness: 0.38,
+      clearcoat: 0.65,
+      clearcoatRoughness: 0.22,
+      reflectivity: 0.55,
     });
 
-    // Box Interior Velvet Lining (Slightly deeper burgundy)
-    const interiorMat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0x280814),
-      roughness: 0.85,
-      metalness: 0.05,
+    // Champagne: #E9D7B8 — Luminous Interior Silk Lining & Cushion (Guarantees ONE Single Visible Cavity)
+    const interiorCushionMat = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(0xE9D7B8),
+      roughness: 0.55,
+      metalness: 0.12,
     });
 
-    // Champagne Gold Satin Ribbon Material
+    // Interior Velvet Walls (Burgundy #3A1224)
+    const interiorWallMat = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(0x3A1224),
+      roughness: 0.75,
+      metalness: 0.08,
+    });
+
+    // Gold: #C69A55 — Rich Antique Gold Satin Ribbon
     const ribbonMat = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0xd6b675),
-      emissive: new THREE.Color(0x524020),
-      emissiveIntensity: 0.25,
-      metalness: 0.82,
-      roughness: 0.22,
-      clearcoat: 0.85,
-      clearcoatRoughness: 0.15,
-      reflectivity: 0.9,
-    });
-
-    // Highlight Gold Material for Bow Highlights & Trim
-    const bowMat = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0xf5dda0),
-      emissive: new THREE.Color(0x735522),
-      emissiveIntensity: 0.35,
+      color: new THREE.Color(0xC69A55),
+      emissive: new THREE.Color(0x483416),
+      emissiveIntensity: 0.3,
       metalness: 0.88,
       roughness: 0.18,
-      clearcoat: 0.95,
-      clearcoatRoughness: 0.1,
+      clearcoat: 0.9,
+      clearcoatRoughness: 0.12,
+      reflectivity: 0.92,
+    });
+
+    // Highlight Gold Material for Bow Highlights & Gem
+    const bowMat = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color(0xDCB372),
+      emissive: new THREE.Color(0x6A4C1C),
+      emissiveIntensity: 0.4,
+      metalness: 0.92,
+      roughness: 0.15,
+      clearcoat: 0.98,
+      clearcoatRoughness: 0.08,
     });
 
     // ── 5. Main 3D Gift Box Hierarchy ──────────────────────────────
@@ -159,25 +180,31 @@ export default function HeroGiftScene({ onBoxClick }) {
     const boxWidth = 2.0;
     const boxHeight = 1.6;
     const boxDepth = 2.0;
-    const wallThick = 0.07;
+    const wallThick = 0.08;
 
-    // ── Constructing Hollow Box Base with True Inner Cavity ──
+    // ── Constructing Hollow Box Base with ONE SINGLE Interior Cavity ──
     const baseGroup = new THREE.Group();
     giftGroup.add(baseGroup);
 
-    // Floor of box
+    // 1. Exterior base floor
     const floorGeo = new THREE.BoxGeometry(boxWidth, wallThick, boxDepth);
     const floorMesh = new THREE.Mesh(floorGeo, boxMat);
     floorMesh.position.y = -boxHeight / 2 + wallThick / 2;
     baseGroup.add(floorMesh);
 
-    // Inner velvet cushion pad on floor
-    const cushionGeo = new THREE.BoxGeometry(boxWidth - 0.15, 0.06, boxDepth - 0.15);
-    const cushionMesh = new THREE.Mesh(cushionGeo, interiorMat);
-    cushionMesh.position.y = floorMesh.position.y + 0.05;
+    // 2. ONE SINGLE Plush Champagne Silk Cushion covering the entire interior compartment
+    const cushionGeo = new THREE.BoxGeometry(boxWidth - wallThick * 2, 0.14, boxDepth - wallThick * 2);
+    const cushionMesh = new THREE.Mesh(cushionGeo, interiorCushionMat);
+    cushionMesh.position.y = -boxHeight / 2 + wallThick + 0.07;
     baseGroup.add(cushionMesh);
 
-    // Front Wall
+    // 3. Central Jewelry Display Pedestal in Champagne Silk
+    const pedGeo = new THREE.CylinderGeometry(0.38, 0.44, 0.12, 32);
+    const pedMesh = new THREE.Mesh(pedGeo, interiorCushionMat);
+    pedMesh.position.set(0, -boxHeight / 2 + wallThick + 0.14, 0);
+    baseGroup.add(pedMesh);
+
+    // 4. Front Exterior Wall
     const frontWall = new THREE.Mesh(
       new THREE.BoxGeometry(boxWidth, boxHeight, wallThick),
       boxMat
@@ -185,7 +212,7 @@ export default function HeroGiftScene({ onBoxClick }) {
     frontWall.position.set(0, 0, boxDepth / 2 - wallThick / 2);
     baseGroup.add(frontWall);
 
-    // Back Wall
+    // 5. Back Exterior Wall
     const backWall = new THREE.Mesh(
       new THREE.BoxGeometry(boxWidth, boxHeight, wallThick),
       boxMat
@@ -193,7 +220,7 @@ export default function HeroGiftScene({ onBoxClick }) {
     backWall.position.set(0, 0, -boxDepth / 2 + wallThick / 2);
     baseGroup.add(backWall);
 
-    // Left Wall
+    // 6. Left Exterior Wall
     const leftWall = new THREE.Mesh(
       new THREE.BoxGeometry(wallThick, boxHeight, boxDepth - wallThick * 2),
       boxMat
@@ -201,7 +228,7 @@ export default function HeroGiftScene({ onBoxClick }) {
     leftWall.position.set(-boxWidth / 2 + wallThick / 2, 0, 0);
     baseGroup.add(leftWall);
 
-    // Right Wall
+    // 7. Right Exterior Wall
     const rightWall = new THREE.Mesh(
       new THREE.BoxGeometry(wallThick, boxHeight, boxDepth - wallThick * 2),
       boxMat
@@ -209,40 +236,80 @@ export default function HeroGiftScene({ onBoxClick }) {
     rightWall.position.set(boxWidth / 2 - wallThick / 2, 0, 0);
     baseGroup.add(rightWall);
 
-    // Base Ribbon Band — Vertical (front, bottom, back)
-    const baseRibbonV = new THREE.Mesh(
-      new THREE.BoxGeometry(0.32, boxHeight + 0.02, boxDepth + 0.02),
+    // ── EXTERIOR ONLY SATIN RIBBON (Strictly on outside walls — NEVER crossing interior cavity) ──
+    const ribbonWidth = 0.32;
+    const ribbonThick = 0.02;
+
+    // Front wall exterior ribbon strip
+    const ribbonFront = new THREE.Mesh(
+      new THREE.BoxGeometry(ribbonWidth, boxHeight + 0.01, ribbonThick),
       ribbonMat
     );
-    baseGroup.add(baseRibbonV);
+    ribbonFront.position.set(0, 0, boxDepth / 2 + ribbonThick / 2);
+    baseGroup.add(ribbonFront);
 
-    // Base Ribbon Band — Horizontal (left, bottom, right)
-    const baseRibbonH = new THREE.Mesh(
-      new THREE.BoxGeometry(boxWidth + 0.02, boxHeight + 0.02, 0.32),
+    // Back wall exterior ribbon strip
+    const ribbonBack = new THREE.Mesh(
+      new THREE.BoxGeometry(ribbonWidth, boxHeight + 0.01, ribbonThick),
       ribbonMat
     );
-    baseGroup.add(baseRibbonH);
+    ribbonBack.position.set(0, 0, -boxDepth / 2 - ribbonThick / 2);
+    baseGroup.add(ribbonBack);
 
-    // ── 6. Warm Golden Interior Light Source ───────────────────────
-    // Emerges from the inside cavity
-    const interiorLight = new THREE.PointLight(0xf5dda0, 0.2, 7.0, 1.8);
-    interiorLight.position.set(0, -0.1, 0);
+    // Left wall exterior ribbon strip
+    const ribbonLeft = new THREE.Mesh(
+      new THREE.BoxGeometry(ribbonThick, boxHeight + 0.01, ribbonWidth),
+      ribbonMat
+    );
+    ribbonLeft.position.set(-boxWidth / 2 - ribbonThick / 2, 0, 0);
+    baseGroup.add(ribbonLeft);
+
+    // Right wall exterior ribbon strip
+    const ribbonRight = new THREE.Mesh(
+      new THREE.BoxGeometry(ribbonThick, boxHeight + 0.01, ribbonWidth),
+      ribbonMat
+    );
+    ribbonRight.position.set(boxWidth / 2 + ribbonThick / 2, 0, 0);
+    baseGroup.add(ribbonRight);
+
+    // Bottom exterior ribbon strips
+    const ribbonBottomV = new THREE.Mesh(
+      new THREE.BoxGeometry(ribbonWidth, ribbonThick, boxDepth + 0.02),
+      ribbonMat
+    );
+    ribbonBottomV.position.set(0, -boxHeight / 2 - ribbonThick / 2, 0);
+    baseGroup.add(ribbonBottomV);
+
+    const ribbonBottomH = new THREE.Mesh(
+      new THREE.BoxGeometry(boxWidth + 0.02, ribbonThick, ribbonWidth),
+      ribbonMat
+    );
+    ribbonBottomH.position.set(0, -boxHeight / 2 - ribbonThick / 2, 0);
+    baseGroup.add(ribbonBottomH);
+
+    // ── 6. Warm Golden Interior Light & Luxury Gift Treasure inside the ONE Cavity ──
+    // PointLight centered inside the single open compartment (Gold #C69A55 & Ivory #FFF7E9)
+    const interiorLight = new THREE.PointLight(0xFFF0CE, 0.3, 8.0, 1.6);
+    interiorLight.position.set(0, 0.25, 0);
     baseGroup.add(interiorLight);
 
-    // Glowing Inner Orb / Core
-    const innerOrbGeo = new THREE.SphereGeometry(0.24, 24, 24);
-    const innerOrbMat = new THREE.MeshStandardMaterial({
-      color: 0xf5dda0,
-      emissive: 0xd6b675,
-      emissiveIntensity: 1.2,
-      roughness: 0.2,
+    // A single glowing luxury gift (a faceted gold gem pendant resting on the jewelry pedestal)
+    const gemGeo = new THREE.OctahedronGeometry(0.34, 1);
+    const gemMat = new THREE.MeshPhysicalMaterial({
+      color: 0xC69A55,
+      emissive: 0x9B7432,
+      emissiveIntensity: 0.95,
+      metalness: 0.92,
+      roughness: 0.12,
+      clearcoat: 1.0,
+      transmission: 0.3,
+      ior: 1.65,
     });
-    const innerOrb = new THREE.Mesh(innerOrbGeo, innerOrbMat);
-    innerOrb.position.set(0, -0.15, 0);
-    baseGroup.add(innerOrb);
+    const treasureMesh = new THREE.Mesh(gemGeo, gemMat);
+    treasureMesh.position.set(0, -boxHeight / 2 + wallThick + 0.42, 0);
+    baseGroup.add(treasureMesh);
 
     // ── 7. Realistic Box Lid with Pivot Near Rear Edge ─────────────
-    // Pivot positioned at the top back edge so the lid rotates naturally
     const lidPivot = new THREE.Group();
     // Top-rear edge: y = boxHeight / 2, z = -boxDepth / 2
     lidPivot.position.set(0, boxHeight / 2, -boxDepth / 2);
@@ -259,9 +326,21 @@ export default function HeroGiftScene({ onBoxClick }) {
     lidTopMesh.position.y = 0.04;
     lidContent.add(lidTopMesh);
 
+    // Lid Underside Silk Lining (Visible when lid opens)
+    const lidUnderGeo = new THREE.BoxGeometry(boxWidth + 0.06, 0.02, boxDepth + 0.06);
+    const lidUnderMesh = new THREE.Mesh(lidUnderGeo, interiorWallMat);
+    lidUnderMesh.position.y = -0.01;
+    lidContent.add(lidUnderMesh);
+
+    // Lid Underside Luxury Gold Seal Medallion
+    const sealGeo = new THREE.CylinderGeometry(0.24, 0.24, 0.02, 32);
+    const sealMesh = new THREE.Mesh(sealGeo, bowMat);
+    sealMesh.position.set(0, -0.02, 0);
+    lidContent.add(sealMesh);
+
     // Lid Lips (the 4 descending edges that slip over the box base)
     const lipThick = 0.05;
-    const lipHeight = 0.30;
+    const lipHeight = 0.28;
     const lipGeoX = new THREE.BoxGeometry(boxWidth + 0.12, lipHeight, lipThick);
     const lipGeoZ = new THREE.BoxGeometry(lipThick, lipHeight, boxDepth + 0.12);
 
@@ -281,67 +360,58 @@ export default function HeroGiftScene({ onBoxClick }) {
     lipRight.position.set(boxWidth / 2 + 0.06 - lipThick / 2, -lipHeight / 2 + 0.04, 0);
     lidContent.add(lipRight);
 
-    // Lid Ribbon Bands (Moves with lid!)
+    // Lid Ribbon Bands (on top of lid only)
     const lidRibbonV = new THREE.Mesh(
-      new THREE.BoxGeometry(0.33, 0.09, boxDepth + 0.14),
+      new THREE.BoxGeometry(ribbonWidth, 0.03, boxDepth + 0.13),
       ribbonMat
     );
-    lidRibbonV.position.y = 0.04;
+    lidRibbonV.position.y = 0.08 + 0.015;
     lidContent.add(lidRibbonV);
 
     const lidRibbonH = new THREE.Mesh(
-      new THREE.BoxGeometry(boxWidth + 0.14, 0.09, 0.33),
+      new THREE.BoxGeometry(boxWidth + 0.13, 0.03, ribbonWidth),
       ribbonMat
     );
-    lidRibbonH.position.y = 0.04;
+    lidRibbonH.position.y = 0.08 + 0.015;
     lidContent.add(lidRibbonH);
 
-    // ── Sophisticated Ribbon Bow with 4 Curved Loops & Tails ──
+    // ── Classic Luxury Satin Ribbon Bow (Firmly anchored to lid top) ──
     const bowGroup = new THREE.Group();
-    bowGroup.position.set(0, 0.1, 0);
+    bowGroup.position.set(0, 0.09, 0);
     lidContent.add(bowGroup);
 
     // Center Knot
-    const knotGeo = new THREE.SphereGeometry(0.14, 18, 18);
+    const knotGeo = new THREE.SphereGeometry(0.13, 18, 18);
     const knotMesh = new THREE.Mesh(knotGeo, bowMat);
-    knotMesh.scale.set(1.1, 0.8, 1.1);
+    knotMesh.scale.set(1.1, 0.75, 1.1);
     bowGroup.add(knotMesh);
 
-    // 4 Curved Satin Ribbon Loops
-    const loopGeo = new THREE.TorusGeometry(0.28, 0.075, 16, 36, Math.PI * 1.85);
+    // Left Satin Loop
+    const loopGeo = new THREE.TorusGeometry(0.26, 0.07, 16, 32, Math.PI * 1.8);
 
-    const loop1 = new THREE.Mesh(loopGeo, bowMat);
-    loop1.position.set(-0.24, 0.16, -0.22);
-    loop1.rotation.set(0.6, 0.7, -0.3);
-    bowGroup.add(loop1);
+    const loopLeft = new THREE.Mesh(loopGeo, bowMat);
+    loopLeft.position.set(-0.22, 0.08, 0);
+    loopLeft.rotation.set(0.2, 0.3, -0.4);
+    bowGroup.add(loopLeft);
 
-    const loop2 = new THREE.Mesh(loopGeo, bowMat);
-    loop2.position.set(0.24, 0.16, 0.22);
-    loop2.rotation.set(-0.6, -0.7, 0.3);
-    bowGroup.add(loop2);
+    // Right Satin Loop
+    const loopRight = new THREE.Mesh(loopGeo, bowMat);
+    loopRight.position.set(0.22, 0.08, 0);
+    loopRight.rotation.set(-0.2, -0.3, 0.4);
+    bowGroup.add(loopRight);
 
-    const loop3 = new THREE.Mesh(loopGeo, bowMat);
-    loop3.position.set(0.22, 0.16, -0.24);
-    loop3.rotation.set(0.6, -0.7, 0.3);
-    bowGroup.add(loop3);
-
-    const loop4 = new THREE.Mesh(loopGeo, bowMat);
-    loop4.position.set(-0.22, 0.16, 0.24);
-    loop4.rotation.set(-0.6, 0.7, -0.3);
-    bowGroup.add(loop4);
-
-    // Flowing Ribbon Tails draped across the lid
-    const tailGeo = new THREE.CylinderGeometry(0.06, 0.14, 0.65, 12);
-    tailGeo.scale(1, 1, 0.2); // flatten into ribbon strip
+    // Flowing Ribbon Tails draped neatly across the lid
+    const tailGeo = new THREE.CylinderGeometry(0.05, 0.12, 0.65, 12);
+    tailGeo.scale(1, 1, 0.16);
 
     const tail1 = new THREE.Mesh(tailGeo, ribbonMat);
-    tail1.position.set(-0.32, 0.02, 0.34);
-    tail1.rotation.set(1.4, 0.3, -0.8);
+    tail1.position.set(-0.26, 0.02, 0.30);
+    tail1.rotation.set(1.4, 0.25, -0.5);
     bowGroup.add(tail1);
 
     const tail2 = new THREE.Mesh(tailGeo, ribbonMat);
-    tail2.position.set(0.34, 0.02, -0.3);
-    tail2.rotation.set(-1.3, -0.4, 0.7);
+    tail2.position.set(0.28, 0.02, 0.30);
+    tail2.rotation.set(1.4, -0.25, 0.5);
     bowGroup.add(tail2);
 
     // ── 8. Golden Dust & Rising Magical Sparkles ───────────────────
@@ -617,8 +687,10 @@ export default function HeroGiftScene({ onBoxClick }) {
       camera.position.y = 1.1 + mouse.y * 0.25;
       camera.lookAt(0, 0.1, 0);
 
-      // Inner orb breathing pulse
-      innerOrb.scale.setScalar(1.0 + Math.sin(elapsedTime * 3) * 0.08);
+      // Luxury golden treasure gentle pulse & slow rotation inside single cavity
+      treasureMesh.scale.setScalar(1.0 + Math.sin(elapsedTime * 2.5) * 0.06);
+      treasureMesh.rotation.y = elapsedTime * 0.6;
+      treasureMesh.rotation.x = Math.sin(elapsedTime * 0.8) * 0.15;
 
       renderer.render(scene, camera);
     };
@@ -639,13 +711,16 @@ export default function HeroGiftScene({ onBoxClick }) {
       bgPlaneMat.dispose();
       bgTexture.dispose();
       boxMat.dispose();
-      interiorMat.dispose();
+      interiorCushionMat.dispose();
+      interiorWallMat.dispose();
       ribbonMat.dispose();
       bowMat.dispose();
       floorGeo.dispose();
       cushionGeo.dispose();
-      innerOrbGeo.dispose();
-      innerOrbMat.dispose();
+      pedGeo.dispose();
+      sealGeo.dispose();
+      gemGeo.dispose();
+      gemMat.dispose();
       ambientGeo.dispose();
       goldParticleMat.dispose();
       burstGeo.dispose();
@@ -660,20 +735,45 @@ export default function HeroGiftScene({ onBoxClick }) {
     }
   };
 
+  if (!webGlAvailable) {
+    return (
+      <div
+        onClick={onBoxClick}
+        className="relative w-full h-[450px] sm:h-[550px] flex items-center justify-center cursor-pointer group select-none"
+        aria-label="Champagne Dream Luxury Gift Box"
+      >
+        <div className="relative w-72 h-72 sm:w-84 sm:h-84 rounded-3xl bg-gradient-to-br from-[#2D1625] via-[#1D111A] to-[#120B11] border border-[#C69A55]/40 shadow-[0_20px_60px_rgba(74,24,48,0.6)] flex flex-col items-center justify-center p-8 text-center transition-all duration-500 group-hover:scale-105 group-hover:border-[#C69A55]">
+          <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-[#4A1830] to-[#2B101D] border border-[#C69A55]/60 flex items-center justify-center shadow-lg mb-6 group-hover:rotate-6 transition-transform">
+            <span className="text-5xl">🎁</span>
+          </div>
+          <span className="font-serif text-2xl font-bold text-[#FFF7E9] tracking-wider mb-2">
+            CHAMPAGNE DREAM
+          </span>
+          <p className="text-xs text-[#E9D7B8]/80 font-sans max-w-xs leading-relaxed">
+            Every Gift Has a Story • Click to open questionnaire
+          </p>
+          <div className="mt-5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-serif uppercase tracking-widest text-[#17131A] bg-gradient-to-r from-[#C69A55] to-[#E9D7B8] font-bold shadow-md">
+            <span>Explore Gift Concierge →</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative w-full h-[500px] sm:h-[600px] lg:h-[680px] flex items-center justify-center select-none">
-      {/* 3D WebGL Canvas */}
+      {/* 3D WebGL Canvas — no browser title tooltip overlay */}
       <div
         ref={mountRef}
         className="w-full h-full cursor-pointer"
-        title="Discover the Champagne Dream gift box — click to interact"
+        aria-label="Interactive 3D Champagne Dream gift box"
       />
 
       {/* Floating Status & Replay Control */}
       <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-3 pointer-events-auto">
-        <div className="px-4 py-2 rounded-full bg-luxury-secondary/85 border border-luxury-border/80 backdrop-blur-md shadow-champagne-sm flex items-center gap-2.5 transition-all duration-300">
-          <span className="w-2 h-2 rounded-full bg-champagne animate-pulse" />
-          <span className="text-xs font-serif tracking-widest uppercase text-champagne-light">
+        <div className="px-4 py-2 rounded-full bg-[#261722]/95 border border-[#4A1830] backdrop-blur-md shadow-[0_4px_16px_rgba(74,24,48,0.4)] flex items-center gap-2.5 transition-all duration-300">
+          <span className="w-2 h-2 rounded-full bg-[#C69A55] animate-pulse" />
+          <span className="text-xs font-serif tracking-widest uppercase text-[#E9D7B8]">
             {animPhase === "playing"
               ? "Unwrapping Gift..."
               : "✦ Champagne Dream Revealed ✦"}
@@ -683,8 +783,7 @@ export default function HeroGiftScene({ onBoxClick }) {
         {/* Replay Magic Button */}
         <button
           onClick={handleReplay}
-          className="group px-3 py-2 rounded-full bg-luxury-elevated/90 hover:bg-luxury-burgundy border border-luxury-border hover:border-champagne/60 text-champagne hover:text-champagne-light backdrop-blur-md transition-all duration-300 flex items-center gap-1.5 text-xs font-sans shadow-md cursor-pointer"
-          title="Replay the gift opening animation"
+          className="group px-3.5 py-2 rounded-full bg-[#261722]/90 hover:bg-[#4A1830] border border-[#4A1830] hover:border-[#C69A55]/60 text-[#C69A55] hover:text-[#FFF7E9] backdrop-blur-md transition-all duration-300 flex items-center gap-1.5 text-xs font-sans shadow-md cursor-pointer"
           aria-label="Replay the gift opening animation"
         >
           <RotateCcw className="w-3.5 h-3.5 transition-transform duration-500 group-hover:-rotate-180" />

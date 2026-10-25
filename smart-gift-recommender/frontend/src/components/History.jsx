@@ -73,19 +73,19 @@ function HistoryItem({ item, onReSearch, onRemove }) {
         <div className="flex items-start gap-3 flex-1 min-w-0">
           {/* Occasion emoji — decorative */}
           <span
-            className="text-xl mt-0.5 shrink-0 leading-none"
+            className="text-2xl mt-0.5 shrink-0 leading-none"
             aria-hidden="true"
           >
             {emoji}
           </span>
 
           <div className="flex-1 min-w-0">
-            <div className="flex flex-wrap items-center gap-1.5 mb-1">
-              <span className="text-sm font-semibold text-neutral-800">
+            <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
+              <span className="text-base font-serif font-bold text-[#FFF7E9]">
                 {fmt(item.occasion)}
               </span>
-              <span className="text-xs text-neutral-400">for</span>
-              <span className="text-sm text-neutral-700">{fmt(item.relationship)}</span>
+              <span className="text-xs text-[#E9D7B8]/60">for</span>
+              <span className="text-sm font-medium text-[#E9D7B8]">{fmt(item.relationship)}</span>
             </div>
 
             {/* Badges row */}
@@ -97,7 +97,7 @@ function HistoryItem({ item, onReSearch, onRemove }) {
             </div>
 
             {/* Timestamp */}
-            <p className="text-xs text-neutral-400 mt-1.5">{formatDate(item.created_at)}</p>
+            <p className="text-[11px] text-[#D8CABA]/60 mt-2 font-sans">{formatDate(item.created_at)}</p>
           </div>
         </div>
 
@@ -111,25 +111,25 @@ function HistoryItem({ item, onReSearch, onRemove }) {
               gender:       item.gender,
             })}
             aria-label={`Search again: ${fmt(item.occasion)} for ${fmt(item.relationship)}`}
-            className="flex items-center gap-1.5 px-3 py-2 min-h-[44px] rounded-base text-xs font-medium
-              border border-burgundy-200 text-burgundy-600
-              hover:bg-burgundy-50 hover:border-burgundy-400
-              transition-colors duration-150
-              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy-500 focus-visible:ring-offset-1
+            className="flex items-center gap-1.5 px-3.5 py-2 min-h-[44px] rounded-xl text-xs font-semibold
+              border border-[#4A1830] bg-[#1E131B] text-[#E9D7B8]
+              hover:bg-[#311C2C] hover:border-[#C69A55]/60 hover:text-[#C69A55]
+              transition-all duration-150
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C69A55] focus-visible:ring-offset-2
               cursor-pointer"
           >
             <IconRefresh />
-            Search again
+            <span>Search again</span>
           </button>
 
           <button
             onClick={() => onRemove(item.id)}
             aria-label={`Remove ${fmt(item.occasion)} search from history`}
-            className="flex items-center justify-center min-w-[44px] min-h-[44px] rounded-base
-              border border-transparent text-neutral-400
-              hover:border-rose-200 hover:text-rose-500 hover:bg-rose-50
-              transition-colors duration-150
-              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy-500 focus-visible:ring-offset-1
+            className="flex items-center justify-center min-w-[44px] min-h-[44px] rounded-xl
+              border border-[#4A1830]/50 text-[#D8CABA]/60
+              hover:border-rose-900/60 hover:text-rose-300 hover:bg-rose-950/40
+              transition-all duration-150
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C69A55] focus-visible:ring-offset-2
               cursor-pointer"
           >
             <IconTrash />
@@ -201,9 +201,9 @@ export default function History({ onReSearch }) {
       {/* Page header */}
       <div className="flex items-start justify-between gap-4 mb-6 flex-wrap">
         <div>
-          <h1 className="font-serif text-3xl font-semibold text-burgundy-800">Search History</h1>
-          <p className="text-sm text-neutral-500 mt-1">
-            Your previous gift searches — private to this browser session.
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#FFF7E9]">Search History</h1>
+          <p className="text-sm text-[#E9D7B8]/80 mt-1 font-sans font-light">
+            Your previous gift searches — stored privately for this browser session.
           </p>
         </div>
 
@@ -214,33 +214,33 @@ export default function History({ onReSearch }) {
               <button
                 onClick={() => setConfirmClear(true)}
                 aria-label="Clear all search history"
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-base
-                  border border-neutral-200 text-neutral-500
-                  hover:border-rose-200 hover:text-rose-600 hover:bg-rose-50
-                  transition-colors duration-150
-                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy-500 focus-visible:ring-offset-1
+                className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium rounded-xl
+                  border border-[#4A1830] text-[#D8CABA] bg-[#241620]
+                  hover:border-rose-900/60 hover:text-rose-300 hover:bg-rose-950/40
+                  transition-all duration-150
+                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C69A55]
                   cursor-pointer self-start"
               >
                 <IconTrash />
-                Clear all
+                <span>Clear all</span>
               </button>
             ) : (
               <div className="flex items-center gap-2 self-start">
-                <span className="text-xs text-neutral-500">Remove all?</span>
+                <span className="text-xs text-[#E9D7B8]">Remove all?</span>
                 <button
                   onClick={clearAll}
-                  className="text-xs px-3 py-1.5 rounded-base bg-rose-500 text-white
-                    hover:bg-rose-600 transition-colors duration-150
-                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy-500 focus-visible:ring-offset-1
+                  className="text-xs px-3.5 py-1.5 rounded-xl bg-rose-600 text-white
+                    hover:bg-rose-500 transition-colors duration-150
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C69A55]
                     cursor-pointer font-medium"
                 >
                   Yes, clear
                 </button>
                 <button
                   onClick={() => setConfirmClear(false)}
-                  className="text-xs px-3 py-1.5 rounded-base border border-neutral-200 text-neutral-500
-                    hover:bg-neutral-50 transition-colors duration-150
-                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-burgundy-500 focus-visible:ring-offset-1
+                  className="text-xs px-3.5 py-1.5 rounded-xl border border-[#4A1830] text-[#D8CABA] bg-[#241620]
+                    hover:bg-[#311C2C] transition-colors duration-150
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C69A55]
                     cursor-pointer"
                 >
                   Cancel
@@ -272,23 +272,23 @@ export default function History({ onReSearch }) {
 
       {/* Empty state */}
       {!loading && !error && items.length === 0 && (
-        <Card variant="flat" padding="lg" className="text-center">
+        <Card variant="default" padding="lg" className="text-center p-10">
           <div
-            className="w-16 h-16 rounded-full bg-burgundy-50 border border-burgundy-100
-              flex items-center justify-center mx-auto mb-4 text-burgundy-400"
+            className="w-16 h-16 rounded-2xl bg-[#4A1830] border border-[#C69A55]/40
+              flex items-center justify-center mx-auto mb-4 text-[#C69A55]"
             aria-hidden="true"
           >
             {/* Clock icon */}
-            <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none"
+            <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="10"/>
               <polyline points="12 6 12 12 16 14"/>
             </svg>
           </div>
-          <h2 className="font-serif text-xl font-semibold text-burgundy-700 mb-2">
+          <h2 className="font-serif text-2xl font-bold text-[#FFF7E9] mb-2">
             No searches yet
           </h2>
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-[#E9D7B8]/75 font-sans">
             Your gift searches will appear here so you can revisit them anytime.
           </p>
         </Card>

@@ -65,11 +65,11 @@ const INTERESTS = [
 
 // ── STEP 4: BUDGET TIERS ──────────────────────────────────────────────────
 const BUDGETS = [
-  { id: "under-500", label: "Under ₹500", desc: "Modest, sweet & thoughtful tokens", range: "₹200 - ₹499" },
-  { id: "500-1000", label: "₹500 – ₹1,000", desc: "Polished gestures for any celebration", range: "₹500 - ₹1,000" },
-  { id: "1000-2500", label: "₹1,000 – ₹2,500", desc: "Generous, artisanal & memorable", range: "₹1,000 - ₹2,500" },
-  { id: "2500-5000", label: "₹2,500 – ₹5,000", desc: "Premium bespoke & luxury keepsakes", range: "₹2,500 - ₹5,000" },
-  { id: "above-5000", label: "₹5,000 & Above", desc: "Heirloom craftsmanship & grand statements", range: "₹5,000+" },
+  { id: "under-500", label: "Under ₹500", desc: "Modest, sweet & thoughtful tokens", range: "₹200 - ₹499", backend: "low" },
+  { id: "500-1000", label: "₹500 – ₹1,000", desc: "Polished gestures for any celebration", range: "₹500 - ₹1,000", backend: "low" },
+  { id: "1000-2500", label: "₹1,000 – ₹2,500", desc: "Generous, artisanal & memorable", range: "₹1,000 - ₹2,500", backend: "medium" },
+  { id: "2500-5000", label: "₹2,500 – ₹5,000", desc: "Premium bespoke & luxury keepsakes", range: "₹2,500 - ₹5,000", backend: "high" },
+  { id: "above-5000", label: "₹5,000 & Above", desc: "Heirloom craftsmanship & grand statements", range: "₹5,000+", backend: "high" },
 ];
 
 // ── STEP 5: GIFT STYLE & AGE PREFERENCES ──────────────────────────────────
@@ -162,53 +162,60 @@ export default function GiftDiscoveryWizard({
       particleCount: 60,
       spread: 70,
       origin: { y: 0.6 },
-      colors: ["#00F2FE", "#8B5CF6", "#FF007A", "#F59E0B"],
+      colors: ["#C69A55", "#DCB372", "#4A1830", "#E9D7B8"],
     });
 
+    const budgetMatch = BUDGETS.find((b) => b.id === formData.budget);
+    const budgetBackend = budgetMatch ? budgetMatch.backend : "medium";
+
+    const submitDelay = typeof process !== "undefined" && process.env?.NODE_ENV === "test" ? 10 : 300;
     setTimeout(() => {
       setIsSubmitting(false);
       if (onDiscover) {
-        onDiscover(formData);
+        onDiscover({
+          ...formData,
+          budgetBackend,
+        });
       }
-    }, 700);
+    }, submitDelay);
   };
 
   return (
-    <section id="gift-wizard-section" className="relative w-full py-20 lg:py-28 bg-luxury-main text-luxury-text overflow-hidden">
+    <section id="gift-wizard-section" className="relative w-full py-20 lg:py-28 bg-transparent text-[#FFF7E9] overflow-hidden">
       {/* Ambient warm champagne & burgundy background glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-gradient-to-tr from-champagne-glow via-luxury-burgundy/20 to-transparent blur-[140px] pointer-events-none rounded-full" />
-      <div className="absolute inset-0 bg-[radial-gradient(#d6b675_0.5px,transparent_0.5px)] opacity-[0.04] [background-size:28px_28px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-gradient-to-tr from-[#C69A55]/15 via-[#4A1830]/40 to-transparent blur-[140px] pointer-events-none rounded-full" />
+      <div className="absolute inset-0 bg-[radial-gradient(#C69A55_0.5px,transparent_0.5px)] opacity-[0.05] [background-size:28px_28px] pointer-events-none" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Wizard Header */}
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-serif uppercase tracking-widest text-champagne-light bg-luxury-card border border-luxury-border shadow-champagne-sm mb-4">
-            <Compass className="w-3.5 h-3.5 text-champagne animate-spin-slow" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-serif uppercase tracking-widest text-[#E9D7B8] bg-[#261722]/95 border border-[#4A1830] shadow-[0_2px_12px_rgba(74,24,48,0.4)] mb-4">
+            <Compass className="w-3.5 h-3.5 text-[#C69A55] animate-spin-slow" />
             <span>Curated Gifting Concierge</span>
           </div>
 
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-luxury-text mb-3">
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#FFF7E9] mb-3">
             Gift Discovery Questionnaire
           </h2>
-          <p className="text-sm sm:text-base text-luxury-muted font-sans font-light">
+          <p className="text-sm sm:text-base text-[#E9D7B8]/80 font-sans font-light">
             Guide our recommendation intelligence through five dimensions of sentiment, bond, and taste.
           </p>
         </div>
 
         {/* Wizard Card Container */}
-        <div className="relative rounded-3xl bg-luxury-card/90 border border-luxury-border shadow-luxury-card backdrop-blur-2xl p-6 sm:p-10 overflow-hidden">
+        <div className="relative rounded-3xl bg-gradient-to-b from-[#261722]/95 via-[#1E131B]/95 to-[#17131A]/95 border border-[#4A1830] shadow-[0_12px_45px_rgba(0,0,0,0.6)] backdrop-blur-2xl p-6 sm:p-10 overflow-hidden">
           
-          {/* Subtle Top Champagne Glowing Edge */}
-          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-champagne to-transparent" />
+          {/* Subtle Top Gold Glowing Edge */}
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-[#C69A55] to-transparent" />
 
           {/* Step Progress Tracker */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between text-xs font-serif uppercase text-luxury-muted tracking-wider mb-2.5">
-              <span className="flex items-center gap-2 text-champagne font-semibold">
+          <div className="mb-8" aria-live="polite">
+            <div className="flex items-center justify-between text-xs font-serif uppercase text-[#E9D7B8] tracking-wider mb-2.5">
+              <span className="flex items-center gap-2 text-[#C69A55] font-semibold">
                 <span>Phase {step} of {totalSteps}</span>
                 <span>•</span>
-                <span className="text-champagne-light">
+                <span className="text-[#E9D7B8]">
                   {step === 1 && "Recipient Dimension"}
                   {step === 2 && "Celebration Timeline"}
                   {step === 3 && "Passions & Interests"}
@@ -218,18 +225,18 @@ export default function GiftDiscoveryWizard({
               </span>
               <button
                 onClick={handleReset}
-                className="hover:text-champagne-light transition-colors flex items-center gap-1 cursor-pointer text-luxury-muted"
+                className="hover:text-[#FFF7E9] transition-colors flex items-center gap-1 cursor-pointer text-[#E9D7B8]"
                 title="Restart Discovery"
               >
-                <RotateCcw className="w-3 h-3 text-champagne" />
+                <RotateCcw className="w-3 h-3 text-[#C69A55]" />
                 <span>Reset</span>
               </button>
             </div>
 
             {/* Progress Bar */}
-            <div className="w-full h-1.5 rounded-full bg-luxury-elevated overflow-hidden relative">
+            <div className="w-full h-1.5 rounded-full bg-[#17131A] border border-[#4A1830] overflow-hidden relative">
               <motion.div
-                className="h-full bg-gradient-to-r from-champagne via-champagne-light to-[#fcf5e5] rounded-full shadow-champagne-sm"
+                className="h-full bg-gradient-to-r from-[#C69A55] via-[#DCB372] to-[#E9D7B8] rounded-full shadow-[0_0_10px_rgba(198,154,85,0.5)]"
                 initial={false}
                 animate={{ width: `${(step / totalSteps) * 100}%` }}
                 transition={{ duration: 0.4, ease: "easeInOut" }}
@@ -238,7 +245,7 @@ export default function GiftDiscoveryWizard({
           </div>
 
           {/* Form Step Content with AnimatePresence */}
-          <AnimatePresence mode="wait">
+          <AnimatePresence initial={false}>
             {/* ── STEP 1: RELATIONSHIP ── */}
             {step === 1 && (
               <motion.div
@@ -270,8 +277,8 @@ export default function GiftDiscoveryWizard({
                         className={`text-left p-4 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between group
                           ${
                             isSelected
-                              ? "bg-luxury-burgundy/60 border-champagne shadow-champagne-sm ring-1 ring-champagne/40"
-                              : "bg-luxury-elevated/70 border-luxury-border/80 hover:border-champagne/40 hover:bg-luxury-elevated"
+                              ? "bg-gradient-to-br from-[#4A1830] to-[#2B101D] border-2 border-[#C69A55] shadow-[0_0_18px_rgba(198,154,85,0.35)] ring-1 ring-[#C69A55]/50 scale-[1.02]"
+                              : "bg-[#21161F]/85 border-[#4A1830] hover:border-[#C69A55]/60 hover:bg-[#2C1A27]"
                           }`}
                       >
                         <div className="flex items-start justify-between">
@@ -279,14 +286,14 @@ export default function GiftDiscoveryWizard({
                             {rel.symbol}
                           </span>
                           {isSelected && (
-                            <span className="w-5 h-5 rounded-full bg-champagne text-luxury-main flex items-center justify-center font-bold text-xs">
+                            <span className="w-5 h-5 rounded-full bg-[#C69A55] text-[#17131A] flex items-center justify-center font-bold text-xs shadow-sm">
                               <Check className="w-3.5 h-3.5 stroke-[3]" />
                             </span>
                           )}
                         </div>
                         <div>
-                          <p className="font-serif font-semibold text-sm text-luxury-text">{rel.label}</p>
-                          <p className="text-[11px] text-luxury-muted mt-0.5 line-clamp-1">{rel.desc}</p>
+                          <p className="font-serif font-semibold text-sm text-[#FFF7E9]">{rel.label}</p>
+                          <p className="text-[11px] text-[#E9D7B8]/75 mt-0.5 line-clamp-1">{rel.desc}</p>
                         </div>
                       </button>
                     );
@@ -306,11 +313,11 @@ export default function GiftDiscoveryWizard({
                 className="space-y-6"
               >
                 <div>
-                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-luxury-text flex items-center gap-2.5">
-                    <Calendar className="w-5 h-5 text-champagne" />
+                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#FFF7E9] flex items-center gap-2.5">
+                    <Calendar className="w-5 h-5 text-[#C69A55]" />
                     <span>What milestone are you celebrating?</span>
                   </h3>
-                  <p className="text-xs sm:text-sm text-luxury-muted mt-1">
+                  <p className="text-xs sm:text-sm text-[#E9D7B8]/80 mt-1">
                     Occasions anchor the emotional resonance of the recommendation.
                   </p>
                 </div>
@@ -326,8 +333,8 @@ export default function GiftDiscoveryWizard({
                         className={`text-left p-4 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between group
                           ${
                             isSelected
-                              ? "bg-luxury-burgundy/60 border-champagne shadow-champagne-sm ring-1 ring-champagne/40"
-                              : "bg-luxury-elevated/70 border-luxury-border/80 hover:border-champagne/40 hover:bg-luxury-elevated"
+                              ? "bg-gradient-to-br from-[#4A1830] to-[#2B101D] border-2 border-[#C69A55] shadow-[0_0_18px_rgba(198,154,85,0.35)] ring-1 ring-[#C69A55]/50 scale-[1.02]"
+                              : "bg-[#21161F]/85 border-[#4A1830] hover:border-[#C69A55]/60 hover:bg-[#2C1A27]"
                           }`}
                       >
                         <div className="flex items-start justify-between">
@@ -335,14 +342,14 @@ export default function GiftDiscoveryWizard({
                             {occ.symbol}
                           </span>
                           {isSelected && (
-                            <span className="w-5 h-5 rounded-full bg-champagne text-luxury-main flex items-center justify-center font-bold text-xs">
+                            <span className="w-5 h-5 rounded-full bg-[#C69A55] text-[#17131A] flex items-center justify-center font-bold text-xs shadow-sm">
                               <Check className="w-3.5 h-3.5 stroke-[3]" />
                             </span>
                           )}
                         </div>
                         <div>
-                          <p className="font-serif font-semibold text-sm text-luxury-text">{occ.label}</p>
-                          <p className="text-[11px] text-luxury-muted mt-0.5 line-clamp-1">{occ.desc}</p>
+                          <p className="font-serif font-semibold text-sm text-[#FFF7E9]">{occ.label}</p>
+                          <p className="text-[11px] text-[#E9D7B8]/75 mt-0.5 line-clamp-1">{occ.desc}</p>
                         </div>
                       </button>
                     );
@@ -362,11 +369,11 @@ export default function GiftDiscoveryWizard({
                 className="space-y-6"
               >
                 <div>
-                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-luxury-text flex items-center gap-2.5">
-                    <Sparkles className="w-5 h-5 text-champagne" />
+                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#FFF7E9] flex items-center gap-2.5">
+                    <Sparkles className="w-5 h-5 text-[#C69A55]" />
                     <span>What sparks their curiosity and passions?</span>
                   </h3>
-                  <p className="text-xs sm:text-sm text-luxury-muted mt-1">
+                  <p className="text-xs sm:text-sm text-[#E9D7B8]/80 mt-1">
                     Select all that apply. Multiple interests yield rich hybrid suggestions.
                   </p>
                 </div>
@@ -382,8 +389,8 @@ export default function GiftDiscoveryWizard({
                         className={`text-left p-3.5 rounded-xl border transition-all duration-200 cursor-pointer flex items-center justify-between group
                           ${
                             isSelected
-                              ? "bg-luxury-burgundy/60 border-champagne text-luxury-text shadow-champagne-sm"
-                              : "bg-luxury-elevated/70 border-luxury-border/80 text-luxury-muted hover:border-champagne/40"
+                              ? "bg-gradient-to-br from-[#4A1830] to-[#2B101D] border-2 border-[#C69A55] text-[#FFF7E9] shadow-[0_0_14px_rgba(198,154,85,0.3)] ring-1 ring-[#C69A55]/40"
+                              : "bg-[#21161F]/85 border-[#4A1830] text-[#E9D7B8] hover:border-[#C69A55]/50 hover:bg-[#2C1A27]"
                           }`}
                       >
                         <div className="flex items-center gap-2.5">
@@ -391,7 +398,7 @@ export default function GiftDiscoveryWizard({
                           <span className="text-xs font-semibold">{item.label}</span>
                         </div>
                         {isSelected && (
-                          <span className="w-4 h-4 rounded-full bg-champagne text-luxury-main flex items-center justify-center text-[10px] font-bold">
+                          <span className="w-4 h-4 rounded-full bg-[#C69A55] text-[#17131A] flex items-center justify-center text-[10px] font-bold">
                             ✓
                           </span>
                         )}
@@ -413,11 +420,11 @@ export default function GiftDiscoveryWizard({
                 className="space-y-6"
               >
                 <div>
-                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-luxury-text flex items-center gap-2.5">
-                    <Wallet className="w-5 h-5 text-champagne" />
+                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#FFF7E9] flex items-center gap-2.5">
+                    <Wallet className="w-5 h-5 text-[#C69A55]" />
                     <span>What budget feels comfortable for this gift?</span>
                   </h3>
-                  <p className="text-xs sm:text-sm text-luxury-muted mt-1">
+                  <p className="text-xs sm:text-sm text-[#E9D7B8]/80 mt-1">
                     All tiers prioritize quality craftsmanship and verified value in Indian Rupees (₹).
                   </p>
                 </div>
@@ -433,18 +440,18 @@ export default function GiftDiscoveryWizard({
                         className={`w-full text-left p-4 rounded-2xl border transition-all duration-200 cursor-pointer flex items-center justify-between
                           ${
                             isSelected
-                              ? "bg-luxury-burgundy/60 border-champagne shadow-champagne-sm ring-1 ring-champagne/40"
-                              : "bg-luxury-elevated/70 border-luxury-border/80 hover:border-champagne/40"
+                              ? "bg-gradient-to-br from-[#4A1830] to-[#2B101D] border-2 border-[#C69A55] shadow-[0_0_18px_rgba(198,154,85,0.35)] ring-1 ring-[#C69A55]/50"
+                              : "bg-[#21161F]/85 border-[#4A1830] hover:border-[#C69A55]/50 hover:bg-[#2C1A27]"
                           }`}
                       >
                         <div className="flex items-center gap-4">
-                          <span className="font-serif font-bold text-base text-luxury-text">{b.label}</span>
-                          <span className="text-xs text-luxury-muted font-sans hidden sm:inline">{b.desc}</span>
+                          <span className="font-serif font-bold text-base text-[#FFF7E9]">{b.label}</span>
+                          <span className="text-xs text-[#E9D7B8]/75 font-sans hidden sm:inline">{b.desc}</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className="text-xs font-serif font-semibold text-champagne-light">{b.range}</span>
+                          <span className="text-xs font-serif font-semibold text-[#C69A55]">{b.range}</span>
                           {isSelected && (
-                            <span className="w-5 h-5 rounded-full bg-champagne text-luxury-main flex items-center justify-center font-bold text-xs">
+                            <span className="w-5 h-5 rounded-full bg-[#C69A55] text-[#17131A] flex items-center justify-center font-bold text-xs">
                               ✓
                             </span>
                           )}
@@ -467,18 +474,18 @@ export default function GiftDiscoveryWizard({
                 className="space-y-6"
               >
                 <div>
-                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-luxury-text flex items-center gap-2.5">
-                    <Sliders className="w-5 h-5 text-champagne" />
+                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#FFF7E9] flex items-center gap-2.5">
+                    <Sliders className="w-5 h-5 text-[#C69A55]" />
                     <span>Fine-tune the gift's personality and tone</span>
                   </h3>
-                  <p className="text-xs sm:text-sm text-luxury-muted mt-1">
+                  <p className="text-xs sm:text-sm text-[#E9D7B8]/80 mt-1">
                     Choose the emotional posture and refinement of your gift.
                   </p>
                 </div>
 
                 {/* Gift Style Selection */}
                 <div className="space-y-2.5">
-                  <label className="text-xs font-serif uppercase text-champagne-light tracking-wider block">
+                  <label className="text-xs font-serif uppercase text-[#E9D7B8] tracking-wider block">
                     Preferred Gift Style
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -492,15 +499,15 @@ export default function GiftDiscoveryWizard({
                           className={`text-left p-3.5 rounded-xl border transition-all duration-150 cursor-pointer flex flex-col justify-between
                             ${
                               isSelected
-                                ? "bg-luxury-burgundy/60 border-champagne text-luxury-text shadow-champagne-sm"
-                                : "bg-luxury-elevated/70 border-luxury-border text-luxury-muted hover:border-champagne/40"
+                                ? "bg-gradient-to-br from-[#4A1830] to-[#2B101D] border-2 border-[#C69A55] text-[#FFF7E9] shadow-[0_0_14px_rgba(198,154,85,0.3)]"
+                                : "bg-[#21161F]/85 border-[#4A1830] text-[#E9D7B8] hover:border-[#C69A55]/50 hover:bg-[#2C1A27]"
                             }`}
                         >
                           <div className="flex items-center justify-between">
-                            <span className="font-semibold text-xs text-luxury-text">{style.label}</span>
-                            {isSelected && <span className="text-champagne text-xs">✓</span>}
+                            <span className="font-semibold text-xs text-[#FFF7E9]">{style.label}</span>
+                            {isSelected && <span className="text-[#C69A55] text-xs font-bold">✓</span>}
                           </div>
-                          <span className="text-[11px] text-luxury-muted mt-1">{style.desc}</span>
+                          <span className="text-[11px] text-[#E9D7B8]/75 mt-1">{style.desc}</span>
                         </button>
                       );
                     })}
@@ -510,13 +517,13 @@ export default function GiftDiscoveryWizard({
                 {/* Age Range & Gender Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-serif uppercase text-luxury-muted tracking-wider block">
+                    <label className="text-xs font-serif uppercase text-[#E9D7B8] tracking-wider block">
                       Recipient Life Stage
                     </label>
                     <select
                       value={formData.ageGroup}
                       onChange={(e) => setFormData({ ...formData, ageGroup: e.target.value })}
-                      className="w-full bg-luxury-elevated border border-luxury-border rounded-xl px-3.5 py-2.5 text-xs text-luxury-text focus:border-champagne focus:outline-none"
+                      className="w-full bg-[#21161F] border border-[#4A1830] rounded-xl px-3.5 py-2.5 text-xs text-[#FFF7E9] focus:border-[#C69A55] focus:outline-none"
                     >
                       {AGE_GROUPS.map((a) => (
                         <option key={a.id} value={a.id}>
@@ -527,13 +534,13 @@ export default function GiftDiscoveryWizard({
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-serif uppercase text-luxury-muted tracking-wider block">
+                    <label className="text-xs font-serif uppercase text-[#E9D7B8] tracking-wider block">
                       Gender Context
                     </label>
                     <select
                       value={formData.gender}
                       onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-                      className="w-full bg-luxury-elevated border border-luxury-border rounded-xl px-3.5 py-2.5 text-xs text-luxury-text focus:border-champagne focus:outline-none"
+                      className="w-full bg-[#21161F] border border-[#4A1830] rounded-xl px-3.5 py-2.5 text-xs text-[#FFF7E9] focus:border-[#C69A55] focus:outline-none"
                     >
                       <option value="any">Any / Not specified</option>
                       <option value="female">Female</option>
@@ -547,19 +554,19 @@ export default function GiftDiscoveryWizard({
           </AnimatePresence>
 
           {/* Navigation & Submission Footer Controls */}
-          <div className="mt-10 pt-6 border-t border-luxury-border flex items-center justify-between gap-4">
+          <div className="mt-10 pt-6 border-t border-[#4A1830] flex items-center justify-between gap-4">
             {step > 1 ? (
               <button
                 type="button"
                 onClick={handleBack}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-xs font-semibold text-luxury-text bg-luxury-elevated hover:bg-luxury-secondary border border-luxury-border transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-xs font-semibold text-[#E9D7B8] bg-[#261722] hover:bg-[#331C2C] hover:text-[#FFF7E9] border border-[#4A1830] transition-all cursor-pointer"
               >
-                <ArrowLeft className="w-4 h-4 text-champagne" />
+                <ArrowLeft className="w-4 h-4 text-[#C69A55]" />
                 <span>Previous</span>
               </button>
             ) : (
-              <div className="text-xs text-luxury-muted font-sans flex items-center gap-1.5">
-                <HelpCircle className="w-3.5 h-3.5 text-champagne" />
+              <div className="text-xs text-[#E9D7B8]/80 font-sans flex items-center gap-1.5">
+                <HelpCircle className="w-3.5 h-3.5 text-[#C69A55]" />
                 <span>Phase 1 of 5</span>
               </div>
             )}
@@ -568,7 +575,7 @@ export default function GiftDiscoveryWizard({
               <button
                 type="button"
                 onClick={handleNext}
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-xs font-semibold uppercase tracking-wider text-luxury-main bg-gradient-to-r from-champagne to-champagne-light hover:brightness-105 shadow-champagne-sm transition-all cursor-pointer active:scale-95"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider text-[#17131A] bg-gradient-to-r from-[#C69A55] via-[#DCB372] to-[#E9D7B8] hover:brightness-105 shadow-[0_4px_18px_rgba(198,154,85,0.4)] transition-all cursor-pointer active:scale-95"
               >
                 <span>Continue</span>
                 <ArrowRight className="w-4 h-4" />
@@ -578,16 +585,16 @@ export default function GiftDiscoveryWizard({
                 type="button"
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full text-sm font-semibold uppercase tracking-wider text-luxury-main bg-gradient-to-r from-champagne to-champagne-light hover:brightness-105 shadow-champagne-glow transition-all cursor-pointer active:scale-95 disabled:opacity-50"
+                className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full text-sm font-bold uppercase tracking-wider text-[#17131A] bg-gradient-to-r from-[#C69A55] via-[#DCB372] to-[#E9D7B8] hover:brightness-105 shadow-[0_4px_24px_rgba(198,154,85,0.45)] transition-all cursor-pointer active:scale-95 disabled:opacity-50"
               >
                 {isSubmitting ? (
                   <>
-                    <span className="w-4 h-4 border-2 border-luxury-main border-t-transparent rounded-full animate-spin" />
+                    <span className="w-4 h-4 border-2 border-[#17131A] border-t-transparent rounded-full animate-spin" />
                     <span>Curating Recommendations...</span>
                   </>
                 ) : (
                   <>
-                    <Sparkles className="w-4 h-4 fill-luxury-main text-luxury-main" />
+                    <Sparkles className="w-4 h-4 fill-[#17131A] text-[#17131A]" />
                     <span>Reveal Curated Gifts</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
