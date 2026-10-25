@@ -13,5 +13,6 @@ export default defineConfig({
     setupFiles: "./src/test/setup.js",
     include: ["src/**/*.{test,spec}.{js,jsx}"],
     exclude: ["e2e/**", "node_modules/**"],
+    testTimeout: 15000,
   },
 });

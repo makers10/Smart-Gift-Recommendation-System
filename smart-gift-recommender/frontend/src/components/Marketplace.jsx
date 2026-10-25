@@ -165,7 +165,7 @@ function OrderDetail({ orderId, myUserId, onBack }) {
             <p>Commissioned by <span className="font-semibold text-[#FFF7E9]">{order.buyer_name}</span></p>
             {order.occasion && <p className="text-[#C69A55]">Occasion: {order.occasion}</p>}
             {(order.budget_min > 0 || order.budget_max > 0) && (
-              <p className="font-semibold text-[#E9D7B8]">Budget: ₹{order.budget_min} – ₹{order.budget_max}</p>
+              <p className="font-semibold text-[#E9D7B8]">Budget: <span className="font-sans font-bold text-[#C69A55]">₹{Number(order.budget_min).toLocaleString("en-IN")} – ₹{Number(order.budget_max).toLocaleString("en-IN")}</span></p>
             )}
             {order.deadline && <p>Deadline: {order.deadline}</p>}
           </div>
@@ -188,7 +188,7 @@ function OrderDetail({ orderId, myUserId, onBack }) {
                 <div className="flex-1">
                   <div className="flex items-center gap-2.5 flex-wrap">
                     <span className="font-semibold text-[#FFF7E9] text-sm">{o.seller_name}</span>
-                    <span className="text-xs font-serif font-bold bg-[#C69A55]/15 text-[#DCB372] border border-[#C69A55]/40 px-2.5 py-0.5 rounded-full">₹{o.price}</span>
+                    <span className="text-xs font-sans font-bold bg-[#C69A55]/15 text-[#DCB372] border border-[#C69A55]/40 px-2.5 py-0.5 rounded-full">₹{Number(o.price).toLocaleString("en-IN")}</span>
                     <span className="text-xs text-[#E9D7B8]/70 flex items-center gap-1">
                       <Clock className="w-3 h-3 text-[#C69A55]" />
                       <span>{o.delivery_days} days delivery</span>
@@ -458,7 +458,7 @@ export default function Marketplace() {
               <div className="text-right text-xs text-[#E9D7B8]/80 shrink-0 font-sans space-y-1">
                 <p className="font-semibold text-[#FFF7E9]">{o.buyer_name}</p>
                 {(o.budget_min > 0 || o.budget_max > 0) && (
-                  <p className="font-serif font-bold text-[#C69A55] text-sm">₹{o.budget_min}–₹{o.budget_max}</p>
+                  <p className="font-sans font-bold text-[#C69A55] text-sm">₹{Number(o.budget_min).toLocaleString("en-IN")} – ₹{Number(o.budget_max).toLocaleString("en-IN")}</p>
                 )}
                 {o.deadline && <p className="text-[11px] text-[#D8CABA]/70" aria-hidden="true">Due {o.deadline}</p>}
                 <p className="text-xs text-[#E9D7B8] font-medium">{o.offer_count} offer{o.offer_count !== 1 ? "s" : ""}</p>

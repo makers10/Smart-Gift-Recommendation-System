@@ -144,13 +144,13 @@ function HistoryItem({ item, onReSearch, onRemove }) {
 
 function HistorySkeleton() {
   return (
-    <div className="bg-white border border-ivory-300 rounded-card px-5 py-4 flex items-start gap-3 shadow-xs"
+    <div className="bg-[#241620]/95 border border-[#4A1830] rounded-2xl px-5 py-4 flex items-start gap-3 shadow-sm"
       role="status" aria-label="Loading history entry…">
-      <div className="w-6 h-6 bg-ivory-300 animate-pulse rounded mt-0.5 shrink-0" />
+      <div className="w-6 h-6 bg-[#311C2C] animate-pulse rounded mt-0.5 shrink-0" />
       <div className="flex-1 space-y-2">
-        <div className="h-3.5 bg-ivory-300 animate-pulse rounded w-3/4" />
-        <div className="h-3 bg-ivory-200 animate-pulse rounded w-1/3" />
-        <div className="h-3 bg-ivory-200 animate-pulse rounded w-1/4" />
+        <div className="h-3.5 bg-[#311C2C] animate-pulse rounded w-3/4" />
+        <div className="h-3 bg-[#1E131B] animate-pulse rounded w-1/3" />
+        <div className="h-3 bg-[#1E131B] animate-pulse rounded w-1/4" />
       </div>
       <span className="sr-only">Loading history entry…</span>
     </div>

@@ -114,7 +114,7 @@ export default function FuturisticHeader({ tab, onNavigate, onLaunchWizard }) {
           </nav>
 
           {/* Right Action: Launch Discovery CTA */}
-          <div className="hidden sm:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-3">
             <button
               onClick={() => {
                 onNavigate("home");
@@ -132,7 +132,7 @@ export default function FuturisticHeader({ tab, onNavigate, onLaunchWizard }) {
           {/* Mobile Menu Hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden flex items-center justify-center w-10 h-10 rounded-xl bg-luxury-card border border-luxury-border text-luxury-muted hover:text-luxury-text cursor-pointer"
+            className="lg:hidden flex items-center justify-center min-w-[44px] min-h-[44px] w-11 h-11 rounded-xl bg-[#261722] border border-[#4A1830] text-[#E9D7B8] hover:text-[#FFF7E9] hover:bg-[#331C2C] transition-colors cursor-pointer"
             aria-label="Toggle Navigation"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

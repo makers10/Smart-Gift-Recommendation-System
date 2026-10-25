@@ -761,7 +761,7 @@ export default function HeroGiftScene({ onBoxClick }) {
   }
 
   return (
-    <div className="relative w-full h-[500px] sm:h-[600px] lg:h-[680px] flex items-center justify-center select-none">
+    <div className="relative w-full h-[360px] sm:h-[500px] lg:h-[640px] flex items-center justify-center select-none">
       {/* 3D WebGL Canvas — no browser title tooltip overlay */}
       <div
         ref={mountRef}
