@@ -1,0 +1,11 @@
+{
+  "name": "smart-gift-recommendation-system",
+  "version": "1.0.0",
+  "description": "Smart Gift Recommendation System - Full Stack Application",
+  "scripts": {
+    "dev": "npm --prefix smart-gift-recommender/frontend run dev",
+    "start": "npm --prefix smart-gift-recommender/frontend run dev",
+    "build": "npm --prefix smart-gift-recommender/frontend run build",
+    "test": "npm --prefix smart-gift-recommender/frontend run test"
+  }
+}
